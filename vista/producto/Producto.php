@@ -34,7 +34,7 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo',
-				fieldLabel: 'codigo',
+				fieldLabel: 'Codigo',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
@@ -46,6 +46,23 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
+		
+		{
+			config:{
+				name: 'description',
+				fieldLabel: 'Description',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 200,
+				maxLength:200 
+			},
+				type:'TextArea',
+				filters:{pfiltro:'prd.description',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		
 		{
 			config:{
 				name: 'estado_reg',
@@ -60,21 +77,6 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:false
-		},
-		{
-			config:{
-				name: 'description',
-				fieldLabel: 'description',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:200
-			},
-				type:'TextField',
-				filters:{pfiltro:'prd.description',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
 		},
 		{
 			config:{
