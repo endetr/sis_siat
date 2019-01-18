@@ -14,7 +14,7 @@ CREATE TABLE siat.evento_significativo (
     fecha_ini Timestamp NOT NULL,
     fecha_fin Timestamp NOT NULL,
     description VARCHAR(200) NOT NULL,
-    PRIMARY KEY (id_producto))
+    PRIMARY KEY (id_evento_significativo))
 INHERITS (pxp.tbase) WITHOUT OIDS; 
 /************************************F-SCP-FPT-SIAT-0-18/01/2019*************************************************/
 
