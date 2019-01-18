@@ -6,4 +6,16 @@ CREATE TABLE siat.tproducto (
     PRIMARY KEY (id_producto))
 INHERITS (pxp.tbase) WITHOUT OIDS; 
 /************************************F-SCP-JRR-SIAT-0-16/01/2019*************************************************/
+/************************************I-SCP-FPT-SIAT-0-18/01/2019*************************************************/
+CREATE TABLE siat.evento_significativo (
+    id_evento_significativo serial NOT NULL,
+    sucursal VARCHAR(55) NOT NULL,
+    codigo_evento VARCHAR(20) NOT NULL,
+    fecha_ini Timestamp NOT NULL,
+    fecha_fin Timestamp NOT NULL,
+    description VARCHAR(200) NOT NULL,
+    PRIMARY KEY (id_producto))
+INHERITS (pxp.tbase) WITHOUT OIDS; 
+/************************************F-SCP-FPT-SIAT-0-18/01/2019*************************************************/
+
 
