@@ -44,7 +44,8 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'sersia.codigo',type:'numeric'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:true,
+				bottom_filter : true
 		},
 		{
 			config:{
@@ -59,7 +60,8 @@ Phx.vista.Servicio=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'sersia.descripcion',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:true,
+				bottom_filter : true
 		},
 		{
 			config:{

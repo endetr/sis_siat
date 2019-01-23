@@ -44,7 +44,8 @@ Phx.vista.TipoDocumentoSiat=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'docsia.codigo',type:'numeric'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:true,
+				bottom_filter : true
 		},
 		{
 			config:{
@@ -59,7 +60,8 @@ Phx.vista.TipoDocumentoSiat=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'docsia.descripcion',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:true,
+				bottom_filter : true
 		},
 		{
 			config:{
@@ -78,8 +80,8 @@ Phx.vista.TipoDocumentoSiat=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'tipo',
-				fieldLabel: 'tipo',
+				name: 'desc_tipo',
+				fieldLabel: 'Tipo',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
@@ -89,8 +91,54 @@ Phx.vista.TipoDocumentoSiat=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'docsia.tipo',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:false
+		}
+		,
+		{
+			config : {
+				name : 'tipo',
+				fieldLabel : 'Tipo',  
+				typeAhead : true,
+				allowBlank : false,
+				triggerAction : 'all',
+				selectOnFocus : true,
+				forceSelection: true,
+				mode : 'local',
+				minChars: 2,
+				store : new Ext.data.ArrayStore({
+					fields : ['ID', 'valor'],
+					data : [['1', 'Documentos Fiscales'], ['2', 'Documentos Identidad'], ['3', 'Documentos Sector']]
+				}),
+				renderer : function(value, p, record) {
+					var tipo = record.data.tipo;
+					return  record.data.tipo;
+					if (tipo=='1'){
+						return 'Documentos Fiscales';
+					}else if (tipo=='2'){
+						return 'Documentos Identidad';
+					}else{
+				        return 'Documentos Sector';
+						
+					}
+					
+					//return String.format('{0}', record.data['desc_clasificador']);
+				},
+				valueField : 'ID',
+				displayField : 'valor',
+				width : 200
+
+			},
+			type : 'ComboBox',
+			valorInicial : 'Documentos Fiscales',
+			filters : {
+				pfiltro : 'docsia.tipo',
+				type : 'string'	
+			},
+			default:'Documentos Fiscales',
+			grid : false,
+			form : true
 		},
+		
 		{
 			config:{
 				name: 'fecha_reg',
@@ -204,6 +252,7 @@ Phx.vista.TipoDocumentoSiat=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'desc_tipo', type: 'string'}
 		
 	],
 	sortInfo:{

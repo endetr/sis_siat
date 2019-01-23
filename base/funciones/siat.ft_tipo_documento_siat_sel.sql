@@ -1,7 +1,11 @@
-CREATE OR REPLACE FUNCTION "siat"."ft_tipo_documento_siat_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+CREATE OR REPLACE FUNCTION siat.ft_tipo_documento_siat_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Sistema SIAT
  FUNCION: 		siat.ft_tipo_documento_siat_sel
@@ -52,7 +56,14 @@ BEGIN
 						docsia.fecha_mod,
 						docsia.id_usuario_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+                        case when docsia.tipo=''1'' then
+                                  ''Documentos Fiscales''
+                             when docsia.tipo=''2'' then 
+                             ''Documentos Identidad''
+                             else 
+                             ''Documentos Sector''
+                        end as desc_tipo	
 						from siat.ttipo_documento_siat docsia
 						inner join segu.tusuario usu1 on usu1.id_usuario = docsia.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = docsia.id_usuario_mod
@@ -107,7 +118,12 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "siat"."ft_tipo_documento_siat_sel"(integer, integer, character varying, character varying) OWNER TO postgres;
+
+ALTER FUNCTION siat.ft_tipo_documento_siat_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+  OWNER TO postgres;

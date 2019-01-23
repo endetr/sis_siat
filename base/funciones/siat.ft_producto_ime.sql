@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "siat"."ft_producto_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION siat.ft_producto_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Sistema SIAT
  FUNCION: 		siat.ft_producto_ime
@@ -46,7 +49,7 @@ BEGIN
         	insert into siat.tproducto(
 			codigo,
 			estado_reg,
-			description,
+			descripcion,
 			id_usuario_reg,
 			usuario_ai,
 			fecha_reg,
@@ -56,7 +59,7 @@ BEGIN
           	) values(
 			v_parametros.codigo,
 			'activo',
-			v_parametros.description,
+			v_parametros.descripcion,
 			p_id_usuario,
 			v_parametros._nombre_usuario_ai,
 			now(),
@@ -90,7 +93,7 @@ BEGIN
 			--Sentencia de la modificacion
 			update siat.tproducto set
 			codigo = v_parametros.codigo,
-			description = v_parametros.description,
+			descripcion = v_parametros.descripcion,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
@@ -145,7 +148,12 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "siat"."ft_producto_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
+
+ALTER FUNCTION siat.ft_producto_ime (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+  OWNER TO postgres;

@@ -19,7 +19,7 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
-			
+			  
 	Atributos:[
 		{
 			//configuracion del componente
@@ -41,30 +41,32 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 				maxLength:20
 			},
 				type:'TextField',
-				filters:{pfiltro:'prd.codigo',type:'string'},
+				filters:{pfiltro:'prd.codigo',type:'numeric'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:true,
+				bottom_filter : true
 		},
 		
 		{
 			config:{
-				name: 'description',
-				fieldLabel: 'Description',
+				name: 'descripcion',
+				fieldLabel: 'Descripción',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 200,
 				maxLength:200 
 			},
 				type:'TextArea',
-				filters:{pfiltro:'prd.description',type:'string'},
+				filters:{pfiltro:'prd.descripcion',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:true,
+				bottom_filter : true
 		},
 		
 		{
-			config:{
+			config:{   
 				name: 'estado_reg',
 				fieldLabel: 'Estado Reg.',
 				allowBlank: true,
@@ -181,7 +183,7 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_producto', type: 'numeric'},
 		{name:'codigo', type: 'string'},
 		{name:'estado_reg', type: 'string'},
-		{name:'description', type: 'string'},
+		{name:'descripcion', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'usuario_ai', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
