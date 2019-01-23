@@ -10,7 +10,7 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 CREATE TABLE siat.tevento_significativo (
     id_evento_significativo serial NOT NULL,
     fk_sucursal integer NOT NULL,
-    codigo_evento VARCHAR(55 NOT NULL,
+    codigo_evento VARCHAR(55) NOT NULL,
     fecha_ini Timestamp NOT NULL,
     fecha_fin Timestamp NOT NULL,
     description VARCHAR(200) NOT NULL,
