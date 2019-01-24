@@ -1,18 +1,18 @@
-CREATE OR REPLACE FUNCTION "siat"."ft_evento_significativo_sel"(	
+CREATE OR REPLACE FUNCTION "siat"."ft_salud_sistema_sel"(	
 				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
 RETURNS character varying AS
 $BODY$
 /**************************************************************************
  SISTEMA:		Sistema SIAT
- FUNCION: 		siat.ft_evento_significativo_sel
- DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.tevento_significativo'
+ FUNCION: 		siat.ft_salud_sistema_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.tsalud_sistema'
  AUTOR: 		 (admin)
- FECHA:	        21-01-2019 22:24:59
+ FECHA:	        24-01-2019 19:34:45
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 #ISSUE				FECHA				AUTOR				DESCRIPCION
- #0				21-01-2019 22:24:59								Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.tevento_significativo'	
+ #0				24-01-2019 19:34:45								Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.tsalud_sistema'	
  #
  ***************************************************************************/
 
@@ -25,41 +25,40 @@ DECLARE
 			    
 BEGIN
 
-	v_nombre_funcion = 'siat.ft_evento_significativo_sel';
+	v_nombre_funcion = 'siat.ft_salud_sistema_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'SIA_EVSI_SEL'
+ 	#TRANSACCION:  'SIA_EVSA_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		admin	
- 	#FECHA:		21-01-2019 22:24:59
+ 	#FECHA:		24-01-2019 19:34:45
 	***********************************/
 
-	if(p_transaccion='SIA_EVSI_SEL')then
+	if(p_transaccion='SIA_EVSA_SEL')then
      				
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						evsi.id_evento_significativo,
-						evsi.fk_sucursal,
+						evsa.id_salud_sistema,
+						evsa.estado_reg,
+						evsa.codigo_evento,
+						evsa.description_salud,
+						evsa.fecha_salud,
+						evsa.fk_sucursal,
 						suc.nombre as nombre_sucursal,
-						evsi.description,
-						evsi.estado_reg,
-						evsi.fecha_fin,
-						evsi.codigo_evento,
-						evsi.fecha_ini,
-						evsi.usuario_ai,
-						evsi.fecha_reg,
-						evsi.id_usuario_reg,
-						evsi.id_usuario_ai,
-						evsi.fecha_mod,
-						evsi.id_usuario_mod,
+						evsa.usuario_ai,
+						evsa.fecha_reg,
+						evsa.id_usuario_reg,
+						evsa.id_usuario_ai,
+						evsa.id_usuario_mod,
+						evsa.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod	
-						from siat.tevento_significativo evsi
-						inner join segu.tusuario usu1 on usu1.id_usuario = evsi.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = evsi.id_usuario_mod
-						inner join vef.tsucursal suc on suc.id_sucursal = evsi.fk_sucursal
+						from siat.tsalud_sistema evsa
+						inner join segu.tusuario usu1 on usu1.id_usuario = evsa.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = evsa.id_usuario_mod
+						inner join vef.tsucursal suc on suc.id_sucursal = evsa.fk_sucursal
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -72,20 +71,20 @@ BEGIN
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'SIA_EVSI_CONT'
+ 	#TRANSACCION:  'SIA_EVSA_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		admin	
- 	#FECHA:		21-01-2019 22:24:59
+ 	#FECHA:		24-01-2019 19:34:45
 	***********************************/
 
-	elsif(p_transaccion='SIA_EVSI_CONT')then
+	elsif(p_transaccion='SIA_EVSA_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_evento_significativo)
-					    from siat.tevento_significativo evsi
-					    inner join segu.tusuario usu1 on usu1.id_usuario = evsi.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = evsi.id_usuario_mod
+			v_consulta:='select count(id_salud_sistema)
+					    from siat.tsalud_sistema evsa
+					    inner join segu.tusuario usu1 on usu1.id_usuario = evsa.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = evsa.id_usuario_mod
 					    where ';
 			
 			--Definicion de la respuesta		    
@@ -114,4 +113,4 @@ END;
 $BODY$
 LANGUAGE 'plpgsql' VOLATILE
 COST 100;
-ALTER FUNCTION "siat"."ft_evento_significativo_sel"(integer, integer, character varying, character varying) OWNER TO postgres;
+ALTER FUNCTION "siat"."ft_salud_sistema_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

@@ -170,15 +170,15 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
 
 	],
 
-	/*labelSubmit: '<i class="fa fa-check"></i> Aplicar Filtro',
+	labelSubmit: '<i class="fa fa-check"></i> Aplicar Filtro',
 	south: {
-		url: '../../../sis_siat/vista/evento_significativo/EventoSignificativo.php',
-		title: 'Eventos Significativos',
+		url: '../../../sis_siat/vista/salud_sistema/SaludSistema.php',
+		title: 'Eventos de Salud del Sistema',
 		
-		height: '70%',
-		cls: 'EventoSignificativo'
+		height: '60%',
+		cls: 'SaludSistema'
 	},
-	title: 'Filtro',*/
+	title: 'Filtro',
 	
 	// Funcion guardar del formulario
 	onSubmit: function(o) {  
@@ -193,7 +193,7 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
 			//var id_sucursal=this.Cmp.fk_sucursal.lastSelectionText;
 		//	var codigo_evento=this.Cmp.codigo_evento.getValue();
 				
-			//this.onEnablePanel(this.idContenedor + '-south', parametros);
+			this.onEnablePanel(this.idContenedor + '-south', parametros);
 			
 			/*this.onEnablePanel(this.idContenedor + '-south', 
 				Ext.apply(parametros,{	'fecha_ini': fecha_desde,
