@@ -1,5 +1,6 @@
 <pre>
 <?php
+//referencia a clase ws
 include "SiatClassWs.inc";
 
 /*
