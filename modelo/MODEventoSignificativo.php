@@ -22,6 +22,7 @@ class MODEventoSignificativo extends MODbase{
 		//Definicion de la lista del resultado del query
 		$this->captura('id_evento_significativo','int4');
 		$this->captura('fk_sucursal','int4');
+		$this->captura('nombre_sucursal','varchar');
 		$this->captura('description','varchar');
 		$this->captura('estado_reg','varchar');
 		$this->captura('fecha_fin','timestamp');
@@ -35,7 +36,7 @@ class MODEventoSignificativo extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		$this->captura('nombre','varchar');
+		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();

@@ -17,22 +17,41 @@ class ACTEventoSignificativo extends ACTbase{
 			 Parametro para listar segun datos del formulario			 
 			 *
 			 */
-			 
-			     if ($this->objParam->getParametro('fecha_ini') != '') {
-                  $this->objParam->addFiltro(" evsi.fecha_ini >= ''" .  $this->objParam->getParametro('fecha_ini')."''");
+			  if ($this->objParam->getParametro('fecha_ini') != '' and $this->objParam->getParametro('fecha_fin') == '' ){
+                  $this->objParam->addFiltro(" evsi.fecha_ini = ''" .  $this->objParam->getParametro('fecha_ini')."'' ");
 				   
 				  }
+				  
+				  else {
+				  	
+					
+					    if ($this->objParam->getParametro('fecha_ini') != '') {
+                        $this->objParam->addFiltro(" evsi.fecha_ini >= ''" .  $this->objParam->getParametro('fecha_ini')."'' ");
 				   
-				 if ($this->objParam->getParametro('fecha_hasta') != '') {
-                     $this->objParam->addFiltro(" tevento_significativo.fecha_fin = " .  $this->objParam->getParametro('fecha_hasta'));
-				  }
+				          }
+				   
+				       if ($this->objParam->getParametro('fecha_fin') != '') {
+                       $this->objParam->addFiltro(" evsi.fecha_ini <= ''" .  $this->objParam->getParametro('fecha_fin')."'' ");
+				         }
 					  
+					
+					
+				   }
+			 
+			 
+			   
 				 
 				 
-				 if ($this->objParam->getParametro('codigo_evento') != '') {
-                     $this->objParam->addFiltro(" evsi.codigo_evento = ''" .  $this->objParam->getParametro('codigo_evento')."''");
-				 
-				 }
+				       if ($this->objParam->getParametro('codigo_evento') != '') {
+                       $this->objParam->addFiltro(" evsi.codigo_evento = ''" .  $this->objParam->getParametro('codigo_evento')."''");
+				  
+				        }
+					   
+					   
+				       if ($this->objParam->getParametro('id_sucursal') != '') {
+                       $this->objParam->addFiltro(" fk_sucursal = " .  $this->objParam->getParametro('id_sucursal')." ");
+				  
+				        }
 				 /**/
 		
 		

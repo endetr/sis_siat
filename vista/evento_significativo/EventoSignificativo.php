@@ -41,14 +41,14 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 		
 		{
             config:{
-                name: 'nombre',
+                name: 'nombre_sucursal',
                 fieldLabel: 'Sucursal',              
-                gwidth: 110
+                gwidth: 150
             },
                 type:'TextField',
-                filters: { pfiltro: 'evsi.nombre', type: 'string'},      
+                filters: { pfiltro: 'suc.nombre', type: 'string'},      
                 grid: true,
-                form: false,
+                form: true,
                 bottom_filter: false
         },
         
@@ -66,16 +66,67 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 				type:'NumberField',
 				filters:{pfiltro:'evsi.fk_sucursal',type:'numeric'},
 				id_grupo:1,
+				grid:false,
+				form:true
+		},
+		
+		
+		{
+			config:{
+				name: 'fecha_ini',
+				fieldLabel: 'Fecha Inicio',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 150,
+							format: 'd/m/Y', 
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+			},
+				type:'DateField',
+				filters:{pfiltro:'evsi.fecha_ini',type:'date'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		
+		{
+			config:{
+				name: 'fecha_fin',
+				fieldLabel: 'Fecha Fin',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 150,
+							format: 'd/m/Y', 
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+			},
+				type:'DateField',
+				filters:{pfiltro:'evsi.fecha_fin',type:'date'},
+				id_grupo:1,
 				grid:true,
 				form:true
 		},
 		{
 			config:{
-				name: 'description',
-				fieldLabel: 'description',
+				name: 'codigo_evento',
+				fieldLabel: 'Código Evento',
 				allowBlank: false,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 120,
+				maxLength:55
+			},
+				type:'TextField',
+				filters:{pfiltro:'evsi.codigo_evento',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		
+		{
+			config:{
+				name: 'description',
+				fieldLabel: 'Descriptión',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 180,
 				maxLength:200
 			},
 				type:'TextField',
@@ -99,53 +150,7 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
-		{
-			config:{
-				name: 'fecha_fin',
-				fieldLabel: 'fecha_fin',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
-			},
-				type:'DateField',
-				filters:{pfiltro:'evsi.fecha_fin',type:'date'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		{
-			config:{
-				name: 'codigo_evento',
-				fieldLabel: 'codigo_evento',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:55
-			},
-				type:'TextField',
-				filters:{pfiltro:'evsi.codigo_evento',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		{
-			config:{
-				name: 'fecha_ini',
-				fieldLabel: 'fecha_ini',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
-			},
-				type:'DateField',
-				filters:{pfiltro:'evsi.fecha_ini',type:'date'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
+		
 		{
 			config:{
 				name: 'usuario_ai',
@@ -167,7 +172,7 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Fecha creación',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
+				gwidth: 120,
 							format: 'd/m/Y', 
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
@@ -248,6 +253,7 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 	fields: [
 		{name:'id_evento_significativo', type: 'numeric'},
 		{name:'fk_sucursal', type: 'numeric'},
+		{name:'nombre_sucursal', type: 'string'},
 		{name:'description', type: 'string'},
 		{name:'estado_reg', type: 'string'},
 		{name:'fecha_fin', type: 'date',dateFormat:'Y-m-d H:i:s'},
@@ -267,8 +273,12 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_evento_significativo',
 		direction: 'ASC'
 	},
-	bdel:true,
-	bsave:true
+	//bdel:true,
+	//bsave:true
+	bdel:false,
+	bsave:false,
+	bedit:false,
+	bnew:false,
 	}
 )
 </script>

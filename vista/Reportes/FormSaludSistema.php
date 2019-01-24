@@ -12,7 +12,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 
 <script>
-Phx.vista.EventosSignificativos=Ext.extend(Phx.frmInterfaz,{
+Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
     constructor:function(config)
     {   
     	
@@ -34,7 +34,7 @@ Phx.vista.EventosSignificativos=Ext.extend(Phx.frmInterfaz,{
 				    
 	  
 				    
-       Phx.vista.EventosSignificativos.superclass.constructor.call(this,config);
+       Phx.vista.FormSaludSistema.superclass.constructor.call(this,config);
        this.init(); 
        this.iniciarEventos(); 
     
@@ -170,7 +170,7 @@ Phx.vista.EventosSignificativos=Ext.extend(Phx.frmInterfaz,{
 
 	],
 
-	labelSubmit: '<i class="fa fa-check"></i> Aplicar Filtro',
+	/*labelSubmit: '<i class="fa fa-check"></i> Aplicar Filtro',
 	south: {
 		url: '../../../sis_siat/vista/evento_significativo/EventoSignificativo.php',
 		title: 'Eventos Significativos',
@@ -178,7 +178,7 @@ Phx.vista.EventosSignificativos=Ext.extend(Phx.frmInterfaz,{
 		height: '70%',
 		cls: 'EventoSignificativo'
 	},
-	title: 'Filtro',
+	title: 'Filtro',*/
 	
 	// Funcion guardar del formulario
 	onSubmit: function(o) {  
@@ -187,15 +187,15 @@ Phx.vista.EventosSignificativos=Ext.extend(Phx.frmInterfaz,{
 		if (me.form.getForm().isValid()) {		
 			var parametros = me.getValForm();
 			
-			var fecha_desde=this.Cmp.desde.getValue();
-			var fecha_hasta=this.Cmp.hasta.getValue();
+			//var fecha_desde=this.Cmp.desde.getValue();
+			//var fecha_hasta=this.Cmp.hasta.getValue();
 			//var nombre_sucursal = this.id_sucursal.getValue(2);
 			//var id_sucursal=this.Cmp.fk_sucursal.lastSelectionText;
 		//	var codigo_evento=this.Cmp.codigo_evento.getValue();
 				
 			//this.onEnablePanel(this.idContenedor + '-south', parametros);
 			
-			this.onEnablePanel(this.idContenedor + '-south', 
+			/*this.onEnablePanel(this.idContenedor + '-south', 
 				Ext.apply(parametros,{	'fecha_ini': fecha_desde,
 										'fecha_fin': fecha_hasta
 									//	'nombre_sucursal': nombre_sucursal,
@@ -203,7 +203,7 @@ Phx.vista.EventosSignificativos=Ext.extend(Phx.frmInterfaz,{
 										 /// 'desc_proveedor':desc_pro,
 										// 'nombre_auxiliar' : nom_aux,
 										 //'razon_social':razon_social
-									 }));
+									 }));*/
        }
     },
 	//
@@ -214,7 +214,7 @@ Phx.vista.EventosSignificativos=Ext.extend(Phx.frmInterfaz,{
 
     
     loadValoresIniciales: function(){
-    	Phx.vista.EventosSignificativos.superclass.loadValoresIniciales.call(this);
+    	Phx.vista.FormSaludSistema.superclass.loadValoresIniciales.call(this);
     	
     	
     	
