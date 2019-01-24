@@ -1,5 +1,5 @@
 <?php
-/**
+/***
 *@package pXP
 *@file gen-ACTProducto.php
 *@author  (admin)
