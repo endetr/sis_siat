@@ -166,7 +166,21 @@ Phx.vista.EventosSignificativos=Ext.extend(Phx.frmInterfaz,{
 		if (me.form.getForm().isValid()) {		
 			var parametros = me.getValForm();
 			
-			this.onEnablePanel(this.idContenedor + '-south', parametros);
+			var fecha_desde=this.Cmp.desde.getValue();
+			var fecha_hasta=this.Cmp.hasta.getValue();
+			//var id_sucursal=this.Cmp.fk_sucursal.lastSelectionText;
+		//	var codigo_evento=this.Cmp.codigo_evento.getValue();
+				
+		//	this.onEnablePanel(this.idContenedor + '-south', parametros);
+			
+			this.onEnablePanel(this.idContenedor + '-south', 
+				Ext.apply(parametros,{	'fecha_ini': fecha_desde,
+										'fecha_fin': fecha_hasta
+										//'codigo_evento' : codigo_evento
+										 /// 'desc_proveedor':desc_pro,
+										// 'nombre_auxiliar' : nom_aux,
+										 //'razon_social':razon_social
+									 }));
        }
     },
 	//

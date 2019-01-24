@@ -3,7 +3,7 @@
 *@package pXP
 *@file gen-EventoSignificativo.php
 *@author  (admin)
-*@date 23-01-2019 19:31:54
+*@date 21-01-2019 22:24:59
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
 
@@ -17,15 +17,16 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.EventoSignificativo.superclass.constructor.call(this,config);
 		this.init();
-		//this.load({params:{start:0, limit:this.tam_pag}})
+		this.load({params:{start:0, limit:this.tam_pag}})
+		
 	},
 	onReloadPage:function(p){
-		this.store.baseParams=p;
+		//this.store.baseParams=p;
 		//cargar datos pasando como parametros
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
 			
-	Atributos:[ 
+	Atributos:[
 		{
 			//configuracion del componente
 			config:{
@@ -36,24 +37,6 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 			type:'Field',
 			form:true 
 		},
-		
-		/**/
-		
-		{
-            config:{
-                name: 'nombre',
-                fieldLabel: 'Sucursal',              
-                gwidth: 110
-            },
-                type:'TextField',
-                filters: { pfiltro: 'evsi.nombre', type: 'string'},      
-                grid: true,
-                form: false,
-                bottom_filter: false
-        },
-        
-		
-		/**/
 		{
 			config:{
 				name: 'fk_sucursal',
@@ -99,7 +82,7 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:false
 		},
-		{
+		/*{
 			config:{
 				name: 'fecha_fin',
 				fieldLabel: 'fecha_fin',
@@ -114,7 +97,7 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:true
-		},
+		},*/
 		{
 			config:{
 				name: 'codigo_evento',
@@ -130,27 +113,30 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 				grid:true,
 				form:true
 		},
-		{
+		/*{
 			config:{
 				name: 'fecha_ini',
 				fieldLabel: 'fecha_ini',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+	       				format:'Y-m-d',
+				
+							//format: 'd/m/Y', 
+				//renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
+				renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 				type:'DateField',
 				filters:{pfiltro:'evsi.fecha_ini',type:'date'},
 				id_grupo:1,
 				grid:true,
 				form:true
-		},
+		},*/
 		{
 			config:{
 				name: 'usuario_ai',
 				fieldLabel: 'Funcionaro AI',
-				allowBlank: true, 
+				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:300
@@ -172,7 +158,7 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
-				filters:{pfiltro:'evsi.fecha_reg',type:'date'},
+				filters:{pfiltro:'acteco.fecha_reg',type:'date'},
 				id_grupo:1,
 				grid:true,
 				form:false
@@ -250,9 +236,9 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 		{name:'fk_sucursal', type: 'numeric'},
 		{name:'description', type: 'string'},
 		{name:'estado_reg', type: 'string'},
-		{name:'fecha_fin', type: 'date',dateFormat:'Y-m-d H:i:s'},
+		{name:'fecha_fin', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'codigo_evento', type: 'string'},
-		{name:'fecha_ini', type: 'date',dateFormat:'Y-m-d H:i:s'},
+		{name:'fecha_ini', type: 'date',dateFormat:'Y-m-d'},
 		{name:'usuario_ai', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_reg', type: 'numeric'},
@@ -267,8 +253,11 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_evento_significativo',
 		direction: 'ASC'
 	},
-	bdel:true,
-	bsave:true
+	bdel:false,
+	bsave:false,
+	bedit:false,
+	bnew:false,
+	
 	}
 )
 </script>

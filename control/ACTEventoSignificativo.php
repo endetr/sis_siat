@@ -10,18 +10,47 @@
 class ACTEventoSignificativo extends ACTbase{    
 			
 	function listarEventoSignificativo(){
+		
 		$this->objParam->defecto('ordenacion','id_evento_significativo');
+		
+		/***
+			 Parametro para listar segun datos del formulario			 
+			 *
+			 */
+			 
+			     if ($this->objParam->getParametro('fecha_ini') != '') {
+                  $this->objParam->addFiltro(" evsi.fecha_ini >= ''" .  $this->objParam->getParametro('fecha_ini')."''");
+				   
+				  }
+				   
+				 if ($this->objParam->getParametro('fecha_hasta') != '') {
+                     $this->objParam->addFiltro(" tevento_significativo.fecha_fin = " .  $this->objParam->getParametro('fecha_hasta'));
+				  }
+					  
+				 
+				 
+				 if ($this->objParam->getParametro('codigo_evento') != '') {
+                     $this->objParam->addFiltro(" evsi.codigo_evento = ''" .  $this->objParam->getParametro('codigo_evento')."''");
+				 
+				 }
+				 /**/
+		
+		
+		
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
 			$this->res = $this->objReporte->generarReporteListado('MODEventoSignificativo','listarEventoSignificativo');
-		} else{
-			$this->objFunc=$this->create('MODEventoSignificativo');
 			
-			$this->res=$this->objFunc->listarEventoSignificativo($this->objParam);
+		} else{
+			
+			$this->objFunc=$this->create('MODEventoSignificativo');
+			     
+			
+	        $this->res=$this->objFunc->listarEventoSignificativo($this->objParam);
 		}
-		$this->res->imprimirRespuesta($this->res->generarJson());
+		    $this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
 	function insertarEventoSignificativo(){
