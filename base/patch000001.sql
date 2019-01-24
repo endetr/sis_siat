@@ -18,7 +18,7 @@ CREATE TABLE siat.tevento_significativo (
 INHERITS (pxp.tbase) WITHOUT OIDS; 
 /************************************F-SCP-FPT-SIAT-0-18/01/2019*************************************************/
 /************************************I-SCP-FPT-SIAT-0-21/01/2019*************************************************/
-CREATE TABLE siat.salud_sistema (
+CREATE TABLE siat.tsalud_sistema (
     id_salud_sistema serial NOT NULL,
     fk_sucursal integer NOT NULL,
     codigo_evento VARCHAR(55) NOT NULL,
