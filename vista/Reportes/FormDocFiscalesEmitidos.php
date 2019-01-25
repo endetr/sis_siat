@@ -12,7 +12,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 
 <script>
-Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
+Phx.vista.FormDocFiscalesEmitidos=Ext.extend(Phx.frmInterfaz,{
     constructor:function(config)
     {   
     	
@@ -34,7 +34,7 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
 				    
 	  
 				    
-       Phx.vista.FormSaludSistema.superclass.constructor.call(this,config);
+       Phx.vista.FormDocFiscalesEmitidos.superclass.constructor.call(this,config);
        this.init(); 
        this.iniciarEventos(); 
     
@@ -106,7 +106,7 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
 		  },
 		 
   			
-        {
+       /* {
             config: {
                 name: 'id_sucursal',
                 fieldLabel: 'Sucursal',
@@ -146,7 +146,7 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
             type: 'ComboBox',
             id_grupo: 0,            
             form: true
-        },  
+        }, */ 
         
        {
 			config:{
@@ -172,11 +172,11 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
 
 	labelSubmit: '<i class="fa fa-check"></i> Aplicar Filtro',
 	south: {
-		url: '../../../sis_siat/vista/salud_sistema/SaludSistema.php',
-		title: 'Eventos de Salud del Sistema',
+		url: '../../../sis_siat/vista/Reportes/DocFiscalesEmitidos.php',
+		title: 'Documentos Fiscales Emitidos',
 		
 		height: '60%',
-		cls: 'SaludSistema'
+		cls: 'DocFiscalesEmitidos'
 	},
 	title: 'Filtro',
 	
@@ -214,7 +214,7 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
 
     
     loadValoresIniciales: function(){
-    	Phx.vista.FormSaludSistema.superclass.loadValoresIniciales.call(this);
+    	Phx.vista.FormDocFiscalesEmitidos.superclass.loadValoresIniciales.call(this);
     	
     	
     	

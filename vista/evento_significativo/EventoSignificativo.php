@@ -70,6 +70,23 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 				form:true
 		},
 		
+		{
+			config:{
+				name: 'codigo_evento',
+				fieldLabel: 'Código Evento',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 120,
+				maxLength:55
+			},
+				type:'TextField',
+				filters:{pfiltro:'evsi.codigo_evento',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		
+		
 		
 		{
 			config:{
@@ -100,21 +117,6 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 			},
 				type:'DateField',
 				filters:{pfiltro:'evsi.fecha_fin',type:'date'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		{
-			config:{
-				name: 'codigo_evento',
-				fieldLabel: 'Código Evento',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 120,
-				maxLength:55
-			},
-				type:'TextField',
-				filters:{pfiltro:'evsi.codigo_evento',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:true

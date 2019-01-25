@@ -12,7 +12,7 @@ header("content-type: text/javascript; charset=UTF-8");
 ?>
 
 <script>
-Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
+Phx.vista.FormResumenVenta=Ext.extend(Phx.frmInterfaz,{
     constructor:function(config)
     {   
     	
@@ -34,7 +34,7 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
 				    
 	  
 				    
-       Phx.vista.FormSaludSistema.superclass.constructor.call(this,config);
+       Phx.vista.FormResumenVenta.superclass.constructor.call(this,config);
        this.init(); 
        this.iniciarEventos(); 
     
@@ -106,48 +106,7 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
 		  },
 		 
   			
-        {
-            config: {
-                name: 'id_sucursal',
-                fieldLabel: 'Sucursal',
-                allowBlank: true,
-                emptyText: 'Elija una Suc...',
-                store: new Ext.data.JsonStore({
-                    url: '../../sis_ventas_facturacion/control/Sucursal/listarSucursal',
-                    id: 'id_sucursal',
-                    root: 'datos',
-                    sortInfo: {
-                        field: 'nombre',
-                        direction: 'ASC'
-                    },
-                    totalProperty: 'total',
-                    fields: ['id_sucursal', 'nombre', 'codigo'],
-                    remoteSort: true,
-                    baseParams: {tipo_usuario : 'todos',par_filtro: 'suc.nombre#suc.codigo'}
-                }),
-                valueField: 'id_sucursal',
-                gdisplayField : 'nombre_sucursal',
-                displayField: 'nombre',                
-                hiddenName: 'id_sucursal',
-                tpl:'<tpl for="."><div class="x-combo-list-item"><p><b>Codigo:</b> {codigo}</p><p><b>Nombre:</b> {nombre}</p></div></tpl>',
-                forceSelection: true,
-                typeAhead: false,
-                triggerAction: 'all',
-                lazyRender: true,
-                mode: 'remote',
-                pageSize: 15,
-                anchor: '40%',
-                width:150,
-                queryDelay: 1000,                
-                minChars: 2,
-                resizable:true,
-                hidden : false
-            },
-            type: 'ComboBox',
-            id_grupo: 0,            
-            form: true
-        },  
-        
+     
        {
 			config:{
 				name: 'codigo_evento',
@@ -170,7 +129,7 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
 
 	],
 
-	labelSubmit: '<i class="fa fa-check"></i> Aplicar Filtro',
+	/*labelSubmit: '<i class="fa fa-check"></i> Aplicar Filtro',
 	south: {
 		url: '../../../sis_siat/vista/salud_sistema/SaludSistema.php',
 		title: 'Eventos de Salud del Sistema',
@@ -178,7 +137,7 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
 		height: '60%',
 		cls: 'SaludSistema'
 	},
-	title: 'Filtro',
+	title: 'Filtro',*/
 	
 	// Funcion guardar del formulario
 	onSubmit: function(o) {  
@@ -214,7 +173,7 @@ Phx.vista.FormSaludSistema=Ext.extend(Phx.frmInterfaz,{
 
     
     loadValoresIniciales: function(){
-    	Phx.vista.FormSaludSistema.superclass.loadValoresIniciales.call(this);
+    	Phx.vista.FormResumenVenta.superclass.loadValoresIniciales.call(this);
     	
     	
     	
