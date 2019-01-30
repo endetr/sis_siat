@@ -93,4 +93,15 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 
 
 /************************************F-SCP-AVQ-SIAT-1-17/01/2019*************************************************/
+/************************************I-SCP-AVQ-SIAT-0-30/01/2019*************************************************/
+
+CREATE TABLE siat.tambientehenry (
+    id_ambiente serial NOT NULL,
+    codigo NUMERIC NOT NULL,
+    descripcion VARCHAR(200) NOT NULL,
+    PRIMARY KEY (id_ambiente))
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+
+/************************************F-SCP-AVQ-SIAT-0-30/01/2019*************************************************/
  

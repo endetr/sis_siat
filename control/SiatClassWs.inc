@@ -115,7 +115,12 @@ class WsFacturacionSincroniza extends SiatClassWs {
 	   //var_dump($result);die();
    }
 
-  
+  function ParametricaEventosSignificativos()
+   {
+       $result = $this->clientSINC->sincronizarParametricaEventosSignificativos($this->parametros);
+	   return $result;
+	   //var_dump($result);die();
+   }
 } // fin de la clase de web services para operaciones
 
 
