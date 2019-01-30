@@ -10,12 +10,12 @@
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.DocFiscalesEmitidos=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.DocFiscalesAnuladas=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
-		Phx.vista.DocFiscalesEmitidos.superclass.constructor.call(this,config);
+		Phx.vista.DocFiscalesAnuladas.superclass.constructor.call(this,config);
 		this.init();
 		//this.load({params:{start:0, limit:this.tam_pag}})
 	},
@@ -226,10 +226,10 @@ Phx.vista.DocFiscalesEmitidos=Ext.extend(Phx.gridInterfaz,{
 		}
 	],
 	tam_pag:50,	
-	title:'Documentos Fiscales Emitidos',
+	title:'Documentos Fiscales ',
 	//ActSave:'../../sis_siat/control/EventoSignificativo/insertarEventoSignificativo',
 	//ActDel:'../../sis_siat/control/EventoSignificativo/eliminarEventoSignificativo',
-	ActList:'../../sis_ventas_facturacion/control/Venta/listarDocFiscalesEmitidosReporteSiat',
+	ActList:'../../sis_ventas_facturacion/control/Venta/listarDocFiscalesAnuladasReporteSiat',
 	id_store:'id_venta',
 	fields: [
 		{name:'id_venta', type: 'numeric'},
@@ -265,5 +265,3 @@ Phx.vista.DocFiscalesEmitidos=Ext.extend(Phx.gridInterfaz,{
 	}
 )
 </script>
-		
-		

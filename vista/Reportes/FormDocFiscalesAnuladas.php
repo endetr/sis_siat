@@ -6,7 +6,7 @@
 *@date    30-01-2014
 *@description permites subir archivos a la tabla de documento_sol
  * ISSUE				FECHA			AUTHOR		  DESCRIPCION
- *  1A					24/08/2018			EGS  		se aumento campo para comprobante  y se hizo mejoras en los combos visualmente
+ *  1A					24/01/2019			EGS  		se aumento campo para   y se hizo mejoras en los combos visualmente
 */
 header("content-type: text/javascript; charset=UTF-8");
 ?>
@@ -106,52 +106,11 @@ Phx.vista.FormDocFiscalesAnuladas=Ext.extend(Phx.frmInterfaz,{
 		  },
 		 
   			
-       /* {
-            config: {
-                name: 'id_sucursal',
-                fieldLabel: 'Sucursal',
-                allowBlank: true,
-                emptyText: 'Elija una Suc...',
-                store: new Ext.data.JsonStore({
-                    url: '../../sis_ventas_facturacion/control/Sucursal/listarSucursal',
-                    id: 'id_sucursal',
-                    root: 'datos',
-                    sortInfo: {
-                        field: 'nombre',
-                        direction: 'ASC'
-                    },
-                    totalProperty: 'total',
-                    fields: ['id_sucursal', 'nombre', 'codigo'],
-                    remoteSort: true,
-                    baseParams: {tipo_usuario : 'todos',par_filtro: 'suc.nombre#suc.codigo'}
-                }),
-                valueField: 'id_sucursal',
-                gdisplayField : 'nombre_sucursal',
-                displayField: 'nombre',                
-                hiddenName: 'id_sucursal',
-                tpl:'<tpl for="."><div class="x-combo-list-item"><p><b>Codigo:</b> {codigo}</p><p><b>Nombre:</b> {nombre}</p></div></tpl>',
-                forceSelection: true,
-                typeAhead: false,
-                triggerAction: 'all',
-                lazyRender: true,
-                mode: 'remote',
-                pageSize: 15,
-                anchor: '40%',
-                width:150,
-                queryDelay: 1000,                
-                minChars: 2,
-                resizable:true,
-                hidden : false
-            },
-            type: 'ComboBox',
-            id_grupo: 0,            
-            form: true
-        }, */ 
-        
-       {
+              
+     {
 			config:{
-				name: 'codigo_evento',
-				fieldLabel: 'Cod Evento',
+				name: 'nit',
+				fieldLabel: 'Nit Cliente',
 				allowBlank: true,
 				anchor: '40%',
 				//anchor: '100%'
@@ -162,7 +121,19 @@ Phx.vista.FormDocFiscalesAnuladas=Ext.extend(Phx.frmInterfaz,{
    
 		
 		     
-              
+           {
+			config:{
+				name: 'estado',
+				fieldLabel: 'Estado',
+				allowBlank: true,
+				anchor: '40%',
+			   //anchor: '100%'
+			},
+			type:'TextField',
+			form: false,
+			valorInicial:'anulado'
+							
+		},    
                
                
            
@@ -170,15 +141,15 @@ Phx.vista.FormDocFiscalesAnuladas=Ext.extend(Phx.frmInterfaz,{
 
 	],
 
-	/*labelSubmit: '<i class="fa fa-check"></i> Aplicar Filtro',
+	labelSubmit: '<i class="fa fa-check"></i> Aplicar Filtro',
 	south: {
-		url: '../../../sis_siat/vista/salud_sistema/SaludSistema.php',
+	    url: '../../../sis_siat/vista/Reportes/DocFiscalesAnuladas.php',
 		title: 'Eventos de Salud del Sistema',
 		
 		height: '60%',
-		cls: 'SaludSistema'
+		cls: 'DocFiscalesAnuladas'
 	},
-	title: 'Filtro',*/
+	title: 'Filtro',
 	
 	// Funcion guardar del formulario
 	onSubmit: function(o) {  

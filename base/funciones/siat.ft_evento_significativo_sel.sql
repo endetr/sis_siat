@@ -32,7 +32,7 @@ BEGIN
  	#TRANSACCION:  'SIA_EVSI_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		admin	
- 	#FECHA:		21-01-2019 22:24:59
+ 	#FECHA:		23-01-2019 19:31:54
 	***********************************/
 
 	if(p_transaccion='SIA_EVSI_SEL')then
@@ -42,7 +42,7 @@ BEGIN
 			v_consulta:='select
 						evsi.id_evento_significativo,
 						evsi.fk_sucursal,
-						suc.nombre as nombre_sucursal,
+                        suc.nombre as nombre_sucursal,
 						evsi.description,
 						evsi.estado_reg,
 						evsi.fecha_fin,
@@ -59,7 +59,7 @@ BEGIN
 						from siat.tevento_significativo evsi
 						inner join segu.tusuario usu1 on usu1.id_usuario = evsi.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = evsi.id_usuario_mod
-						inner join vef.tsucursal suc on suc.id_sucursal = evsi.fk_sucursal
+                        inner join vef.tsucursal suc on suc.id_sucursal = evsi.fk_sucursal
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -70,6 +70,7 @@ BEGIN
 			return v_consulta;
 						
 		end;
+
 
 	/*********************************    
  	#TRANSACCION:  'SIA_EVSI_CONT'
@@ -86,6 +87,7 @@ BEGIN
 					    from siat.tevento_significativo evsi
 					    inner join segu.tusuario usu1 on usu1.id_usuario = evsi.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = evsi.id_usuario_mod
+						inner join vef.tsucursal suc on suc.id_sucursal = evsi.fk_sucursal
 					    where ';
 			
 			--Definicion de la respuesta		    

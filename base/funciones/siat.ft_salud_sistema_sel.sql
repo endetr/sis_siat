@@ -46,7 +46,7 @@ BEGIN
 						evsa.description_salud,
 						evsa.fecha_salud,
 						evsa.fk_sucursal,
-						suc.nombre as nombre_sucursal,
+                        suc.nombre as nombre_sucursal,
 						evsa.usuario_ai,
 						evsa.fecha_reg,
 						evsa.id_usuario_reg,
@@ -58,7 +58,7 @@ BEGIN
 						from siat.tsalud_sistema evsa
 						inner join segu.tusuario usu1 on usu1.id_usuario = evsa.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = evsa.id_usuario_mod
-						inner join vef.tsucursal suc on suc.id_sucursal = evsa.fk_sucursal
+                        inner join vef.tsucursal suc on suc.id_sucursal = evsa.fk_sucursal
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -85,6 +85,7 @@ BEGIN
 					    from siat.tsalud_sistema evsa
 					    inner join segu.tusuario usu1 on usu1.id_usuario = evsa.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = evsa.id_usuario_mod
+						inner join vef.tsucursal suc on suc.id_sucursal = evsa.fk_sucursal
 					    where ';
 			
 			--Definicion de la respuesta		    
