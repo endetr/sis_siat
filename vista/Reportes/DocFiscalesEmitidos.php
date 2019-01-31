@@ -45,7 +45,7 @@ Phx.vista.DocFiscalesEmitidos=Ext.extend(Phx.gridInterfaz,{
 				anchor: '80%',
 				gwidth: 150,
 							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 				type:'DateField',
 				filters:{pfiltro:'ven.fecha',type:'date'},
@@ -161,7 +161,7 @@ Phx.vista.DocFiscalesEmitidos=Ext.extend(Phx.gridInterfaz,{
 				maxLength:55
 			},
 				type:'TextField',
-				filters:{pfiltro:'cli.desc_proveedor',type:'string'},
+				filters:{pfiltro:'cli.nombre_factura',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:true
@@ -241,7 +241,7 @@ Phx.vista.DocFiscalesEmitidos=Ext.extend(Phx.gridInterfaz,{
 		{name:'nit', type: 'string'},
 		{name:'nit_entidad', type: 'string'},
 		{name:'nombre_entidad', type: 'string'},
-		{name:'fecha', type: 'date',dateFormat:'Y-m-d H:i:s'},
+		{name:'fecha', type: 'date',dateFormat:'Y-m-d'},
 		{name:'total_venta_msuc', type: 'numeric'},
 		//{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		//{name:'id_usuario_reg', type: 'numeric'},

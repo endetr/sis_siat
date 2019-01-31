@@ -244,7 +244,7 @@ Phx.vista.EnvioDocumento=Ext.extend(Phx.gridInterfaz,{
 		{name:'estado', type: 'string'},
 		{name:'modo_envio', type: 'string'},
 		{name:'id_usuario_ai', type: 'numeric'},
-		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s'},
 		{name:'usuario_ai', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'id_usuario_mod', type: 'numeric'},

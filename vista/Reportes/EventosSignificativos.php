@@ -175,7 +175,7 @@ Phx.vista.EventosSignificativos=Ext.extend(Phx.frmInterfaz,{
 		url: '../../../sis_siat/vista/evento_significativo/EventoSignificativo.php',
 		title: 'Eventos Significativos',
 		
-		height: '70%',
+		height: '60%',
 		cls: 'EventoSignificativo'
 	},
 	title: 'Filtro',
@@ -184,12 +184,19 @@ Phx.vista.EventosSignificativos=Ext.extend(Phx.frmInterfaz,{
 	onSubmit: function(o) {  
 			
 		var me = this;
-		if (me.form.getForm().isValid()) {		
+		if (me.form.getForm().isValid()) {
+					
 			var parametros = me.getValForm();
 			
 			var fecha_desde=this.Cmp.desde.getValue();
 			var fecha_hasta=this.Cmp.hasta.getValue();
-			//var nombre_sucursal = this.id_sucursal.getValue(2);
+			
+			if (this.Cmp.desde.getValue()> this.Cmp.hasta.getValue()){
+				
+				alert("La fecha 'Desde' debe ser menor a la fecha 'Hasta'")
+			} else {
+				
+						
 			//var id_sucursal=this.Cmp.fk_sucursal.lastSelectionText;
 		//	var codigo_evento=this.Cmp.codigo_evento.getValue();
 				
@@ -204,6 +211,7 @@ Phx.vista.EventosSignificativos=Ext.extend(Phx.frmInterfaz,{
 										// 'nombre_auxiliar' : nom_aux,
 										 //'razon_social':razon_social
 									 }));
+			}
        }
     },
 	//

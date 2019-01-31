@@ -154,21 +154,18 @@ Phx.vista.FormDocFiscalesAnuladas=Ext.extend(Phx.frmInterfaz,{
 	onSubmit: function(o) {  
 			
 		var me = this;
-		if (me.form.getForm().isValid()) {		
+		if (me.form.getForm().isValid()) {	
+				
 			var parametros = me.getValForm();
 			
+			if (this.Cmp.desde.getValue()> this.Cmp.hasta.getValue()){
+				
+				alert("La fecha 'Desde' debe ser menor a la fecha 'Hasta'")
+			} else {
 			
 			this.onEnablePanel(this.idContenedor + '-south', parametros);
 			
-			/*this.onEnablePanel(this.idContenedor + '-south', 
-				Ext.apply(parametros,{	'fecha_ini': fecha_desde,
-										'fecha_fin': fecha_hasta
-									//	'nombre_sucursal': nombre_sucursal,
-										//'codigo_evento' : codigo_evento
-										 /// 'desc_proveedor':desc_pro,
-										// 'nombre_auxiliar' : nom_aux,
-										 //'razon_social':razon_social
-									 }));*/
+			}
        }
     },
 	//

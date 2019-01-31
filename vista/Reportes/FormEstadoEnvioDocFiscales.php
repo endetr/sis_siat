@@ -143,26 +143,19 @@ Phx.vista.FormEstadoEnvioDocFiscales=Ext.extend(Phx.frmInterfaz,{
 	onSubmit: function(o) {  
 			
 		var me = this;
-		if (me.form.getForm().isValid()) {		
+		if (me.form.getForm().isValid()) {	
+				
 			var parametros = me.getValForm();
 			
-			//var fecha_desde=this.Cmp.desde.getValue();
-			//var fecha_hasta=this.Cmp.hasta.getValue();
-			//var nombre_sucursal = this.id_sucursal.getValue(2);
-			//var id_sucursal=this.Cmp.fk_sucursal.lastSelectionText;
-		//	var codigo_evento=this.Cmp.codigo_evento.getValue();
+			if (this.Cmp.desde.getValue()> this.Cmp.hasta.getValue()){
 				
+				alert("La fecha 'Desde' debe ser menor a la fecha 'Hasta'")
+			} else {
+				
+				//alert("pasooo")
 			this.onEnablePanel(this.idContenedor + '-south', parametros);
 			
-			/*this.onEnablePanel(this.idContenedor + '-south', 
-				Ext.apply(parametros,{	'fecha_ini': fecha_desde,
-										'fecha_fin': fecha_hasta
-									//	'nombre_sucursal': nombre_sucursal,
-										//'codigo_evento' : codigo_evento
-										 /// 'desc_proveedor':desc_pro,
-										// 'nombre_auxiliar' : nom_aux,
-										 //'razon_social':razon_social
-									 }));*/
+			}
        }
     },
 	//
