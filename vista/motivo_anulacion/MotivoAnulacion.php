@@ -1,21 +1,21 @@
 <?php
 /**
 *@package pXP
-*@file gen-Modalidad.php
-*@author  (admin)
-*@date 18-01-2019 14:57:53
+*@file gen-MotivoAnulacion.php
+*@author  (ana.villegas)
+*@date 31-01-2019 16:28:10
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.Modalidad=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
-		Phx.vista.Modalidad.superclass.constructor.call(this,config);
+		Phx.vista.MotivoAnulacion.superclass.constructor.call(this,config);
 		 this.addButton('obtener_ws', {
             text: 'Obtener Datos WS',
             iconCls: 'bupload',
@@ -23,7 +23,6 @@ Phx.vista.Modalidad=Ext.extend(Phx.gridInterfaz,{
             handler: this.BObtenerWS,
             tooltip: '<b>Obtener Datos</b><br/>Obtener Datos desde el WS del SIN'
         });
-	
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
@@ -34,7 +33,7 @@ Phx.vista.Modalidad=Ext.extend(Phx.gridInterfaz,{
 			config:{
 					labelSeparator:'',
 					inputType:'hidden',
-					name: 'id_modalidad'
+					name: 'id_motivo_anulacion'
 			},
 			type:'Field',
 			form:true 
@@ -42,37 +41,18 @@ Phx.vista.Modalidad=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo',
-				fieldLabel: 'Código',
+				fieldLabel: 'codigo',
 				allowBlank: false,
-				anchor: '25%',
+				anchor: '80%',
 				gwidth: 100,
 				maxLength:10
 			},
 				type:'NumberField',
-				filters:{pfiltro:'modsia.codigo',type:'numeric'},
+				filters:{pfiltro:'motanu.codigo',type:'numeric'},
 				id_grupo:1,
 				grid:true,
-				form:true,
-				bottom_filter : true
+				form:true
 		},
-		{
-			config:{
-				name: 'descripcion',
-				fieldLabel: 'Descripción',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 200,
-				maxLength:200
-			},
-				type:'TextArea',
-				filters:{pfiltro:'modsia.descripcion',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true,
-				bottom_filter : true
-		},
-		
-		
 		 {
 			config : {
 				name : 'estado_reg',
@@ -108,43 +88,25 @@ Phx.vista.Modalidad=Ext.extend(Phx.gridInterfaz,{
 			},
 			type : 'ComboBox',
 			valorInicial : 'activo',
-			filters:{pfiltro:'modsia.estado_reg',type:'string'},
+			filters:{pfiltro:'motanu.estado_reg',type:'string'},
 			id_grupo : 0,
 			grid : true,
 			form : true
 		},
-		
-	
 		{
 			config:{
-				name: 'fecha_reg',
-				fieldLabel: 'Fecha creación',
-				allowBlank: true,
+				name: 'descripcion',
+				fieldLabel: 'descripcion',
+				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+				maxLength:200
 			},
-				type:'DateField',
-				filters:{pfiltro:'modsia.fecha_reg',type:'date'},
+				type:'TextField',
+				filters:{pfiltro:'motanu.descripcion',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:false
-		},
-		{
-			config:{
-				name: 'id_usuario_ai',
-				fieldLabel: 'Fecha creación',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-				type:'Field',
-				filters:{pfiltro:'modsia.id_usuario_ai',type:'numeric'},
-				id_grupo:1,
-				grid:false,
-				form:false
+				form:true
 		},
 		{
 			config:{
@@ -171,15 +133,15 @@ Phx.vista.Modalidad=Ext.extend(Phx.gridInterfaz,{
 				maxLength:300
 			},
 				type:'TextField',
-				filters:{pfiltro:'modsia.usuario_ai',type:'string'},
+				filters:{pfiltro:'motanu.usuario_ai',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:false
 		},
 		{
 			config:{
-				name: 'fecha_mod',
-				fieldLabel: 'Fecha Modif.',
+				name: 'fecha_reg',
+				fieldLabel: 'Fecha creación',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
@@ -187,9 +149,24 @@ Phx.vista.Modalidad=Ext.extend(Phx.gridInterfaz,{
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
-				filters:{pfiltro:'modsia.fecha_mod',type:'date'},
+				filters:{pfiltro:'motanu.fecha_reg',type:'date'},
 				id_grupo:1,
 				grid:true,
+				form:false
+		},
+		{
+			config:{
+				name: 'id_usuario_ai',
+				fieldLabel: 'Fecha creación',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:4
+			},
+				type:'Field',
+				filters:{pfiltro:'motanu.id_usuario_ai',type:'numeric'},
+				id_grupo:1,
+				grid:false,
 				form:false
 		},
 		{
@@ -206,31 +183,47 @@ Phx.vista.Modalidad=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:false
+		},
+		{
+			config:{
+				name: 'fecha_mod',
+				fieldLabel: 'Fecha Modif.',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+							format: 'd/m/Y', 
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+			},
+				type:'DateField',
+				filters:{pfiltro:'motanu.fecha_mod',type:'date'},
+				id_grupo:1,
+				grid:true,
+				form:false
 		}
 	],
 	tam_pag:50,	
-	title:'Modelo SIAT',
-	ActSave:'../../sis_siat/control/Modalidad/insertarModalidad',
-	ActDel:'../../sis_siat/control/Modalidad/eliminarModalidad',
-	ActList:'../../sis_siat/control/Modalidad/listarModalidad',
-	id_store:'id_modalidad',
+	title:'Motivo Anulacion',
+	ActSave:'../../sis_siat/control/MotivoAnulacion/insertarMotivoAnulacion',
+	ActDel:'../../sis_siat/control/MotivoAnulacion/eliminarMotivoAnulacion',
+	ActList:'../../sis_siat/control/MotivoAnulacion/listarMotivoAnulacion',
+	id_store:'id_motivo_anulacion',
 	fields: [
-		{name:'id_modalidad', type: 'numeric'},
+		{name:'id_motivo_anulacion', type: 'numeric'},
 		{name:'codigo', type: 'numeric'},
-		{name:'descripcion', type: 'string'},
 		{name:'estado_reg', type: 'string'},
-		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
-		{name:'id_usuario_ai', type: 'numeric'},
+		{name:'descripcion', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'usuario_ai', type: 'string'},
-		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+		{name:'id_usuario_ai', type: 'numeric'},
 		{name:'id_usuario_mod', type: 'numeric'},
+		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		
 	],
 	sortInfo:{
-		field: 'id_modalidad',
+		field: 'id_motivo_anulacion',
 		direction: 'ASC'
 	},
 	bdel:false,
@@ -239,19 +232,19 @@ Phx.vista.Modalidad=Ext.extend(Phx.gridInterfaz,{
 	onButtonNew: function () {
             
              this.ocultarComponente(this.Cmp.estado_reg);
-             Phx.vista.Modalidad.superclass.onButtonNew.call(this);
+             Phx.vista.MotivoAnulacion.superclass.onButtonNew.call(this);
             },
     onButtonEdit: function () {
             
              this.mostrarComponente(this.Cmp.estado_reg);
-             Phx.vista.Modalidad.superclass.onButtonEdit.call(this);
-           },
-      
+             Phx.vista.MotivoAnulacion.superclass.onButtonEdit.call(this);
+            }
+	,
     BObtenerWS:function () {
 			var rec = this.sm.getSelected();
 			Phx.CP.loadingShow();
 			Ext.Ajax.request({
-				url: '../../sis_siat/control/Modalidad/insertarModalidadWS',
+				url: '../../sis_siat/control/MotivoAnulacion/insertarMotivoAnulacionWS',
 				params: {
 					estado: 'recibido'
 				},
@@ -275,10 +268,7 @@ Phx.vista.Modalidad=Ext.extend(Phx.gridInterfaz,{
 			this.reload();
 
 		}
-		
-	
 	}
-	
 )
 </script>
 		

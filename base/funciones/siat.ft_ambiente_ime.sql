@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "siat"."ft_ambiente_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION siat.ft_ambiente_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Sistema SIAT
  FUNCION: 		siat.ft_ambiente_ime
@@ -66,7 +69,14 @@ BEGIN
 							
 			
 			
-			)RETURNING id_ambiente into v_id_ambiente;
+			) ON CONFLICT ON CONSTRAINT tambiente_codigo_key 
+			DO UPDATE SET codigo = v_parametros.codigo,
+			descripcion = v_parametros.descripcion,
+			fecha_mod = now(),
+			id_usuario_mod = p_id_usuario,
+			id_usuario_ai = v_parametros._id_usuario_ai,
+			usuario_ai = v_parametros._nombre_usuario_ai
+			RETURNING id_ambiente into v_id_ambiente;
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Ambiente SIAT almacenado(a) con exito (id_ambiente'||v_id_ambiente||')'); 
@@ -91,6 +101,7 @@ BEGIN
 			update siat.tambiente set
 			codigo = v_parametros.codigo,
 			descripcion = v_parametros.descripcion,
+            estado_reg=v_parametros.estado_reg,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
@@ -145,7 +156,12 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "siat"."ft_ambiente_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
+
+ALTER FUNCTION siat.ft_ambiente_ime (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+  OWNER TO postgres;

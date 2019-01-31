@@ -6,7 +6,9 @@
 *@date 18-01-2019 14:57:53
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
+include "SiatClassWs.inc";
 
+session_start();
 class ACTModalidad extends ACTbase{    
 			
 	function listarModalidad(){
@@ -39,7 +41,48 @@ class ACTModalidad extends ACTbase{
 		$this->res=$this->objFunc->eliminarModalidad($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
-			
+function insertarModalidadWS(){
+        // Obtengo los datos que serviran de parametro para el WS
+         $cone = new conexion();
+			$this->link = $cone->conectarpdo();
+			$copiado = false;	
+			$sql = "select e.nit,s.codigo as codigo_sucursal,
+       						(select codigo from siat.tambiente where estado_reg ='activo' limit 1) as codigo_ambiente,
+       						(select codigo from siat.tmodalidad where estado_reg ='activo' limit 1) as codigo_modalidad
+					from param.tentidad e
+					left join vef.tsucursal s on s.id_entidad=e.id_entidad
+					where e.estado_reg='activo' limit 1";
+			$res = $this->link->prepare($sql);
+			$res->execute();
+			$result = $res->fetchAll(PDO::FETCH_ASSOC);
+			$nit=$result[0]['nit'];
+			$codigo_sucursal=$result[0]['codigo_sucursal'];
+			$codigo_ambiente=$result[0]['codigo_ambiente'];
+			$codigo_modalidad=$result[0]['codigo_modalidad'];	
+					
+		// Acceso al web service.
+		$wsSincroniza= new WsFacturacionSincroniza($_SESSION["_URLWS_SINCRONIZA"],2,'2E07180BA7E','',1009393025,'713E32B4',0);
+		//$wsSincroniza= new WsFacturacionSincroniza($_SESSION["_URLWS_SINCRONIZA"],$codigo_ambiente,$codigo_sistema,$codigo_modalidad,$nit,$codigo_cuis,$codigo_sucursal);
+		
+		//ejemplo de solicitud de tipos de moneda
+		$resultsinc = $wsSincroniza->ParametricaTipoModalidad();
+		
+		//inserto los datos a las tablas
+		//convierte resultado en array
+        $r = $wsSincroniza->ConvertObjectToArray($resultsinc);
+     
+ 				foreach($r['return']['listaCodigos'] as $r2)
+			 	{
+			 	  $codigo= $r2[codigoClasificador];
+				  $descripcion= $r2[descripcion];
+				  $this->objParam->addParametro('codigo',$codigo);
+		 		  $this->objParam->addParametro('descripcion',$descripcion);		
+		    	  $this->objFunc=$this->create('MODModalidad');	
+				  $this->res=$this->objFunc->insertarModalidad($this->objParam);			
+		        }
+                $this->res->imprimirRespuesta($this->res->generarJson());
+	    }
+    					
 }
 
 ?>

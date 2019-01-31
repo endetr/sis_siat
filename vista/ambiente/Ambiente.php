@@ -16,6 +16,14 @@ Phx.vista.Ambiente=Ext.extend(Phx.gridInterfaz,{
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.Ambiente.superclass.constructor.call(this,config);
+		this.addButton('obtener_ws', {
+            text: 'Obtener Datos WS',
+            iconCls: 'bupload',
+            disabled: false,
+            handler: this.BObtenerWS,
+            tooltip: '<b>Obtener Datos</b><br/>Obtener Datos desde el WS del SIN'
+        });
+	
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
@@ -227,8 +235,9 @@ Phx.vista.Ambiente=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_ambiente',
 		direction: 'ASC'
 	},
-	bdel:true,
-	bsave:true,
+	bdel:false,
+	bsave:false,
+	bnew:false,
 	onButtonNew: function () {
             
              this.ocultarComponente(this.Cmp.estado_reg);
@@ -239,8 +248,38 @@ Phx.vista.Ambiente=Ext.extend(Phx.gridInterfaz,{
              this.mostrarComponente(this.Cmp.estado_reg);
              Phx.vista.Ambiente.superclass.onButtonEdit.call(this);
             }
-	}
-)
+	,
+    BObtenerWS:function () {
+			var rec = this.sm.getSelected();
+			Phx.CP.loadingShow();
+			Ext.Ajax.request({
+				url: '../../sis_siat/control/Ambiente/insertarAmbienteWS',
+				params: {
+					estado: 'recibido'
+				},
+				success: this.successDerivar,
+				failure: this.conexionFailure,
+				timeout: this.timeout,
+				scope: this
+			});
+	
+		},
+		
+
+		successDerivar : function(resp) {
+
+			Phx.CP.loadingHide();
+			var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+			if (!reg.ROOT.error) {
+				alert(reg.ROOT.detalle.mensaje)
+
+			}
+			this.reload();
+
+		}
+	
+		
+})
 </script>
 		
 		

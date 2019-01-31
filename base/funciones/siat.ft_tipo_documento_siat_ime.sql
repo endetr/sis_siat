@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "siat"."ft_tipo_documento_siat_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION siat.ft_tipo_documento_siat_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Sistema SIAT
  FUNCION: 		siat.ft_tipo_documento_siat_ime
@@ -43,37 +46,58 @@ BEGIN
 					
         begin
         	--Sentencia de la insercion
-        	insert into siat.ttipo_documento_siat(
-			codigo,
-			descripcion,
-			estado_reg,
-			tipo,
-			fecha_reg,
-			id_usuario_ai,
-			id_usuario_reg,
-			usuario_ai,
-			fecha_mod,
-			id_usuario_mod
-          	) values(
-			v_parametros.codigo,
-			v_parametros.descripcion,
-			'activo',
-			v_parametros.tipo,
-			now(),
-			v_parametros._id_usuario_ai,
-			p_id_usuario,
-			v_parametros._nombre_usuario_ai,
-			null,
-			null
-							
-			
-			
-			)RETURNING id_tipo_documento into v_id_tipo_documento;
-			
-			--Definicion de la respuesta
+            IF (EXISTS ( SELECT 1 FROM siat.ttipo_documento_siat
+                       WHERE codigo=v_parametros.codigo and tipo=v_parametros.tipo))THEN
+                       
+                      update siat.ttipo_documento_siat set
+                          codigo = v_parametros.codigo,
+                          descripcion = v_parametros.descripcion,
+                          tipo = v_parametros.tipo,
+                          fecha_mod = now(),
+                          id_usuario_mod = p_id_usuario,
+                          id_usuario_ai = v_parametros._id_usuario_ai,
+                          usuario_ai = v_parametros._nombre_usuario_ai
+                       where codigo=v_parametros.codigo and tipo=v_parametros.tipo;
+                             
+                          --Definicion de la respuesta
+                          v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Documento SIAT modificado(a)'); 
+                          v_resp = pxp.f_agrega_clave(v_resp,'codigo_tipo_documento',v_parametros.codigo::varchar);
+             
+            ELSE
+            
+                    	insert into siat.ttipo_documento_siat(
+                                  codigo,
+                                  descripcion,
+                                  estado_reg,
+                                  tipo,
+                                  fecha_reg,
+                                  id_usuario_ai,
+                                  id_usuario_reg,
+                                  usuario_ai,
+                                  fecha_mod,
+                                  id_usuario_mod
+                                  ) values(
+                                  v_parametros.codigo,
+                                  v_parametros.descripcion,
+                                  'activo',
+                                  v_parametros.tipo,
+                                  now(),
+                                  v_parametros._id_usuario_ai,
+                                  p_id_usuario,
+                                  v_parametros._nombre_usuario_ai,
+                                  null,
+                                  null
+                      							
+                      			
+                      			
+                                  )RETURNING id_tipo_documento into v_id_tipo_documento;
+
+            --Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Tipo Documento SIAT almacenado(a) con exito (id_tipo_documento'||v_id_tipo_documento||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_tipo_documento',v_id_tipo_documento::varchar);
 
+            END IF;
+			
             --Devuelve la respuesta
             return v_resp;
 
@@ -97,7 +121,8 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			usuario_ai = v_parametros._nombre_usuario_ai,
+               estado_reg=v_parametros.estado_reg
 			where id_tipo_documento=v_parametros.id_tipo_documento;
                
 			--Definicion de la respuesta
@@ -148,7 +173,12 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "siat"."ft_tipo_documento_siat_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
+
+ALTER FUNCTION siat.ft_tipo_documento_siat_ime (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+  OWNER TO postgres;

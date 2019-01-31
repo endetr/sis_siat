@@ -69,7 +69,15 @@ BEGIN
 							
 			
 			
-			)RETURNING id_producto into v_id_producto;
+			)
+            ON CONFLICT ON CONSTRAINT tproducto_codigo_key 
+			DO UPDATE SET codigo = v_parametros.codigo,
+			descripcion = v_parametros.descripcion,
+			fecha_mod = now(),
+			id_usuario_mod = p_id_usuario,
+			id_usuario_ai = v_parametros._id_usuario_ai,
+			usuario_ai = v_parametros._nombre_usuario_ai
+            RETURNING id_producto into v_id_producto;
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Productos almacenado(a) con exito (id_producto'||v_id_producto||')'); 
@@ -97,7 +105,8 @@ BEGIN
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			usuario_ai = v_parametros._nombre_usuario_ai,
+            estado_reg=v_parametros.estado_reg
 			where id_producto=v_parametros.id_producto;
                
 			--Definicion de la respuesta

@@ -14,7 +14,7 @@ $resultop = $wsOperaciones->solicitudCufdOp();
 
 //ejemplo de solicitud de tipos de moneda
 //$resultsinc = $wsSincroniza->ParametricaTipoMoneda();
-$resultsinc = $wsSincroniza->ParametricaEventosSignificativos();
+$resultsinc = $wsSincroniza->ParametricaMotivoAnulacion();
 
 
 //convierte resultado en array

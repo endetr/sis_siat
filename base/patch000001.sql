@@ -94,14 +94,48 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 
 /************************************F-SCP-AVQ-SIAT-1-17/01/2019*************************************************/
 /************************************I-SCP-AVQ-SIAT-0-30/01/2019*************************************************/
+ALTER TABLE siat.ttipo_moneda
+  ADD UNIQUE (codigo);
+  
+ALTER TABLE siat.tambiente
+  ADD UNIQUE (codigo);
+  
+  ALTER TABLE siat.tevento
+  ADD UNIQUE (codigo);
 
-CREATE TABLE siat.tambientehenry (
-    id_ambiente serial NOT NULL,
+ALTER TABLE siat.tmensaje_soap
+  ADD UNIQUE (codigo);
+  
+  ALTER TABLE siat.tmetodo_pago
+  ADD UNIQUE (codigo);
+  
+  ALTER TABLE siat.tmodalidad
+  ADD UNIQUE (codigo);
+  
+  ALTER TABLE siat.tpais
+  ADD UNIQUE (codigo);
+  
+  ALTER TABLE siat.tproducto
+  ADD UNIQUE (codigo);
+  
+  ALTER TABLE siat.tservicio
+  ADD UNIQUE (codigo);
+  
+  ALTER TABLE siat.ttipo_emision
+  ADD UNIQUE (codigo);
+  
+   
+/************************************F-SCP-AVQ-SIAT-0-30/01/2019*************************************************/
+ 
+/************************************I-SCP-AVQ-SIAT-0-31/01/2019*************************************************/
+CREATE TABLE siat.tmotivo_anulacion (
+    id_motivo_anulacion serial NOT NULL,
     codigo NUMERIC NOT NULL,
     descripcion VARCHAR(200) NOT NULL,
-    PRIMARY KEY (id_ambiente))
+    PRIMARY KEY (id_motivo_anulacion))
 INHERITS (pxp.tbase) WITHOUT OIDS;
 
-
-/************************************F-SCP-AVQ-SIAT-0-30/01/2019*************************************************/
+ALTER TABLE siat.tmotivo_anulacion
+  ADD UNIQUE (codigo);
+  /************************************F-SCP-AVQ-SIAT-0-31/01/2019*************************************************/
  

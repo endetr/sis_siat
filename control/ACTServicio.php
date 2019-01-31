@@ -6,7 +6,9 @@
 *@date 17-01-2019 21:55:55
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
+include "SiatClassWs.inc";
 
+session_start();
 class ACTServicio extends ACTbase{    
 			
 	function listarServicio(){

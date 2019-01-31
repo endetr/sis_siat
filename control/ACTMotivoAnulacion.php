@@ -1,47 +1,49 @@
 <?php
 /**
 *@package pXP
-*@file gen-ACTMetodoPago.php
-*@author  (admin)
-*@date 18-01-2019 14:57:57
+*@file gen-ACTMotivoAnulacion.php
+*@author  (ana.villegas)
+*@date 31-01-2019 16:28:10
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 include "SiatClassWs.inc";
 
 session_start();
-class ACTMetodoPago extends ACTbase{    
+
+class ACTMotivoAnulacion extends ACTbase{    
 			
-	function listarMetodoPago(){
-		$this->objParam->defecto('ordenacion','id_metodo_pago');
+	function listarMotivoAnulacion(){
+		$this->objParam->defecto('ordenacion','id_motivo_anulacion');
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){
 			$this->objReporte = new Reporte($this->objParam,$this);
-			$this->res = $this->objReporte->generarReporteListado('MODMetodoPago','listarMetodoPago');
+			$this->res = $this->objReporte->generarReporteListado('MODMotivoAnulacion','listarMotivoAnulacion');
 		} else{
-			$this->objFunc=$this->create('MODMetodoPago');
+			$this->objFunc=$this->create('MODMotivoAnulacion');
 			
-			$this->res=$this->objFunc->listarMetodoPago($this->objParam);
+			$this->res=$this->objFunc->listarMotivoAnulacion($this->objParam);
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 				
-	function insertarMetodoPago(){
-		$this->objFunc=$this->create('MODMetodoPago');	
-		if($this->objParam->insertar('id_metodo_pago')){
-			$this->res=$this->objFunc->insertarMetodoPago($this->objParam);			
+	function insertarMotivoAnulacion(){
+		$this->objFunc=$this->create('MODMotivoAnulacion');	
+		if($this->objParam->insertar('id_motivo_anulacion')){
+			$this->res=$this->objFunc->insertarMotivoAnulacion($this->objParam);			
 		} else{			
-			$this->res=$this->objFunc->modificarMetodoPago($this->objParam);
+			$this->res=$this->objFunc->modificarMotivoAnulacion($this->objParam);
 		}
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 						
-	function eliminarMetodoPago(){
-			$this->objFunc=$this->create('MODMetodoPago');	
-		$this->res=$this->objFunc->eliminarMetodoPago($this->objParam);
+	function eliminarMotivoAnulacion(){
+			$this->objFunc=$this->create('MODMotivoAnulacion');	
+		$this->res=$this->objFunc->eliminarMotivoAnulacion($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
-	function insertarMetodoPagoWS(){
+  
+	function insertarMotivoAnulacionWS(){
         // Obtengo los datos que serviran de parametro para el WS
          $cone = new conexion();
 			$this->link = $cone->conectarpdo();
@@ -65,7 +67,7 @@ class ACTMetodoPago extends ACTbase{
 		//$wsSincroniza= new WsFacturacionSincroniza($_SESSION["_URLWS_SINCRONIZA"],$codigo_ambiente,$codigo_sistema,$codigo_modalidad,$nit,$codigo_cuis,$codigo_sucursal);
 		
 		//ejemplo de solicitud de tipos de moneda
-		$resultsinc = $wsSincroniza->ParametricaMetodoPago();
+		$resultsinc = $wsSincroniza->ParametricaMotivoAnulacion();
 		
 		//inserto los datos a las tablas
 		//convierte resultado en array
@@ -77,12 +79,11 @@ class ACTMetodoPago extends ACTbase{
 				  $descripcion= $r2[descripcion];
 				  $this->objParam->addParametro('codigo',$codigo);
 		 		  $this->objParam->addParametro('descripcion',$descripcion);		
-		    	  $this->objFunc=$this->create('MODMetodoPago');	
-				  $this->res=$this->objFunc->insertarMetodoPago($this->objParam);			
+		    	  $this->objFunc=$this->create('MODMotivoAnulacion');	
+				  $this->res=$this->objFunc->insertarMotivoAnulacion($this->objParam);			
 		        }
                 $this->res->imprimirRespuesta($this->res->generarJson());
 	    }
-    					
 			
 }
 

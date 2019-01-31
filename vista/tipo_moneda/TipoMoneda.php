@@ -18,7 +18,7 @@ Phx.vista.TipoMoneda=Ext.extend(Phx.gridInterfaz,{
 		Phx.vista.TipoMoneda.superclass.constructor.call(this,config);
 	    this.addButton('obtener_ws', {
             text: 'Obtener Datos WS',
-            iconCls: 'bword',
+            iconCls: 'bupload',
             disabled: false,
             handler: this.BObtenerWS,
             tooltip: '<b>Obtener Datos</b><br/>Obtener Datos desde el WS del SIN'
@@ -71,22 +71,47 @@ Phx.vista.TipoMoneda=Ext.extend(Phx.gridInterfaz,{
 				form:true,
 				bottom_filter : true
 		},
-		{
-			config:{
-				name: 'estado_reg',
-				fieldLabel: 'Estado Reg.',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:10
+		 {
+			config : {
+				name : 'estado_reg',
+				fieldLabel : 'Estado Registro',
+				typeAhead : true,
+				allowBlank : false,
+				triggerAction : 'all',
+				emptyText : 'Seleccione Opcion...',
+				selectOnFocus : true,
+				forceSelection: true,
+				width : 250,
+				mode : 'local',
+
+				store : new Ext.data.ArrayStore({
+					fields : ['ID', 'valor'],
+					data : [['activo', 'Activo'],['inactivo', 'Inactivo']],
+
+				}),
+				renderer : function(value, p, record) {
+					var estado_reg = record.data.estado_reg;
+					return  record.data.estado_reg;
+					if (estado_reg=='activo'){
+						return 'Activo';
+					}else if (estado_reg=='inactivo'){
+						return 'Inactivo';
+						
+					}
+					
+				},
+				valueField : 'ID',
+				displayField : 'valor'
+
 			},
-				type:'TextField',
-				filters:{pfiltro:'monsia.estado_reg',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:false
+			type : 'ComboBox',
+			valorInicial : 'activo',
+			filters:{pfiltro:'monsia.estado_reg',type:'string'},
+			id_grupo : 0,
+			grid : true,
+			form : true
 		},
-		{
+	    {
 			config:{
 				name: 'id_usuario_ai',
 				fieldLabel: '',
@@ -204,17 +229,27 @@ Phx.vista.TipoMoneda=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_tipo_moneda',
 		direction: 'ASC'
 	},
-	bdel:true,
-	bsave:true,
-	//1
+	bdel:false,
+	bsave:false,
+	bnew:false,
+	onButtonNew: function () {
+            
+             this.ocultarComponente(this.Cmp.estado_reg);
+             Phx.vista.TipoMoneda.superclass.onButtonNew.call(this);
+            },
+    onButtonEdit: function () {
+            
+             this.mostrarComponente(this.Cmp.estado_reg);
+             Phx.vista.TipoMoneda.superclass.onButtonEdit.call(this);
+            }
+	,//1
     BObtenerWS:function () {
 			var rec = this.sm.getSelected();
 			Phx.CP.loadingShow();
 			Ext.Ajax.request({
 				url: '../../sis_siat/control/TipoMoneda/insertarTipoMonedaWS',
 				params: {
-				//	id_correspondencia: rec.data.id_correspondencia,
-					estado: 'recibido'
+				estado: 'recibido'
 				},
 				success: this.successDerivar,
 				failure: this.conexionFailure,
