@@ -16,16 +16,16 @@ class ACTEventoSignificativo extends ACTbase{
 	    if ($this->objParam->getParametro('fecha_ini') != '') {
         	$this->objParam->addFiltro(" evsi.fecha_ini::date >= ''" .  $this->objParam->getParametro('fecha_ini')."''::date ");   
         }   
-       if ($this->objParam->getParametro('fecha_fin') != '') {
+        if ($this->objParam->getParametro('fecha_fin') != '') {
        		$this->objParam->addFiltro(" evsi.fecha_ini::date <= ''" .  $this->objParam->getParametro('fecha_fin')."''::date ");
-	   }	 
-	   if ($this->objParam->getParametro('codigo_evento') != '') {
+	    }	 
+	    if ($this->objParam->getParametro('codigo_evento') != '') {
        		$this->objParam->addFiltro(" evsi.codigo_evento = ''" .  $this->objParam->getParametro('codigo_evento')."''");  
-       }	   
+        }	   
 	   
-       if ($this->objParam->getParametro('id_sucursal') != '') {
+        if ($this->objParam->getParametro('id_sucursal') != '') {
        		$this->objParam->addFiltro(" fk_sucursal = " .  $this->objParam->getParametro('id_sucursal')." ");  
-       }			
+        }			
 
 		$this->objParam->defecto('dir_ordenacion','asc');
 		if($this->objParam->getParametro('tipoReporte')=='excel_grid' || $this->objParam->getParametro('tipoReporte')=='pdf_grid'){

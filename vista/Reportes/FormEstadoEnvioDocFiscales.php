@@ -109,8 +109,8 @@ Phx.vista.FormEstadoEnvioDocFiscales=Ext.extend(Phx.frmInterfaz,{
      
        {
 			config:{
-				name: 'codigo_evento',
-				fieldLabel: 'Cod Evento',
+				name: 'nro_documento',
+				fieldLabel: 'Nro Documento',
 				allowBlank: true,
 				anchor: '40%',
 				//anchor: '100%'
@@ -129,15 +129,15 @@ Phx.vista.FormEstadoEnvioDocFiscales=Ext.extend(Phx.frmInterfaz,{
 
 	],
 
-	/*labelSubmit: '<i class="fa fa-check"></i> Aplicar Filtro',
+	labelSubmit: '<i class="fa fa-check"></i> Aplicar Filtro',
 	south: {
-		url: '../../../sis_siat/vista/salud_sistema/SaludSistema.php',
-		title: 'Eventos de Salud del Sistema',
+		url: '../../../sis_siat/vista/envio_documento/EnvioDocumento.php',
+		title: 'Estado de Envio de Documentos Fiscales',
 		
 		height: '60%',
-		cls: 'SaludSistema'
+		cls: 'EnvioDocumento'
 	},
-	title: 'Filtro',*/
+	title: 'Filtro',
 	
 	// Funcion guardar del formulario
 	onSubmit: function(o) {  

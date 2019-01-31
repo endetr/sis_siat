@@ -13,15 +13,22 @@ class ACTSaludSistema extends ACTbase{
 		$this->objParam->defecto('ordenacion','id_salud_sistema');
 		
 		
+		                if ($this->objParam->getParametro('desde') != '') {
+        	            $this->objParam->addFiltro(" evsa.fecha_salud::date >= ''" .  $this->objParam->getParametro('desde')."''::date ");   
+                        }   
+                        if ($this->objParam->getParametro('hasta') != '') {
+       		            $this->objParam->addFiltro(" evsa.fecha_salud::date <= ''" .  $this->objParam->getParametro('hasta')."''::date ");
+	                    }	
 		
-		             if ($this->objParam->getParametro('codigo_evento') != '') {
+		
+		                if ($this->objParam->getParametro('codigo_evento') != '') {
                          $this->objParam->addFiltro(" evsa.codigo_evento = ''" .  $this->objParam->getParametro('codigo_evento')."''");
 				  
 				         }
 					   
 					   
-				       if ($this->objParam->getParametro('id_sucursal') != '') {
-                       $this->objParam->addFiltro(" fk_sucursal = " .  $this->objParam->getParametro('id_sucursal')." ");
+				        if ($this->objParam->getParametro('id_sucursal') != '') {
+                        $this->objParam->addFiltro(" fk_sucursal = " .  $this->objParam->getParametro('id_sucursal')." ");
 				  
 				        }
 		

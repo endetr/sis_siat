@@ -157,12 +157,7 @@ Phx.vista.FormDocFiscalesAnuladas=Ext.extend(Phx.frmInterfaz,{
 		if (me.form.getForm().isValid()) {		
 			var parametros = me.getValForm();
 			
-			//var fecha_desde=this.Cmp.desde.getValue();
-			//var fecha_hasta=this.Cmp.hasta.getValue();
-			//var nombre_sucursal = this.id_sucursal.getValue(2);
-			//var id_sucursal=this.Cmp.fk_sucursal.lastSelectionText;
-		//	var codigo_evento=this.Cmp.codigo_evento.getValue();
-				
+			
 			this.onEnablePanel(this.idContenedor + '-south', parametros);
 			
 			/*this.onEnablePanel(this.idContenedor + '-south', 

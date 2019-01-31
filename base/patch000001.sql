@@ -33,8 +33,9 @@ CREATE TABLE siat.tenvio_documento (
     modo_envio VARCHAR(75) NOT NULL,
     fecha_emision Timestamp NOT NULL,    
     nro_documento integer NOT NULL,
-    monto numeric ,  
-    estado VARCHAR(80) NOT NULL,
+    cuf varchar(50) NOT NULL,
+    monto numeric NOT NULL,  
+    estado VARCHAR(20) NOT NULL,
     PRIMARY KEY (id_envio_documento))
 INHERITS (pxp.tbase) WITHOUT OIDS; 
 /************************************F-SCP-FPT-SIAT-0-28/01/2019*************************************************/
