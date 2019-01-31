@@ -123,14 +123,13 @@ Phx.vista.FormDocFiscalesAnuladas=Ext.extend(Phx.frmInterfaz,{
 		     
            {
 			config:{
-				name: 'estado',
-				fieldLabel: 'Estado',
-				allowBlank: true,
-				anchor: '40%',
+				labelSeparator:'',
+				inputType:'hidden',
+				name: 'estado'				
 			   //anchor: '100%'
 			},
-			type:'TextField',
-			form: false,
+			type:'Field',
+			form: true,
 			valorInicial:'anulado'
 							
 		},    

@@ -27,5 +27,16 @@ CREATE TABLE siat.tsalud_sistema (
     PRIMARY KEY (id_salud_sistema))
 INHERITS (pxp.tbase) WITHOUT OIDS; 
 /************************************F-SCP-FPT-SIAT-0-21/01/2019*************************************************/
+/************************************I-SCP-FPT-SIAT-0-28/01/2019*************************************************/
+CREATE TABLE siat.tenvio_documento (
+    id_envio_documento serial NOT NULL,    
+    modo_envio VARCHAR(75) NOT NULL,
+    fecha_emision Timestamp NOT NULL,    
+    nro_documento integer NOT NULL,
+    monto numeric ,  
+    estado VARCHAR(80) NOT NULL,
+    PRIMARY KEY (id_envio_documento))
+INHERITS (pxp.tbase) WITHOUT OIDS; 
+/************************************F-SCP-FPT-SIAT-0-28/01/2019*************************************************/
 
 

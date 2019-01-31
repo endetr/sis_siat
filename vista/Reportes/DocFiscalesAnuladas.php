@@ -20,6 +20,7 @@ Phx.vista.DocFiscalesAnuladas=Ext.extend(Phx.gridInterfaz,{
 		//this.load({params:{start:0, limit:this.tam_pag}})
 	},
 	onReloadPage:function(p){
+		console.log(p);
 		this.store.baseParams=p;
 		//cargar datos pasando como parametros
 		this.load({params:{start:0, limit:this.tam_pag}})
