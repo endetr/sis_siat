@@ -115,8 +115,73 @@ class WsFacturacionSincroniza extends SiatClassWs {
 	   //var_dump($result);die();
    }
 
-  
-} // fin de la clase de web services para operaciones
+  function ParametricaEventosSignificativos()
+   {
+       $result = $this->clientSINC->sincronizarParametricaEventosSignificativos($this->parametros);
+	   return $result;
+	   //var_dump($result);die();
+   }
+   function ParametricaMotivoAnulacion()
+   {
+       $result = $this->clientSINC->sincronizarParametricaMotivoAnulacion($this->parametros);
+	   return $result;
+	  
+   }
+   function ParametricaPaisOrigen()
+   {
+       $result = $this->clientSINC->sincronizarParametricaPaisOrigen($this->parametros);
+	   return $result;
+	  
+   }
+   function ParametricaTipoDepartamento()
+   {
+       $result = $this->clientSINC->sincronizarParametricaTipoDepartamento($this->parametros);
+	   return $result;
+	  
+   }
+   function ParametricaMensajesServicios()
+   {
+       $result = $this->clientSINC->sincronizarListaMensajesServicios($this->parametros);
+	   return $result;
+	  
+   }
+   function ParametricaTipoAmbiente()
+   {
+       $result = $this->clientSINC->sincronizarParametricaTipoAmbiente($this->parametros);
+	   return $result;
+	  
+   }
+   function ParametricaTipoEmision()
+   {
+       $result = $this->clientSINC->sincronizarParametricaTipoEmision($this->parametros);
+	   return $result;
+	  
+   }
+   function ParametricaTipoModalidad()
+   {
+       $result = $this->clientSINC->sincronizarParametricaTipoModalidad($this->parametros);
+	   return $result;
+	  
+   }
+   function ParametricaTipoDocumentoIdentidad()
+   {
+       $result = $this->clientSINC->sincronizarParametricaTipoDocumentoIdentidad($this->parametros);
+	   return $result;
+	  
+   }
+   function ParametricaTipoDocumentoFiscal()
+   {
+       $result = $this->clientSINC->sincronizarParametricaTipoDocumentoFiscal($this->parametros);
+	   return $result;
+	  
+   }
+   function ParametricaMetodoPago()
+   {
+       $result = $this->clientSINC->sincronizarParametricaMetodoPago($this->parametros);
+	   return $result;
+	  
+   }
+   } // fin de la clase de web services para operaciones
 
 
 ?> 

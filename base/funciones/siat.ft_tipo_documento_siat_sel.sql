@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION siat.ft_producto_sel (
+CREATE OR REPLACE FUNCTION siat.ft_tipo_documento_siat_sel (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
@@ -8,15 +8,15 @@ RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Sistema SIAT
- FUNCION: 		siat.ft_producto_sel
- DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.tproducto'
+ FUNCION: 		siat.ft_tipo_documento_siat_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.ttipo_documento_siat'
  AUTOR: 		 (admin)
- FECHA:	        16-01-2019 19:47:00
+ FECHA:	        18-01-2019 14:58:05
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 #ISSUE				FECHA				AUTOR				DESCRIPCION
- #0				16-01-2019 19:47:00								Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.tproducto'	
+ #0				18-01-2019 14:58:05								Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.ttipo_documento_siat'	
  #
  ***************************************************************************/
 
@@ -29,63 +29,70 @@ DECLARE
 			    
 BEGIN
 
-	v_nombre_funcion = 'siat.ft_producto_sel';
+	v_nombre_funcion = 'siat.ft_tipo_documento_siat_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'SIA_PRD_SEL'
+ 	#TRANSACCION:  'SIA_DOCSIA_SEL'
  	#DESCRIPCION:	Consulta de datos
  	#AUTOR:		admin	
- 	#FECHA:		16-01-2019 19:47:00
+ 	#FECHA:		18-01-2019 14:58:05
 	***********************************/
 
-	if(p_transaccion='SIA_PRD_SEL')then
+	if(p_transaccion='SIA_DOCSIA_SEL')then
      				
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						prd.id_producto,
-						prd.codigo,
-						prd.estado_reg,
-						prd.descripcion,
-						prd.id_usuario_reg,
-						prd.usuario_ai,
-						prd.fecha_reg,
-						prd.id_usuario_ai,
-						prd.fecha_mod,
-						prd.id_usuario_mod,
+						docsia.id_tipo_documento,
+						docsia.codigo,
+						docsia.descripcion,
+						docsia.estado_reg,
+						docsia.tipo,
+						docsia.fecha_reg,
+						docsia.id_usuario_ai,
+						docsia.id_usuario_reg,
+						docsia.usuario_ai,
+						docsia.fecha_mod,
+						docsia.id_usuario_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
-						from siat.tproducto prd
-						inner join segu.tusuario usu1 on usu1.id_usuario = prd.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = prd.id_usuario_mod
+						usu2.cuenta as usr_mod,
+                        case when docsia.tipo=''1'' then
+                                  ''Documentos Fiscales''
+                             when docsia.tipo=''2'' then 
+                             ''Documentos Identidad''
+                             else 
+                             ''Documentos Sector''
+                        end as desc_tipo	
+						from siat.ttipo_documento_siat docsia
+						inner join segu.tusuario usu1 on usu1.id_usuario = docsia.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = docsia.id_usuario_mod
 				        where  ';
 			
 			--Definicion de la respuesta
-            v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-              -- raise exception '%',''||v_consulta;
-			
+
 			--Devuelve la respuesta
 			return v_consulta;
 						
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'SIA_PRD_CONT'
+ 	#TRANSACCION:  'SIA_DOCSIA_CONT'
  	#DESCRIPCION:	Conteo de registros
  	#AUTOR:		admin	
- 	#FECHA:		16-01-2019 19:47:00
+ 	#FECHA:		18-01-2019 14:58:05
 	***********************************/
 
-	elsif(p_transaccion='SIA_PRD_CONT')then
+	elsif(p_transaccion='SIA_DOCSIA_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_producto)
-					    from siat.tproducto prd
-					    inner join segu.tusuario usu1 on usu1.id_usuario = prd.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = prd.id_usuario_mod
+			v_consulta:='select count(id_tipo_documento)
+					    from siat.ttipo_documento_siat docsia
+					    inner join segu.tusuario usu1 on usu1.id_usuario = docsia.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = docsia.id_usuario_mod
 					    where ';
 			
 			--Definicion de la respuesta		    
@@ -118,5 +125,5 @@ CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
 
-ALTER FUNCTION siat.ft_producto_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+ALTER FUNCTION siat.ft_tipo_documento_siat_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
   OWNER TO postgres;

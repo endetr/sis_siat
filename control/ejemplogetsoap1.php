@@ -13,14 +13,15 @@ $wsOperaciones= new WsFacturacionOperaciones($_SESSION["_URLWS_OPERACIONES"],2,'
 $resultop = $wsOperaciones->solicitudCufdOp();
 
 //ejemplo de solicitud de tipos de moneda
-$resultsinc = $wsSincroniza->ParametricaTipoMoneda();
+//$resultsinc = $wsSincroniza->ParametricaTipoMoneda();
+$resultsinc = $wsSincroniza->ParametricaMotivoAnulacion();
 
 
 //convierte resultado en array
 $r = $wsSincroniza->ConvertObjectToArray($resultsinc);
 $rop = $wsOperaciones->ConvertObjectToArray($resultop);
 
-print_r($rop);
+print_r($r);
 
 
 ?>

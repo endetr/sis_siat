@@ -1,21 +1,21 @@
 <?php
 /**
 *@package pXP
-*@file gen-Producto.php
-*@author  (admin)
-*@date 16-01-2019 19:47:00
+*@file gen-MotivoAnulacion.php
+*@author  (ana.villegas)
+*@date 31-01-2019 16:28:10
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
-		Phx.vista.Producto.superclass.constructor.call(this,config);
+		Phx.vista.MotivoAnulacion.superclass.constructor.call(this,config);
 		 this.addButton('obtener_ws', {
             text: 'Obtener Datos WS',
             iconCls: 'bupload',
@@ -23,18 +23,17 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
             handler: this.BObtenerWS,
             tooltip: '<b>Obtener Datos</b><br/>Obtener Datos desde el WS del SIN'
         });
-	
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
-			  
+			
 	Atributos:[
 		{
 			//configuracion del componente
 			config:{
 					labelSeparator:'',
 					inputType:'hidden',
-					name: 'id_producto'
+					name: 'id_motivo_anulacion'
 			},
 			type:'Field',
 			form:true 
@@ -42,35 +41,17 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo',
-				fieldLabel: 'Codigo',
-				allowBlank: false,
-				anchor: '25%',
-				gwidth: 100,
-				maxLength:20
-			},
-				type:'TextField',
-				filters:{pfiltro:'prd.codigo',type:'numeric'},
-				id_grupo:1,
-				grid:true,
-				form:true,
-				bottom_filter : true
-		},
-		
-		{
-			config:{
-				name: 'descripcion',
-				fieldLabel: 'Descripción',
+				fieldLabel: 'codigo',
 				allowBlank: false,
 				anchor: '80%',
-				gwidth: 200,
-				maxLength:200 
+				gwidth: 100,
+				maxLength:10
 			},
-				type:'TextArea',
-				filters:{pfiltro:'prd.descripcion',type:'string'},
+				type:'NumberField',
+				filters:{pfiltro:'motanu.codigo',type:'numeric'},
 				id_grupo:1,
 				grid:true,
-				form:true,
-				bottom_filter : true
+				form:true
 		},
 		 {
 			config : {
@@ -107,10 +88,25 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 			},
 			type : 'ComboBox',
 			valorInicial : 'activo',
-			filters:{pfiltro:'prd.estado_reg',type:'string'},
+			filters:{pfiltro:'motanu.estado_reg',type:'string'},
 			id_grupo : 0,
 			grid : true,
 			form : true
+		},
+		{
+			config:{
+				name: 'descripcion',
+				fieldLabel: 'descripcion',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:200
+			},
+				type:'TextField',
+				filters:{pfiltro:'motanu.descripcion',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
 		},
 		{
 			config:{
@@ -137,7 +133,7 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 				maxLength:300
 			},
 				type:'TextField',
-				filters:{pfiltro:'prd.usuario_ai',type:'string'},
+				filters:{pfiltro:'motanu.usuario_ai',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:false
@@ -153,7 +149,7 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
-				filters:{pfiltro:'prd.fecha_reg',type:'date'},
+				filters:{pfiltro:'motanu.fecha_reg',type:'date'},
 				id_grupo:1,
 				grid:true,
 				form:false
@@ -168,25 +164,9 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 				maxLength:4
 			},
 				type:'Field',
-				filters:{pfiltro:'prd.id_usuario_ai',type:'numeric'},
+				filters:{pfiltro:'motanu.id_usuario_ai',type:'numeric'},
 				id_grupo:1,
 				grid:false,
-				form:false
-		},
-		{
-			config:{
-				name: 'fecha_mod',
-				fieldLabel: 'Fecha Modif.',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
-			},
-				type:'DateField',
-				filters:{pfiltro:'prd.fecha_mod',type:'date'},
-				id_grupo:1,
-				grid:true,
 				form:false
 		},
 		{
@@ -203,31 +183,47 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:false
+		},
+		{
+			config:{
+				name: 'fecha_mod',
+				fieldLabel: 'Fecha Modif.',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+							format: 'd/m/Y', 
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+			},
+				type:'DateField',
+				filters:{pfiltro:'motanu.fecha_mod',type:'date'},
+				id_grupo:1,
+				grid:true,
+				form:false
 		}
 	],
 	tam_pag:50,	
-	title:'Productos',
-	ActSave:'../../sis_siat/control/Producto/insertarProducto',
-	ActDel:'../../sis_siat/control/Producto/eliminarProducto',
-	ActList:'../../sis_siat/control/Producto/listarProducto',
-	id_store:'id_producto',
+	title:'Motivo Anulacion',
+	ActSave:'../../sis_siat/control/MotivoAnulacion/insertarMotivoAnulacion',
+	ActDel:'../../sis_siat/control/MotivoAnulacion/eliminarMotivoAnulacion',
+	ActList:'../../sis_siat/control/MotivoAnulacion/listarMotivoAnulacion',
+	id_store:'id_motivo_anulacion',
 	fields: [
-		{name:'id_producto', type: 'numeric'},
-		{name:'codigo', type: 'string'},
+		{name:'id_motivo_anulacion', type: 'numeric'},
+		{name:'codigo', type: 'numeric'},
 		{name:'estado_reg', type: 'string'},
 		{name:'descripcion', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'usuario_ai', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_ai', type: 'numeric'},
-		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
+		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
 		
 	],
 	sortInfo:{
-		field: 'id_producto',
+		field: 'id_motivo_anulacion',
 		direction: 'ASC'
 	},
 	bdel:false,
@@ -236,19 +232,19 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 	onButtonNew: function () {
             
              this.ocultarComponente(this.Cmp.estado_reg);
-             Phx.vista.Producto.superclass.onButtonNew.call(this);
+             Phx.vista.MotivoAnulacion.superclass.onButtonNew.call(this);
             },
     onButtonEdit: function () {
             
              this.mostrarComponente(this.Cmp.estado_reg);
-             Phx.vista.Producto.superclass.onButtonEdit.call(this);
+             Phx.vista.MotivoAnulacion.superclass.onButtonEdit.call(this);
             }
 	,
     BObtenerWS:function () {
 			var rec = this.sm.getSelected();
 			Phx.CP.loadingShow();
 			Ext.Ajax.request({
-				url: '../../sis_siat/control/Producto/insertarProductoWS',
+				url: '../../sis_siat/control/MotivoAnulacion/insertarMotivoAnulacionWS',
 				params: {
 					estado: 'recibido'
 				},
@@ -272,7 +268,6 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 			this.reload();
 
 		}
-		
 	}
 )
 </script>

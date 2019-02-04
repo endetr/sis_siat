@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION siat.ft_producto_sel (
+CREATE OR REPLACE FUNCTION siat.ft_motivo_anulacion_sel (
   p_administrador integer,
   p_id_usuario integer,
   p_tabla varchar,
@@ -8,15 +8,15 @@ RETURNS varchar AS
 $body$
 /**************************************************************************
  SISTEMA:		Sistema SIAT
- FUNCION: 		siat.ft_producto_sel
- DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.tproducto'
- AUTOR: 		 (admin)
- FECHA:	        16-01-2019 19:47:00
+ FUNCION: 		siat.ft_motivo_anulacion_sel
+ DESCRIPCION:   Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.tmotivo_anulacion'
+ AUTOR: 		 (ana.villegas)
+ FECHA:	        31-01-2019 16:28:10
  COMENTARIOS:	
 ***************************************************************************
  HISTORIAL DE MODIFICACIONES:
 #ISSUE				FECHA				AUTOR				DESCRIPCION
- #0				16-01-2019 19:47:00								Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.tproducto'	
+ #0				31-01-2019 16:28:10								Funcion que devuelve conjuntos de registros de las consultas relacionadas con la tabla 'siat.tmotivo_anulacion'	
  #
  ***************************************************************************/
 
@@ -29,63 +29,62 @@ DECLARE
 			    
 BEGIN
 
-	v_nombre_funcion = 'siat.ft_producto_sel';
+	v_nombre_funcion = 'siat.ft_motivo_anulacion_sel';
     v_parametros = pxp.f_get_record(p_tabla);
 
 	/*********************************    
- 	#TRANSACCION:  'SIA_PRD_SEL'
+ 	#TRANSACCION:  'SIA_MOTANU_SEL'
  	#DESCRIPCION:	Consulta de datos
- 	#AUTOR:		admin	
- 	#FECHA:		16-01-2019 19:47:00
+ 	#AUTOR:		ana.villegas	
+ 	#FECHA:		31-01-2019 16:28:10
 	***********************************/
 
-	if(p_transaccion='SIA_PRD_SEL')then
+	if(p_transaccion='SIA_MOTANU_SEL')then
      				
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						prd.id_producto,
-						prd.codigo,
-						prd.estado_reg,
-						prd.descripcion,
-						prd.id_usuario_reg,
-						prd.usuario_ai,
-						prd.fecha_reg,
-						prd.id_usuario_ai,
-						prd.fecha_mod,
-						prd.id_usuario_mod,
+						motanu.id_motivo_anulacion,
+						motanu.codigo,
+						motanu.estado_reg,
+						motanu.descripcion,
+						motanu.id_usuario_reg,
+						motanu.usuario_ai,
+						motanu.fecha_reg,
+						motanu.id_usuario_ai,
+						motanu.id_usuario_mod,
+						motanu.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod	
-						from siat.tproducto prd
-						inner join segu.tusuario usu1 on usu1.id_usuario = prd.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = prd.id_usuario_mod
+						from siat.tmotivo_anulacion motanu
+						inner join segu.tusuario usu1 on usu1.id_usuario = motanu.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = motanu.id_usuario_mod
 				        where  ';
 			
 			--Definicion de la respuesta
-            v_consulta:=v_consulta||v_parametros.filtro;
+			v_consulta:=v_consulta||v_parametros.filtro;
 			v_consulta:=v_consulta||' order by ' ||v_parametros.ordenacion|| ' ' || v_parametros.dir_ordenacion || ' limit ' || v_parametros.cantidad || ' offset ' || v_parametros.puntero;
-              -- raise exception '%',''||v_consulta;
-			
+
 			--Devuelve la respuesta
 			return v_consulta;
 						
 		end;
 
 	/*********************************    
- 	#TRANSACCION:  'SIA_PRD_CONT'
+ 	#TRANSACCION:  'SIA_MOTANU_CONT'
  	#DESCRIPCION:	Conteo de registros
- 	#AUTOR:		admin	
- 	#FECHA:		16-01-2019 19:47:00
+ 	#AUTOR:		ana.villegas	
+ 	#FECHA:		31-01-2019 16:28:10
 	***********************************/
 
-	elsif(p_transaccion='SIA_PRD_CONT')then
+	elsif(p_transaccion='SIA_MOTANU_CONT')then
 
 		begin
 			--Sentencia de la consulta de conteo de registros
-			v_consulta:='select count(id_producto)
-					    from siat.tproducto prd
-					    inner join segu.tusuario usu1 on usu1.id_usuario = prd.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = prd.id_usuario_mod
+			v_consulta:='select count(id_motivo_anulacion)
+					    from siat.tmotivo_anulacion motanu
+					    inner join segu.tusuario usu1 on usu1.id_usuario = motanu.id_usuario_reg
+						left join segu.tusuario usu2 on usu2.id_usuario = motanu.id_usuario_mod
 					    where ';
 			
 			--Definicion de la respuesta		    
@@ -118,5 +117,5 @@ CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
 
-ALTER FUNCTION siat.ft_producto_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
+ALTER FUNCTION siat.ft_motivo_anulacion_sel (p_administrador integer, p_id_usuario integer, p_tabla varchar, p_transaccion varchar)
   OWNER TO postgres;

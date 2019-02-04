@@ -1,21 +1,21 @@
 <?php
 /**
 *@package pXP
-*@file gen-Producto.php
+*@file gen-MetodoPago.php
 *@author  (admin)
-*@date 16-01-2019 19:47:00
+*@date 18-01-2019 14:57:57
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
 */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.MetodoPago=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
-		Phx.vista.Producto.superclass.constructor.call(this,config);
+		Phx.vista.MetodoPago.superclass.constructor.call(this,config);
 		 this.addButton('obtener_ws', {
             text: 'Obtener Datos WS',
             iconCls: 'bupload',
@@ -27,14 +27,14 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
-			  
+			
 	Atributos:[
 		{
 			//configuracion del componente
 			config:{
 					labelSeparator:'',
 					inputType:'hidden',
-					name: 'id_producto'
+					name: 'id_metodo_pago'
 			},
 			type:'Field',
 			form:true 
@@ -42,20 +42,19 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo',
-				fieldLabel: 'Codigo',
+				fieldLabel: 'Código',
 				allowBlank: false,
 				anchor: '25%',
 				gwidth: 100,
-				maxLength:20
+				maxLength:10
 			},
-				type:'TextField',
-				filters:{pfiltro:'prd.codigo',type:'numeric'},
+				type:'NumberField',
+				filters:{pfiltro:'mepsia.codigo',type:'numeric'},
 				id_grupo:1,
 				grid:true,
 				form:true,
 				bottom_filter : true
 		},
-		
 		{
 			config:{
 				name: 'descripcion',
@@ -63,16 +62,16 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 200,
-				maxLength:200 
+				maxLength:200
 			},
 				type:'TextArea',
-				filters:{pfiltro:'prd.descripcion',type:'string'},
+				filters:{pfiltro:'mepsia.descripcion',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:true,
 				bottom_filter : true
 		},
-		 {
+	 {
 			config : {
 				name : 'estado_reg',
 				fieldLabel : 'Estado Registro',
@@ -107,10 +106,41 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 			},
 			type : 'ComboBox',
 			valorInicial : 'activo',
-			filters:{pfiltro:'prd.estado_reg',type:'string'},
+			filters:{pfiltro:'mepsia.estado_reg',type:'string'},
 			id_grupo : 0,
 			grid : true,
 			form : true
+		},
+		{
+			config:{
+				name: 'fecha_reg',
+				fieldLabel: 'Fecha creación',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+							format: 'd/m/Y', 
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+			},
+				type:'DateField',
+				filters:{pfiltro:'mepsia.fecha_reg',type:'date'},
+				id_grupo:1,
+				grid:true,
+				form:false
+		},
+		{
+			config:{
+				name: 'id_usuario_ai',
+				fieldLabel: 'Fecha creación',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:4
+			},
+				type:'Field',
+				filters:{pfiltro:'mepsia.id_usuario_ai',type:'numeric'},
+				id_grupo:1,
+				grid:false,
+				form:false
 		},
 		{
 			config:{
@@ -137,40 +167,9 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 				maxLength:300
 			},
 				type:'TextField',
-				filters:{pfiltro:'prd.usuario_ai',type:'string'},
+				filters:{pfiltro:'mepsia.usuario_ai',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:false
-		},
-		{
-			config:{
-				name: 'fecha_reg',
-				fieldLabel: 'Fecha creación',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
-			},
-				type:'DateField',
-				filters:{pfiltro:'prd.fecha_reg',type:'date'},
-				id_grupo:1,
-				grid:true,
-				form:false
-		},
-		{
-			config:{
-				name: 'id_usuario_ai',
-				fieldLabel: 'Fecha creación',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-				type:'Field',
-				filters:{pfiltro:'prd.id_usuario_ai',type:'numeric'},
-				id_grupo:1,
-				grid:false,
 				form:false
 		},
 		{
@@ -184,7 +183,7 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
-				filters:{pfiltro:'prd.fecha_mod',type:'date'},
+				filters:{pfiltro:'mepsia.fecha_mod',type:'date'},
 				id_grupo:1,
 				grid:true,
 				form:false
@@ -206,20 +205,20 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 		}
 	],
 	tam_pag:50,	
-	title:'Productos',
-	ActSave:'../../sis_siat/control/Producto/insertarProducto',
-	ActDel:'../../sis_siat/control/Producto/eliminarProducto',
-	ActList:'../../sis_siat/control/Producto/listarProducto',
-	id_store:'id_producto',
+	title:'Método Pago SIAT',
+	ActSave:'../../sis_siat/control/MetodoPago/insertarMetodoPago',
+	ActDel:'../../sis_siat/control/MetodoPago/eliminarMetodoPago',
+	ActList:'../../sis_siat/control/MetodoPago/listarMetodoPago',
+	id_store:'id_metodo_pago',
 	fields: [
-		{name:'id_producto', type: 'numeric'},
-		{name:'codigo', type: 'string'},
-		{name:'estado_reg', type: 'string'},
+		{name:'id_metodo_pago', type: 'numeric'},
+		{name:'codigo', type: 'numeric'},
 		{name:'descripcion', type: 'string'},
-		{name:'id_usuario_reg', type: 'numeric'},
-		{name:'usuario_ai', type: 'string'},
+		{name:'estado_reg', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_ai', type: 'numeric'},
+		{name:'id_usuario_reg', type: 'numeric'},
+		{name:'usuario_ai', type: 'string'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
@@ -227,7 +226,7 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 		
 	],
 	sortInfo:{
-		field: 'id_producto',
+		field: 'id_metodo_pago',
 		direction: 'ASC'
 	},
 	bdel:false,
@@ -236,19 +235,19 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 	onButtonNew: function () {
             
              this.ocultarComponente(this.Cmp.estado_reg);
-             Phx.vista.Producto.superclass.onButtonNew.call(this);
+             Phx.vista.MetodoPago.superclass.onButtonNew.call(this);
             },
     onButtonEdit: function () {
             
              this.mostrarComponente(this.Cmp.estado_reg);
-             Phx.vista.Producto.superclass.onButtonEdit.call(this);
+             Phx.vista.MetodoPago.superclass.onButtonEdit.call(this);
             }
 	,
     BObtenerWS:function () {
 			var rec = this.sm.getSelected();
 			Phx.CP.loadingShow();
 			Ext.Ajax.request({
-				url: '../../sis_siat/control/Producto/insertarProductoWS',
+				url: '../../sis_siat/control/MetodoPago/insertarMetodoPagoWS',
 				params: {
 					estado: 'recibido'
 				},
