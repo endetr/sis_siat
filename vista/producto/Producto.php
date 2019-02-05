@@ -16,10 +16,18 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.Producto.superclass.constructor.call(this,config);
+		 this.addButton('obtener_ws', {
+            text: 'Obtener Datos WS',
+            iconCls: 'bupload',
+            disabled: false,
+            handler: this.BObtenerWS,
+            tooltip: '<b>Obtener Datos</b><br/>Obtener Datos desde el WS del SIN'
+        });
+	
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
-			
+			  
 	Atributos:[
 		{
 			//configuracion del componente
@@ -36,47 +44,73 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 				name: 'codigo',
 				fieldLabel: 'Codigo',
 				allowBlank: false,
-				anchor: '80%',
+				anchor: '25%',
 				gwidth: 100,
 				maxLength:20
 			},
 				type:'TextField',
-				filters:{pfiltro:'prd.codigo',type:'string'},
+				filters:{pfiltro:'prd.codigo',type:'numeric'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:true,
+				bottom_filter : true
 		},
 		
 		{
 			config:{
-				name: 'description',
-				fieldLabel: 'Description',
+				name: 'descripcion',
+				fieldLabel: 'Descripción',
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 200,
 				maxLength:200 
 			},
 				type:'TextArea',
-				filters:{pfiltro:'prd.description',type:'string'},
+				filters:{pfiltro:'prd.descripcion',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:true,
+				bottom_filter : true
 		},
-		
-		{
-			config:{
-				name: 'estado_reg',
-				fieldLabel: 'Estado Reg.',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:10
+		 {
+			config : {
+				name : 'estado_reg',
+				fieldLabel : 'Estado Registro',
+				typeAhead : true,
+				allowBlank : false,
+				triggerAction : 'all',
+				emptyText : 'Seleccione Opcion...',
+				selectOnFocus : true,
+				forceSelection: true,
+				width : 250,
+				mode : 'local',
+
+				store : new Ext.data.ArrayStore({
+					fields : ['ID', 'valor'],
+					data : [['activo', 'Activo'],['inactivo', 'Inactivo']],
+
+				}),
+				renderer : function(value, p, record) {
+					var estado_reg = record.data.estado_reg;
+					return  record.data.estado_reg;
+					if (estado_reg=='activo'){
+						return 'Activo';
+					}else if (estado_reg=='inactivo'){
+						return 'Inactivo';
+						
+					}
+					
+				},
+				valueField : 'ID',
+				displayField : 'valor'
+
 			},
-				type:'TextField',
-				filters:{pfiltro:'prd.estado_reg',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:false
+			type : 'ComboBox',
+			valorInicial : 'activo',
+			filters:{pfiltro:'prd.estado_reg',type:'string'},
+			id_grupo : 0,
+			grid : true,
+			form : true
 		},
 		{
 			config:{
@@ -181,7 +215,7 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_producto', type: 'numeric'},
 		{name:'codigo', type: 'string'},
 		{name:'estado_reg', type: 'string'},
-		{name:'description', type: 'string'},
+		{name:'descripcion', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'usuario_ai', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
@@ -196,8 +230,49 @@ Phx.vista.Producto=Ext.extend(Phx.gridInterfaz,{
 		field: 'id_producto',
 		direction: 'ASC'
 	},
-	bdel:true,
-	bsave:true
+	bdel:false,
+	bsave:false,
+	bnew:false,
+	onButtonNew: function () {
+            
+             this.ocultarComponente(this.Cmp.estado_reg);
+             Phx.vista.Producto.superclass.onButtonNew.call(this);
+            },
+    onButtonEdit: function () {
+            
+             this.mostrarComponente(this.Cmp.estado_reg);
+             Phx.vista.Producto.superclass.onButtonEdit.call(this);
+            }
+	,
+    BObtenerWS:function () {
+			var rec = this.sm.getSelected();
+			Phx.CP.loadingShow();
+			Ext.Ajax.request({
+				url: '../../sis_siat/control/Producto/insertarProductoWS',
+				params: {
+					estado: 'recibido'
+				},
+				success: this.successDerivar,
+				failure: this.conexionFailure,
+				timeout: this.timeout,
+				scope: this
+			});
+	
+		},
+		
+
+		successDerivar : function(resp) {
+
+			Phx.CP.loadingHide();
+			var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
+			if (!reg.ROOT.error) {
+				alert(reg.ROOT.detalle.mensaje)
+
+			}
+			this.reload();
+
+		}
+		
 	}
 )
 </script>

@@ -4,7 +4,7 @@
 *@file gen-MODProducto.php
 *@author  (admin)
 *@date 16-01-2019 19:47:00
-*@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+*@descripcion Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 */
 
 class MODProducto extends MODbase{
@@ -21,9 +21,9 @@ class MODProducto extends MODbase{
 				
 		//Definicion de la lista del resultado del query
 		$this->captura('id_producto','int4');
-		$this->captura('codigo','varchar');
+		$this->captura('codigo','numeric');
 		$this->captura('estado_reg','varchar');
-		$this->captura('description','varchar');
+		$this->captura('descripcion','varchar');
 		$this->captura('id_usuario_reg','int4');
 		$this->captura('usuario_ai','varchar');
 		$this->captura('fecha_reg','timestamp');
@@ -48,9 +48,9 @@ class MODProducto extends MODbase{
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('codigo','codigo','varchar');
+		$this->setParametro('codigo','codigo','numeric');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('description','description','varchar');
+		$this->setParametro('descripcion','descripcion','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -68,9 +68,9 @@ class MODProducto extends MODbase{
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_producto','id_producto','int4');
-		$this->setParametro('codigo','codigo','varchar');
+		$this->setParametro('codigo','codigo','numeric');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('description','description','varchar');
+		$this->setParametro('descripcion','descripcion','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
