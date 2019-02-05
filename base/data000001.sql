@@ -13,6 +13,20 @@ select pxp.f_insert_tgui ('Productos', 'Productos', 'SIAPROD', 'si', 1, 'sis_sia
 
 /********************************************F-DAT-JRR-SIAT-0-16/01/2019********************************************/
 
+/********************************************I-DAT-AVQ-SIAT-0-21/01/2019********************************************/
+select pxp.f_insert_tgui ('Servicio', 'Servicios', 'SERSIA', 'si', 2, 'sis_siat/vista/servicio/Servicio.php', 3, '', 'Servicio', 'SIAT');
+select pxp.f_insert_tgui ('Evento', 'Evento', 'EVESIA', 'si', 3, 'sis_siat/vista/evento/Evento.php', 3, '', 'Evento', 'SIAT');
+select pxp.f_insert_tgui ('Pais', 'Pais', 'PAISIA', 'si', 4, 'sis_siat/vista/pais/Pais.php', 3, '', 'Pais', 'SIAT');
+select pxp.f_insert_tgui ('Tipo Moneda', 'Tipo Moneda', 'MONSIA', 'si', 4, 'sis_siat/vista/tipo_moneda/TipoMoneda.php', 3, '', 'TipoMoneda', 'SIAT');
+select pxp.f_insert_tgui ('Modalidad', 'Modalidad', 'MODSIA', 'si', 8, 'sis_siat/vista/modalidad/Modalidad.php', 3, '', 'Modalidad', 'SIAT');
+select pxp.f_insert_tgui ('Metodo Pago', 'Metodo Pago', 'MEPSIA', 'si', 9, 'sis_siat/vista/metodo_pago/MetodoPago.php', 3, '', 'MetodoPago', 'SIAT');
+select pxp.f_insert_tgui ('Tipo Documento', 'Tipo Documento', 'TIDSIA', 'si', 10, 'sis_siat/vista/tipo_documento_siat/TipoDocumentoSiat.php', 3, '', 'TipoDocumentoSiat', 'SIAT');
+select pxp.f_insert_tgui ('Mensaje SOAP', 'Mensaje SOAP', 'MESSIA', 'si', 11, 'sis_siat/vista/mensaje_soap/MensajeSoap.php', 3, '', 'MensajeSoap', 'SIAT');
+select pxp.f_insert_tgui ('Ambiente', 'Ambiente', 'AMBSIA', 'si', 12, 'sis_siat/vista/ambiente/Ambiente.php', 4, '', 'Ambiente', 'SIAT');
+select pxp.f_insert_tgui ('Tipo Emision', 'Tipo Emision', 'TIPEMSIA', 'si', 12, 'sis_siat/vista/tipo_emision/TipoEmision.php', 3, '', 'TipoEmision', 'SIAT');
+
+/********************************************F-DAT-AVQ-SIAT-0-21/01/2019********************************************/
+
 /********************************************I-DAT-JMH-SIAT-0-05/02/2019********************************************/
 select pxp.f_insert_tgui ('CUF', 'CUF', 'CUF', 'si', 5, 'sis_siat/vista/cuf/Cuf.php', 2, '', 'Cuf', 'SIAT');
 select pxp.f_insert_tgui ('CUIS', 'CUIS', 'CUIS', 'si', 6, 'sis_siat/vista/cuis/Cuis.php', 2, '', 'Cuis', 'SIAT');
