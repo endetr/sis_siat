@@ -21,6 +21,7 @@ select pxp.f_insert_testructura_gui ('TIPEMSIA', 'SIASINC');
 
 /***********************************F-DEP-AVQ-SIAT-0-21/01/2019******************************************/
 
+
 /***********************************I-DEP-JMH-SIAT-0-05/02/2019******************************************/
 select pxp.f_insert_testructura_gui ('CUF', 'SIAT');
 select pxp.f_insert_testructura_gui ('CUIS', 'SIAT');
