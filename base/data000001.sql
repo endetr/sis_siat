@@ -34,3 +34,7 @@ select pxp.f_insert_tgui ('SISTEMA SIAT', '', 'SIAT', 'si', 1, '', 1, '', '', 'S
 select pxp.f_insert_tgui ('Sincronizacion', 'Sincronizacion', 'SIASINC', 'si', 1, '', 2, '', '', 'SIAT');
 select pxp.f_insert_tgui ('Productos', 'Productos', 'SIAPROD', 'si', 1, 'sis_siat/vista/producto/Producto.php', 3, '', 'Producto', 'SIAT');
 /********************************************F-DAT-JMH-SIAT-0-05/02/2019********************************************/
+
+/********************************************I-DAT-AVQ-SIAT-0-25/02/2019********************************************/
+select pxp.f_insert_tgui ('Motivo Anulacion', 'Motivos de Anulación', 'MOTANU', 'si', 11, 'sis_siat/vista/motivo_anulacion/MotivoAnulacion.php', 3, '', 'MotivoAnulacion', 'SIAT');
+/********************************************F-DAT-AVQ-SIAT-0-25/02/2019********************************************/

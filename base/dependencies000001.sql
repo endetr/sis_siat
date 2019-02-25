@@ -29,3 +29,8 @@ select pxp.f_insert_testructura_gui ('SIAT', 'SISTEMA');
 select pxp.f_insert_testructura_gui ('SIASINC', 'SIAT');
 select pxp.f_insert_testructura_gui ('SIAPROD', 'SIASINC');
 /***********************************F-DEP-JMH-SIAT-0-05/02/2019******************************************/
+
+
+/***********************************I-DEP-AVQ-SIAT-0-25/02/2019******************************************/
+select pxp.f_insert_testructura_gui ('MOTANU', 'SIASINC');
+/***********************************F-DEP-AVQ-SIAT-0-25/02/2019******************************************/
