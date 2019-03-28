@@ -185,6 +185,22 @@ Phx.vista.Cuis=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:false
+		},  
+		
+		{
+			config:{
+				name: 'horas_anulacion',
+				fieldLabel: 'Horas limite para Anulacion',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:200
+			},
+				type:'TextField',
+				filters:{pfiltro:'cuis.horas_anulacion',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
 		}
 	],
 	tam_pag:50,	
@@ -207,7 +223,7 @@ Phx.vista.Cuis=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		
+		{name:'horas_anulacion', type: 'string'}
 	],
 	sortInfo:{
 		field: 'id_cuis',

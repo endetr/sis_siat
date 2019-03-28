@@ -1,7 +1,11 @@
-CREATE OR REPLACE FUNCTION "siat"."ft_cuis_sel"(	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
+CREATE OR REPLACE FUNCTION siat.ft_cuis_sel (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Sistema de Ventas
  FUNCION: 		siat.ft_cuis_sel
@@ -52,7 +56,8 @@ BEGIN
 						cuis.id_usuario_mod,
 						cuis.fecha_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+                        cuis.horas_anulacion		
 						from siat.tcuis cuis
 						inner join segu.tusuario usu1 on usu1.id_usuario = cuis.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = cuis.id_usuario_mod
@@ -107,7 +112,9 @@ EXCEPTION
 			v_resp = pxp.f_agrega_clave(v_resp,'procedimientos',v_nombre_funcion);
 			raise exception '%',v_resp;
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "siat"."ft_cuis_sel"(integer, integer, character varying, character varying) OWNER TO postgres;

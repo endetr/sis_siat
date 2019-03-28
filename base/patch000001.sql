@@ -224,3 +224,11 @@ ALTER TABLE siat.tcuifd
 
 /************************************F-SCP-JMH-SIAT-0-23/01/2019*************************************************/
 
+/************************************I-SCP-AVQ-SIAT-0-26/03/2019*************************************************/
+  ALTER TABLE siat.tcuis
+  ADD COLUMN horas_anulacion INTERVAL;
+  
+  COMMENT ON COLUMN siat.tcuis.horas_anulacion
+  IS 'Horas Limite para anulación esto dependiendo de la entidad de impuestos';
+
+/************************************F-SCP-AVQ-SIAT-0-26/03/2019*************************************************/

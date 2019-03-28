@@ -1,8 +1,11 @@
-CREATE OR REPLACE FUNCTION "siat"."ft_cuis_ime" (	
-				p_administrador integer, p_id_usuario integer, p_tabla character varying, p_transaccion character varying)
-RETURNS character varying AS
-$BODY$
-
+CREATE OR REPLACE FUNCTION siat.ft_cuis_ime (
+  p_administrador integer,
+  p_id_usuario integer,
+  p_tabla varchar,
+  p_transaccion varchar
+)
+RETURNS varchar AS
+$body$
 /**************************************************************************
  SISTEMA:		Sistema de Ventas
  FUNCION: 		siat.ft_cuis_ime
@@ -53,7 +56,8 @@ BEGIN
 			fecha_reg,
 			usuario_ai,
 			id_usuario_mod,
-			fecha_mod
+			fecha_mod,
+            horas_anulacion
           	) values(
 			v_parametros.codigo,
 			v_parametros.fecha_fin,
@@ -64,7 +68,8 @@ BEGIN
 			now(),
 			v_parametros._nombre_usuario_ai,
 			null,
-			null
+			null,
+            v_parametros.horas_anulacion
 							
 			
 			
@@ -97,7 +102,8 @@ BEGIN
 			id_usuario_mod = p_id_usuario,
 			fecha_mod = now(),
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai
+			usuario_ai = v_parametros._nombre_usuario_ai,
+            horas_anulacion = v_parametros.horas_anulacion
 			where id_cuis=v_parametros.id_cuis;
                
 			--Definicion de la respuesta
@@ -148,7 +154,9 @@ EXCEPTION
 		raise exception '%',v_resp;
 				        
 END;
-$BODY$
-LANGUAGE 'plpgsql' VOLATILE
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
 COST 100;
-ALTER FUNCTION "siat"."ft_cuis_ime"(integer, integer, character varying, character varying) OWNER TO postgres;
