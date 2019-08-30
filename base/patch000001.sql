@@ -232,3 +232,20 @@ ALTER TABLE siat.tcuifd
   IS 'Horas Limite para anulación esto dependiendo de la entidad de impuestos';
 
 /************************************F-SCP-AVQ-SIAT-0-26/03/2019*************************************************/
+
+
+/************************************I-SCP-JRR-SIAT-0-24/07/2019*************************************************/
+ALTER TABLE siat.tcuf
+  DROP COLUMN fecha_emision; 
+
+ALTER TABLE siat.tcuf
+  ADD COLUMN fecha_emision VARCHAR(100);
+  
+ALTER TABLE siat.tcuf
+  DROP COLUMN concatenacion; 
+
+ALTER TABLE siat.tcuf
+  ADD COLUMN concatenacion VARCHAR(100);
+  
+
+/************************************F-SCP-JMH-SIAT-0-24/07/2019*************************************************/

@@ -68,13 +68,13 @@ Phx.vista.Cuf=Ext.extend(Phx.gridInterfaz,{
 				allowBlank: false,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:4
+				maxLength:15
 			},
 				type:'NumberField',
 				filters:{pfiltro:'cuf.nit',type:'numeric'},
 				id_grupo:1,
 				grid:true,
-				form:false
+				form:true
 		},
 		{
 			config:{
@@ -104,7 +104,7 @@ Phx.vista.Cuf=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'cuf.sucursal',type:'numeric'},
 				id_grupo:1,
 				grid:true,
-				form:false
+				form:true
 		},
 		{
 			config:{
@@ -128,12 +128,10 @@ Phx.vista.Cuf=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Fecha Emisión',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+				gwidth: 100
 			},
-				type:'DateField',
-				filters:{pfiltro:'cuf.fecha_emision',type:'date'},
+				type:'TextField',
+				filters:{pfiltro:'cuf.fecha_emision', type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:true
@@ -152,22 +150,7 @@ Phx.vista.Cuf=Ext.extend(Phx.gridInterfaz,{
 				id_grupo:1,
 				grid:true,
 				form:true
-		},
-		{
-			config:{
-				name: 'codigo_autoverificador',
-				fieldLabel: 'Cod. Autoverificador',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-				type:'NumberField',
-				filters:{pfiltro:'cuf.codigo_autoverificador',type:'numeric'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
+		},		
 		{
 			config:{
 				name: 'tipo_documento_sector',
@@ -351,8 +334,7 @@ Phx.vista.Cuf=Ext.extend(Phx.gridInterfaz,{
 		{name:'sucursal', type: 'numeric'},
 		{name:'punto_venta', type: 'numeric'},
 		{name:'fecha_emision', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
-		{name:'modalidad', type: 'numeric'},
-		{name:'codigo_autoverificador', type: 'numeric'},
+		{name:'modalidad', type: 'numeric'},		
 		{name:'tipo_documento_sector', type: 'numeric'},
 		{name:'tipo_emision', type: 'numeric'},
 		{name:'base16', type: 'string'},
