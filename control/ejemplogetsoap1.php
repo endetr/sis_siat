@@ -40,7 +40,7 @@ session_start();
 /*************
  * GENERAR CUFD
  * **************/	
-	/*$wsOperaciones= new WsFacturacionOperaciones('https://presiatservicios.impuestos.gob.bo:39268/FacturacionSolicitudCufd?wsdl',2,'5D778EC73EF',2,196560027,'9081F4D2',0,0);
+	/*$wsOperaciones= new WsFacturacionOperaciones('https://presiatservicios.impuestos.gob.bo:39268/FacturacionSolicitudCufd?wsdl',2,'5D778EC73EF',1,196560027,'9081F4D2',0,0);
 	$resultop = $wsOperaciones->solicitudCufdOp();
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);*/
@@ -101,6 +101,7 @@ session_start();
 	//cuis
 	//sucursal
 	//punto venta	
+	//codigo autorizacion
 	
 /*************
  * SINCRONIZACION TIPO MONEDA
@@ -221,10 +222,10 @@ session_start();
  * SINCRONIZACION PRODUCTOS Y SERVICIOS
  * **************/
 		
-	/**$wsOperaciones= new WsFacturacionSincroniza('https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl',2,'5D778EC73EF',196560027,'E9EB25AC',0,0);
+	/*$wsOperaciones= new WsFacturacionSincroniza('https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl',2,'5D778EC73EF',196560027,'E9EB25AC',0,0,'1000000');
 	$resultop = $wsOperaciones->SincronizaProductosServicios();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-	print_r($rop);/
+	print_r($rop);*/
 
 /***************************************
  * ************************************
@@ -262,15 +263,20 @@ session_start();
  	
 	
 	//generar cuf
-	/*$concatenacion = MODCuf::concatenar(
+	/*$fecha = new DateTime();
+	$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
+	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
+	$fecha_formato2 = $fecha->format('YmdHis000');
+	
+	$concatenacion = MODCuf::concatenar(
 											"196560027",//nit
-											"20190829182212215",//fecha emision
+											$fecha_formato2,//fecha emision
 											"0",//sucursal
 											"2",//modalidad
 											"1",//tipo emision 1 online 2offline
 											"1",// codigo documento fiscal
 											"1",// codigo documento serctor
-											"1",//nro factura
+											"4",//nro factura
 											"0");  //punto venta
 											
 											
@@ -282,13 +288,13 @@ session_start();
 	
 	$cabecera = array(		
 						"nitEmisor" => 196560027,
-						"numeroFactura" => 1,						
+						"numeroFactura" => 4,						
 						"cuf" => $base16,
-						"cufd" => "256563CEC3DDCA487261ECB310F135BE",
+						"cufd" => "F2CEB1734D112C7C2C9A6E14AB1B84E0",
 						"codigoSucursal" => 0,
 						"direccion" => "Calle Ballivian Nro. 1333",
 						"codigoPuntoVenta" => null,
-						"fechaEmision" => "2019-08-29T18:22:12.215",
+						"fechaEmision" => $fecha_formato1,
 						"nombreRazonSocial" => "Rivera",
 						"codigoTipoDocumentoIdentidad" => 1,
 						"numeroDocumento" => "4394565",						
@@ -331,7 +337,7 @@ session_start();
 	
 	
  	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39112/FacturaComputarizadaEstandar?wsdl',
- 							2,1,1,1,2,0,'5D778EC73EF',0, '256563CEC3DDCA487261ECB310F135BE','E9EB25AC',196560027,'2019-08-29T18:22:16.987-04:00',$hash,$archivo_envio);
+ 							2,1,1,1,2,0,'5D778EC73EF',0, 'F2CEB1734D112C7C2C9A6E14AB1B84E0','E9EB25AC',196560027,$fecha_formato1,$hash,$archivo_envio);
 	$resultop = $wsOperaciones->recepcionFacturaEstandar();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);*/
@@ -341,7 +347,7 @@ session_start();
  **************************/
  
  	/*$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39112/FacturaComputarizadaEstandar?wsdl',
- 							2,1,1,1,2,0,'5D778EC73EF',0, '256563CEC3DDCA487261ECB310F135BE','E9EB25AC',196560027,NULL,NULL,NULL,178339);
+ 							2,1,1,1,2,0,'5D778EC73EF',0, 'F2CEB1734D112C7C2C9A6E14AB1B84E0','E9EB25AC',196560027,NULL,NULL,NULL,215569);
 	$resultop = $wsOperaciones->validarRecepcionFacturaEstandar();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);*/
@@ -362,10 +368,14 @@ session_start();
  	//creacion de carpeta donde se guarda los archivos xml y archivos encriptados.
  	
 	
+	/*$fecha = new DateTime();
+	$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
+	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
+	$fecha_formato2 = $fecha->format('YmdHis000');	
 	//generar cuf
-	/*$concatenacion = MODCuf::concatenar(
+	$concatenacion = MODCuf::concatenar(
 											"196560027",//nit
-											"20190830011512215",//fecha emision
+											$fecha_formato2,//fecha emision
 											"0",//sucursal
 											"1",//modalidad
 											"1",//tipo emision 1 online 2offline
@@ -389,7 +399,7 @@ session_start();
 						"codigoSucursal" => 0,
 						"direccion" => "Calle Ballivian Nro. 1333",
 						"codigoPuntoVenta" => null,
-						"fechaEmision" => "2019-08-30T01:15:12.215",
+						"fechaEmision" => $fecha_formato1,
 						"nombreRazonSocial" => "Rivera",
 						"codigoTipoDocumentoIdentidad" => 1,
 						"numeroDocumento" => "4394565",						
@@ -433,20 +443,332 @@ session_start();
 	
 	
  	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
- 							2,1,1,1,1,0,'5D778EC73EF',0, 'F2329AD50359CAA7B9192E43B516A82F','9081F4D2',196560027,'2019-08-30T01:15:16.987-04:00',$hash,$archivo_envio);
+ 							2,1,1,1,1,0,'5D778EC73EF',0, 'F2329AD50359CAA7B9192E43B516A82F','9081F4D2',196560027,$fecha_formato1,$hash,$archivo_envio);
 	$resultop = $wsOperaciones->recepcionFacturaEstandar();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);*/
 
 /**************************
- * VALIDA RECEPCION FACTURA ESTANDAR COMPUTARIZADA
+ * VALIDA RECEPCION FACTURA ESTANDAR ELECTRONICA
  **************************/
  
- 	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
+ 	/*$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
  							2,1,1,1,1,0,'5D778EC73EF',0, 'F2329AD50359CAA7B9192E43B516A82F','9081F4D2',196560027,NULL,NULL,NULL,179048);
 	$resultop = $wsOperaciones->validarRecepcionFacturaEstandar();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-	print_r($rop);
+	print_r($rop);*/
 
+/**************************
+ * VALIDA RECEPCION FACTURA ESTANDAR ELECTRONICA X CUF
+ **************************/
+ 
+ 	/*$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
+ 							2,1,1,1,1,0,'5D778EC73EF',0, 'F2329AD50359CAA7B9192E43B516A82F','9081F4D2',196560027,NULL,NULL,NULL,NULL,$base16);
+	$resultop = $wsOperaciones->validaRecepcionFacturaEstandarxCuf();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);*/
+/**************************
+ * RECEPCION FACTURA COMERCIAL EXPORTACION COMPUTARIZADA
+ **************************/
+ 	//creacion de carpeta donde se guarda los archivos xml y archivos encriptados.
+ 	
+	/*$fecha = new DateTime();
+	$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
+	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
+	$fecha_formato2 = $fecha->format('YmdHis000');	
+	
+	//generar cuf
+	$concatenacion = MODCuf::concatenar(
+											"196560027",//nit
+											$fecha_formato2,//fecha emision
+											"0",//sucursal
+											"2",//modalidad
+											"1",//tipo emision 1 online 2offline
+											"1",// codigo documento fiscal
+											"12",// codigo documento serctor
+											"3",//nro factura
+											"0");  //punto venta
+											
+											
+	$mod11 = MODCuf::mod11((string)$concatenacion,1,9,false); 
+	
+	
+	$concatenacion = $concatenacion . $mod11; 
+	$base16 = strtoupper(MODCuf::bcdechex($concatenacion));
+	
+	$cabecera = array(		
+						"nitEmisor" => 196560027,
+						"numeroFactura" => 3,						
+						"cuf" => $base16,
+						"cufd" => "B62AFA029A43D9F59EFBCB1FE1BB8827",
+						"codigoSucursal" => 0,
+						"direccion" => "Calle Ballivian Nro. 1333",
+						"codigoPuntoVenta" => null,
+						"fechaEmision" => $fecha_formato1,
+						"nombreRazonSocial" => "Rivera",
+						"codigoTipoDocumentoIdentidad" => 1,
+						"numeroDocumento" => "4394565",						
+						"complemento" => null,	
+	 					"direccionComprador"=>"Ave. Quebec, In 255",
+						"codigoCliente" => "C1",
+	 					"incoterm" => "CIF",
+	 					"puertoDestino" => "Vancouver",
+	 					"lugarDestino" => "Canada",
+	 					"codigoPais" => "391",	
+						"codigoMetodoPago" => 1,
+						"numeroTarjeta" => null,
+						"montoTotal" => "10000.0",
+						"montoTotalPuerto" => "10000.0",
+						"precioValorBruto" => "6975.0",
+						"gastosTransporteFrontera" => "375.0",
+						"gastosSeguroFrontera" => "150.0",
+						"totalFobFrontera" => "7500.0",
+						"montoTransporteFrontera" => "2000.0",
+						"montoSeguroInternacional" => "500.0",
+						"otrosMontos" => null,
+						"montoDescuento" => null,
+						"codigoMoneda" => 688,
+						"tipoCambio" => "1",
+						"montoTotalMoneda" => "10000.0",
+						"leyenda" => "ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAÍS. EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY",
+						"usuario" => "JRIVERA",
+						"codigoDocumentoSector" => 12												
+						);
+	$detalle = [
+				[		"actividadEconomica" => "620200",
+						"codigoProductoSin" => "83131",
+						"codigoProducto" => "P1",
+						"codigoNandina" => "0909610000",
+						"descripcion" => "Semilla",
+						"cantidad" => 100,
+						"unidadMedida" => 1,		
+						"precioUnitario" => "100.0",
+						"montoDescuento" => null,						
+						"subTotal" => "10000.0"					
+										
+				]
+			];	
+	
+	$factura = new FacturaEstandar('COM_196560027_3',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Computarizada","ComercialExportacion");
+	$factura->loadXml($cabecera,$detalle);	
+	$factura->crearArchivoBase64();
+	$factura->crearArchivoGZIP();
+	$archivo_envio = $factura->convertirArchivoGZIPABase64();	
+	$hash = hash ( "sha256" , $archivo_envio );
+	
+	
+ 	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39116/FacturaComputarizadaComercialExportacion?wsdl',
+ 							2,1,12,1,2,0,'5D778EC73EF',0, 'B62AFA029A43D9F59EFBCB1FE1BB8827','E9EB25AC',196560027,$fecha_formato1,$hash,$archivo_envio);
+	$resultop = $wsOperaciones->recepcionFacturaComercialExportacion();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);*/
+/**************************
+ * VALIDA RECEPCION FACTURA COMERCIAL DE EXPORTACION COMPUTARIZADA
+ **************************/
+ 
+ 	/*$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39116/FacturaComputarizadaComercialExportacion?wsdl',
+ 							2,1,12,1,2,0,'5D778EC73EF',0, 'B62AFA029A43D9F59EFBCB1FE1BB8827','E9EB25AC',196560027,NULL,NULL,NULL,80);
+	$resultop = $wsOperaciones->validarRecepcionFacturaComercialExportacion();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);*/
+
+/**************************
+ * RECEPCION FACTURA COMERCIAL EXPORTACION ELECTRONICA
+ **************************/
+ 	//creacion de carpeta donde se guarda los archivos xml y archivos encriptados.
+ 	
+	$fecha = new DateTime();
+	$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
+	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
+	$fecha_formato2 = $fecha->format('YmdHis000');	
+	
+	//generar cuf
+	$concatenacion = MODCuf::concatenar(
+											"196560027",//nit
+											$fecha_formato2,//fecha emision
+											"0",//sucursal
+											"1",//modalidad
+											"1",//tipo emision 1 online 2offline
+											"1",// codigo documento fiscal
+											"12",// codigo documento serctor
+											"4",//nro factura
+											"0");  //punto venta
+											
+											
+	$mod11 = MODCuf::mod11((string)$concatenacion,1,9,false); 
+	
+	
+	$concatenacion = $concatenacion . $mod11; 
+	$base16 = strtoupper(MODCuf::bcdechex($concatenacion));
+	
+	$cabecera = array(		
+						"nitEmisor" => 196560027,
+						"numeroFactura" => 4,						
+						"cuf" => $base16,
+						"cufd" => "480E6F5C04D407496F834ADDD8381EDF",
+						"codigoSucursal" => 0,
+						"direccion" => "Calle Ballivian Nro. 1333",
+						"codigoPuntoVenta" => null,
+						"fechaEmision" => $fecha_formato1,
+						"nombreRazonSocial" => "Rivera",
+						"codigoTipoDocumentoIdentidad" => 1,
+						"numeroDocumento" => "4394565",						
+						"complemento" => null,	
+	 					"direccionComprador"=>"Ave. Quebec, In 255",
+						"codigoCliente" => "C1",
+	 					"incoterm" => "CIF",
+	 					"puertoDestino" => "Vancouver",
+	 					"lugarDestino" => "Canada",
+	 					"codigoPais" => "391",	
+						"codigoMetodoPago" => 1,
+						"numeroTarjeta" => null,
+						"montoTotal" => "10000.0",
+						"montoTotalPuerto" => "10000.0",
+						"precioValorBruto" => "6975.0",
+						"gastosTransporteFrontera" => "375.0",
+						"gastosSeguroFrontera" => "150.0",
+						"totalFobFrontera" => "7500.0",
+						"montoTransporteFrontera" => "2000.0",
+						"montoSeguroInternacional" => "500.0",
+						"otrosMontos" => null,
+						"montoDescuento" => null,
+						"codigoMoneda" => 689,
+						"tipoCambio" => "6.96",
+						"montoTotalMoneda" => "10000.0",
+						"leyenda" => "ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAÍS. EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY",
+						"usuario" => "JRIVERA",
+						"codigoDocumentoSector" => 12												
+						);
+	$detalle = [
+				[		"actividadEconomica" => "620200",
+						"codigoProductoSin" => "83131",
+						"codigoProducto" => "P1",
+						"codigoNandina" => "0909610000",
+						"descripcion" => "Semilla",
+						"cantidad" => 100,
+						"unidadMedida" => 1,		
+						"precioUnitario" => "100.0",
+						"montoDescuento" => null,						
+						"subTotal" => "10000.0"					
+										
+				]
+			];	
+	
+	$factura = new FacturaEstandar('ELE_196560027_4',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Computarizada","ComercialExportacion");
+	$factura->loadXml($cabecera,$detalle);	
+	$factura->sign(dirname(__FILE__).'/../sis_siat/firma_digital/server.p12');
+	$factura->crearArchivoBase64();
+	$factura->crearArchivoGZIP();
+	$archivo_envio = $factura->convertirArchivoGZIPABase64();	
+	$hash = hash ( "sha256" , $archivo_envio );
+	
+	
+ 	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39124/FacturaElectronicaComercialExportacion?wsdl',
+ 							2,1,12,1,1,0,'5D778EC73EF',0, '480E6F5C04D407496F834ADDD8381EDF','9081F4D2',196560027,$fecha_formato1,$hash,$archivo_envio);
+	$resultop = $wsOperaciones->recepcionFacturaComercialExportacion();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);
+/**************************
+ * VALIDA RECEPCION FACTURA COMERCIAL DE EXPORTACION ELECTRONICA
+ **************************/
+ 
+ 	/*$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39116/FacturaComputarizadaComercialExportacion?wsdl',
+ 							2,1,12,1,1,0,'5D778EC73EF',0, '480E6F5C04D407496F834ADDD8381EDF','9081F4D2',196560027,NULL,NULL,NULL,74);
+	$resultop = $wsOperaciones->validarRecepcionFacturaComercialExportacion();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);*/
+	
+/**************************
+ * RECEPCION NOTA CREDITO DEBITO COMPUTARIZADA
+ **************************/
+ 	//creacion de carpeta donde se guarda los archivos xml y archivos encriptados.
+ 	
+	/*$fecha = new DateTime();
+	$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
+	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
+	$fecha_formato2 = $fecha->format('YmdHis000');	
+	
+	//generar cuf
+	$concatenacion = MODCuf::concatenar(
+											"196560027",//nit
+											$fecha_formato2,//fecha emision
+											"0",//sucursal
+											"2",//modalidad
+											"1",//tipo emision 1 online 2offline
+											"1",// codigo documento fiscal
+											"12",// codigo documento serctor
+											"3",//nro factura
+											"0");  //punto venta
+											
+											
+	$mod11 = MODCuf::mod11((string)$concatenacion,1,9,false); 
+	
+	
+	$concatenacion = $concatenacion . $mod11; 
+	$base16 = strtoupper(MODCuf::bcdechex($concatenacion));
+	
+	$cabecera = array(		
+						"nitEmisor" => 196560027,
+						"numeroNotaCreditoDebido" => 3,						
+						"cuf" => $base16,
+						"cufd" => "F2CEB1734D112C7C2C9A6E14AB1B84E0",
+						"codigoSucursal" => 0,
+						"direccion" => "Calle Ballivian Nro. 1333",
+						"codigoPuntoVenta" => null,
+						"fechaEmision" => $fecha_formato1,
+						"nombreRazonSocial" => "Rivera",
+						"codigoTipoDocumentoIdentidad" => 1,
+						"numeroDocumento" => "4394565",						
+						"complemento" => null,		 					
+						"codigoCliente" => "C1",
+	 					"incoterm" => "CIF",
+	 					"numeroFactura" => "Vancouver",
+	 					"numeroAutorizacionCuf" => "Canada",
+	 					"fechaEmisionFactura" => "391",	
+						"montoTotalOriginal" => 1,
+						"montoTotalDevuelto" => null,
+						"montoEfectivoCreditoDebito" => "69600.0",						
+						"leyenda" => "ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAÍS. EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY",
+						"usuario" => "JRIVERA",
+						"codigoDocumentoSector" => 18												
+						);
+	$detalle = [
+				[		"actividadEconomica" => "1231",
+						"codigoProductoSin" => "21312",
+						"codigoProducto" => "P1",
+						"codigoNandina" => "0909610000",
+						"descripcion" => "Semilla",
+						"cantidad" => 100,
+						"unidadMedida" => 1,		
+						"precioUnitario" => "100.0",
+						"montoDescuento" => null,						
+						"subTotal" => "10000.0"					
+										
+				]
+			];	
+	
+	$factura = new FacturaEstandar('COM_196560027_3',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Computarizada","ComercialExportacion");
+	$factura->loadXml($cabecera,$detalle);	
+	$factura->crearArchivoBase64();
+	$factura->crearArchivoGZIP();
+	$archivo_envio = $factura->convertirArchivoGZIPABase64();	
+	$hash = hash ( "sha256" , $archivo_envio );
+	
+	
+ 	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39116/FacturaComputarizadaComercialExportacion?wsdl',
+ 							2,1,12,1,2,0,'5D778EC73EF',0, 'F2CEB1734D112C7C2C9A6E14AB1B84E0','E9EB25AC',196560027,$fecha_formato1,$hash,$archivo_envio);
+	$resultop = $wsOperaciones->recepcionFacturaComercialExportacion();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);*/
+/**************************
+ * VALIDA RECEPCION NOTA CREDITO DEBITO COMPUTARIZADA
+ **************************/
+ 
+ 	/*$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39116/FacturaComputarizadaComercialExportacion?wsdl',
+ 							2,1,12,1,2,0,'5D778EC73EF',0, 'F2CEB1734D112C7C2C9A6E14AB1B84E0','E9EB25AC',196560027,NULL,NULL,NULL,70);
+	$resultop = $wsOperaciones->validarRecepcionFacturaComercialExportacion();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);*/
+	
 ?>
 </pre>

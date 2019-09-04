@@ -58,10 +58,14 @@ class WsFacturacionOperaciones extends SiatClassWs {
    var $result;
    var $wsurlFO;
    var $parametrosFO;
-   function WsFacturacionOperaciones($wsurlFO,$codigoAmbiente,$codigoSistema,$codigoModalidad,$nit,$cuis,$sucursal,$pos = 0,$nombrePos = '',$codigoTipoPos=1,$descripcion="",$codigoEvento="",$fechaHoraEvento="",$cufd="",$fechaHoraFinEvento=NULL,$codigoRecepcionEvento = NULL)
-   {	
-        $this->SiatClassWs($wsurlFO,$codigoAmbiente,$codigoSistema,$codigoModalidad,$nit,$cuis,$sucursal,$pos,$nombrePos,$codigoTipoPos,$descripcion,$codigoEvento,$fechaHoraEvento,$cufd,$fechaHoraFinEvento,$codigoRecepcionEvento);
-		$this->clientFO = $this->Conexion();
+   function WsFacturacionOperaciones($wsurlFO,$codigoAmbiente,$codigoSistema,$codigoModalidad,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta = 0,$nombrePos = '',$codigoTipoPos=1,$descripcion="",$codigoEvento="",$fechaHoraEvento="",$cufd="",$fechaHoraFinEvento=NULL,$codigoRecepcionEvento = NULL)
+   {	$this->wsurl = $wsurlFO;
+       	$this->parametros = compact("codigoAmbiente","codigoSistema","codigoModalidad","nit","cuis","codigoSucursal",
+       								"codigoPuntoVenta","nombrePos","codigoTipoPos","descripcion","codigoEvento",
+       								"fechaHoraEvento","cufd","fechaHoraFinEvento","codigoRecepcionEvento");
+     
+	    $this->clientFO = $this->Conexion();
+        
    }
 
    function estableceConexion($wsurlFO,$parametrosFO)
@@ -136,9 +140,12 @@ class WsFacturacionSincroniza extends SiatClassWs {
    var $result;
    var $wsurlSINC;
    var $parametrosSINC;
-   function WsFacturacionSincroniza($wsurlSINC,$codigoAmbiente,$codigoSistema,$nit,$cuis,$sucursal,$pos = 0,$nombrePos = '',$codigoTipoPos=1,$descripcion="",$codigoEvento="",$fechaHoraEvento="",$cufd="",$fechaHoraFinEvento=NULL,$codigoRecepcionEvento = NULL)
+   function WsFacturacionSincroniza($wsurlSINC,$codigoAmbiente,$codigoSistema,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta = 0,$codigoAutorizacion=null)
    {
-        $this->SiatClassWs($wsurlSINC,$codigoAmbiente,$codigoSistema,0,$nit,$cuis,$sucursal,$pos,$nombrePos,$codigoTipoPos,$descripcion,$codigoEvento,$fechaHoraEvento,$cufd,$fechaHoraFinEvento,$codigoRecepcionEvento);
+        $this->wsurl = $wsurlSINC;
+       	$this->parametros = compact("codigoAmbiente","codigoSistema","nit","cuis","codigoSucursal",
+       								"codigoPuntoVenta","codigoAutorizacion");
+     
 		$this->clientSINC = $this->Conexion();
    }
 
@@ -335,10 +342,14 @@ class WsFacturacion extends SiatClassWs {
        $result = $this->clientFac->verificarComunicacion();
 	   return $result;
    }
+   
+   /********************************************
+    * FACTURA ESTANDAR
+    ********************************************/
    function recepcionFacturaEstandar()
    {       
 	   try {
-	   		 if ($this->parametros['codigoModalidad'] = 1) {
+	   		 if ($this->parametros['codigoModalidad'] == 1) {
 	   		 	$result = $this->clientFac->recepcionFacturaElectronicaEstandar(array('SolicitudServicioRecepcion' => $this->parametros));	
 	   		 } else {  			
 	       		$result = $this->clientFac->recepcionFacturaComputarizadaEstandar(array('SolicitudServicioRecepcion' => $this->parametros));
@@ -352,7 +363,7 @@ class WsFacturacion extends SiatClassWs {
    function validaRecepcionFacturaEstandarxCuf()
    {       
 	   try {
-	   		if ($this->parametros['codigoModalidad'] = 1) {     			
+	   		if ($this->parametros['codigoModalidad'] == 1) {     			
 	       		$result = $this->clientFac->validacionRecepcionPorCufFacturaComputarizadaEstandar(array('SolicitudServicioValidacionRecepcionPorCuf' => $this->parametros));
 			} else {
 				$result = $this->clientFac->validacionRecepcionPorCufFacturaElectronicaEstandar(array('SolicitudServicioValidacionRecepcionPorCuf' => $this->parametros));
@@ -367,7 +378,7 @@ class WsFacturacion extends SiatClassWs {
    function validarRecepcionFacturaEstandar()
    {       
 	   try {
-	   		if ($this->parametros['codigoModalidad'] = 1) {   			
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
 	       		$result = $this->clientFac->validacionRecepcionFacturaElectronicaEstandar(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
 			} else {  			
 	       		$result = $this->clientFac->validacionRecepcionFacturaComputarizadaEstandar(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
@@ -378,9 +389,102 @@ class WsFacturacion extends SiatClassWs {
 		}    
 	  
    }
+   /********************************************
+    * FACTURA COMERCIAL DE EXPORTACION
+    ********************************************/
+   function recepcionFacturaComercialExportacion()
+   {       
+	   try {
+	   		 if ($this->parametros['codigoModalidad'] == 1) {
+	   		 	$result = $this->clientFac->recepcionFacturaElectronicaComercialExportacion(array('SolicitudServicioRecepcion' => $this->parametros));	
+	   		 } else {  			
+	       		$result = $this->clientFac->recepcionFacturaComputarizadaComercialExportacion(array('SolicitudServicioRecepcion' => $this->parametros));
+			 }
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
    
+   function validaRecepcionFacturaComercialExportacionxCuf()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {     			
+	       		$result = $this->clientFac->validacionRecepcionPorCufFacturaElectronicaComercialExportacion(array('SolicitudServicioValidacionRecepcionPorCuf' => $this->parametros));
+			} else {
+				$result = $this->clientFac->validacionRecepcionPorCufFacturaComputarizadaComercialExportacion(array('SolicitudServicioValidacionRecepcionPorCuf' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
    
-} // fin de la clase de web services para facturacion estandar
+   function validarRecepcionFacturaComercialExportacion()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionRecepcionFacturaElectronicaComercialExportacion(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionRecepcionFacturaComputarizadaComercialExportacion(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   
+   /********************************************
+    * NOTA DE CREDITO DEBITO
+    ********************************************/
+   function recepcionNotaCreditoDebito()
+   {       
+	   try {
+	   		 if ($this->parametros['codigoModalidad'] == 1) {
+	   		 	$result = $this->clientFac->recepcionNotaFiscalElectronicaCreditoDebito(array('SolicitudServicioRecepcion' => $this->parametros));	
+	   		 } else {  			
+	       		$result = $this->clientFac->recepcionNotaFiscalComputarizadaCreditoDebito(array('SolicitudServicioRecepcion' => $this->parametros));
+			 }
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   
+   function validaRecepcionNotaCreditoDebitoxCuf()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {     			
+	       		$result = $this->clientFac->validacionRecepcionPorCufNotaFiscalElectronicaCreditoDebito(array('SolicitudServicioValidacionRecepcionPorCuf' => $this->parametros));
+			} else {
+				$result = $this->clientFac->validacionRecepcionPorCufNotaFiscalComputarizadaCreditoDebito(array('SolicitudServicioValidacionRecepcionPorCuf' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   
+   function validarRecepcionNotaCreditoDebito()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionRecepcionNotaFiscalElectronicaCreditoDebito(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionRecepcionNotaFiscalComputarizadaCreditoDebito(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}  
+   }
+   
+} // fin de la clase de web services para facturacion
 
 
 ?> 
