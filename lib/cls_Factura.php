@@ -2,7 +2,7 @@
 
 include_once(dirname(__FILE__).'/XML.php');
 
-class FacturaEstandar
+class Factura
 {
 	/**
 	* Funcion que crea un archivo XML (/tmp/facturaEstandar.xml)validado a partir de 2 arreglos, cabecera y detalle
