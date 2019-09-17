@@ -58,10 +58,10 @@ class WsFacturacionOperaciones extends SiatClassWs {
    var $result;
    var $wsurlFO;
    var $parametrosFO;
-   function WsFacturacionOperaciones($wsurlFO,$codigoAmbiente,$codigoSistema,$codigoModalidad,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta = 0,$nombrePos = '',$codigoTipoPos=1,$descripcion="",$codigoEvento="",$fechaHoraEvento="",$cufd="",$fechaHoraFinEvento=NULL,$codigoRecepcionEvento = NULL)
+   function WsFacturacionOperaciones($wsurlFO,$codigoAmbiente,$codigoSistema,$codigoModalidad,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta = 0,$nombrePuntoVenta = '',$codigoTipoPuntoVenta=1,$descripcion="",$codigoEvento="",$fechaHoraEvento="",$cufd="",$fechaHoraFinEvento=NULL,$codigoRecepcionEvento = NULL,$codigoSistemaProveedor=NULL)
    {	$this->wsurl = $wsurlFO;
-       	$this->parametros = compact("codigoAmbiente","codigoSistema","codigoModalidad","nit","cuis","codigoSucursal",
-       								"codigoPuntoVenta","nombrePos","codigoTipoPos","descripcion","codigoEvento",
+       	$this->parametros = compact("codigoAmbiente","codigoSistema","codigoSistemaProveedor","codigoModalidad","nit","cuis","codigoSucursal",
+       								"codigoPuntoVenta","nombrePuntoVenta","codigoTipoPuntoVenta","descripcion","codigoEvento",
        								"fechaHoraEvento","cufd","fechaHoraFinEvento","codigoRecepcionEvento");
      
 	    $this->clientFO = $this->Conexion();
@@ -321,12 +321,13 @@ class WsFacturacion extends SiatClassWs {
    
    function WsFacturacion($wsurlFac,$codigoAmbiente,$codigoDocumentoFiscal,$codigoDocumentoSector,$codigoEmision,
    										$codigoModalidad,$codigoPuntoVenta,$codigoSistema,$codigoSucursal,$cufd,$cuis,$nit,
-   										$fechaEnvio=NULL,$hashArchivo=NULL,$archivo=NULL,$codigoRecepcion=NULL,$cuf=NULL)
+   										$fechaEnvio=NULL,$hashArchivo=NULL,$archivo=NULL,$codigoRecepcion=NULL,$cuf=NULL,
+   										$codigoMotivo = NULL,$numeroDocumentoFiscal=NULL)
    {
         $this->wsurl = $wsurlFac;
        	$this->parametros = compact("codigoAmbiente","codigoDocumentoFiscal","codigoDocumentoSector","codigoEmision",
        								"codigoModalidad","codigoPuntoVenta","codigoSistema","codigoSucursal","cufd","cuis","nit",
-       								"fechaEnvio","hashArchivo","archivo","codigoRecepcion","cuf");
+       								"fechaEnvio","hashArchivo","archivo","codigoRecepcion","cuf","codigoMotivo","numeroDocumentoFiscal");
      
 	   $this->clientFac = $this->Conexion();
    }
@@ -389,6 +390,37 @@ class WsFacturacion extends SiatClassWs {
 		}    
 	  
    }
+   
+   function anulacionFacturaEstandar()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->anulacionFacturaElectronicaEstandar(array('SolicitudServicioAnulacion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->anulacionFacturaComputarizadaEstandar(array('SolicitudServicioAnulacion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+
+	function validaAnulacionFacturaEstandar()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionAnulacionFacturaElectronicaEstandar(array('SolicitudServicioValidacionAnulacion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionAnulacionFacturaComputarizadaEstandar(array('SolicitudServicioValidacionAnulacion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   
    /********************************************
     * FACTURA COMERCIAL DE EXPORTACION
     ********************************************/
