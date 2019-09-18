@@ -515,6 +515,98 @@ class WsFacturacion extends SiatClassWs {
 			return  'ERROR: '.$fault;
 		}  
    }
+   function anulacionNotaCreditoDebito()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->anulacionNotaFiscalElectronicaCreditoDebito(array('SolicitudServicioAnulacion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->anulacionNotaFiscalComputarizadaCreditoDebito(array('SolicitudServicioAnulacion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+
+	function validaAnulacionNotaCreditoDebito()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionAnulacionNotaFiscalElectronicaCreditoDebito(array('SolicitudServicioValidacionAnulacion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionAnulacionNotaFiscalComputarizadaCreditoDebito(array('SolicitudServicioValidacionAnulacion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   /******************************************
+    * FACTURA ALQUILER
+    *************************************/
+    
+    function recepcionFacturaAlquiler()
+   {       
+	   try {
+	   		 if ($this->parametros['codigoModalidad'] == 1) {
+	   		 	$result = $this->clientFac->recepcionFacturaElectronicaAlquilerBienInmueble(array('SolicitudServicioRecepcion' => $this->parametros));	
+	   		 } else {  			
+	       		$result = $this->clientFac->recepcionFacturaComputarizadaAlquilerBienInmueble(array('SolicitudServicioRecepcion' => $this->parametros));
+			 }
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }      
+   function validarRecepcionFacturaAlquiler()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionRecepcionFacturaElectronicaAlquilerBienInmueble(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionRecepcionFacturaComputarizadaAlquilerBienInmueble(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   
+   function anulacionFacturaAlquiler()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->anulacionFacturaElectronicaAlquilerBienInmueble(array('SolicitudServicioAnulacion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->anulacionFacturaComputarizadaAlquilerBienInmueble(array('SolicitudServicioAnulacion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+
+	function validaAnulacionFacturaAlquiler()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionAnulacionFacturaElectronicaAlquilerBienInmueble(array('SolicitudServicioValidacionAnulacion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionAnulacionFacturaComputarizadaAlquilerBienInmueble(array('SolicitudServicioValidacionAnulacion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+    
    
 } // fin de la clase de web services para facturacion
 
