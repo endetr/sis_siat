@@ -361,6 +361,23 @@ class WsFacturacion extends SiatClassWs {
 		}    
 	  
    }
+   
+   function recepcionFacturaEstandarPaquete()
+   {       
+	   try {
+	   		 if ($this->parametros['codigoModalidad'] == 1) {
+	   		 	$result = $this->clientFac->recepcionPaqueteFacturaElectronicaEstandar(array('SolicitudServicioRecepcion' => $this->parametros));	
+	   		 } else {  			
+	       		$result = $this->clientFac->recepcionPaqueteFacturaComputarizadaEstandar(array('SolicitudServicioRecepcion' => $this->parametros));
+			 }
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   
+   
    function validaRecepcionFacturaEstandarxCuf()
    {       
 	   try {
@@ -376,6 +393,8 @@ class WsFacturacion extends SiatClassWs {
 	  
    }
    
+   
+   
    function validarRecepcionFacturaEstandar()
    {       
 	   try {
@@ -383,6 +402,21 @@ class WsFacturacion extends SiatClassWs {
 	       		$result = $this->clientFac->validacionRecepcionFacturaElectronicaEstandar(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
 			} else {  			
 	       		$result = $this->clientFac->validacionRecepcionFacturaComputarizadaEstandar(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   
+   function validarRecepcionFacturaEstandarPaquete()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionRecepcionPaqueteFacturaElectronicaEstandar(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionRecepcionPaqueteFacturaComputarizadaEstandar(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
 			}
 		   	return $result;
 		} catch (SoapFault $fault) {

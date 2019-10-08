@@ -8,13 +8,13 @@ include_once(dirname(__FILE__).'/../lib/cls_Factura.php');
 require(dirname(__FILE__).'/../../lib/lib_modelo/driver.php');
 require(dirname(__FILE__).'/../../lib/lib_modelo/MODbase.php');
 require(dirname(__FILE__).'/../modelo/MODCuf.php');
-$cufd = "QUHCoUM5JVRBQUVGREUyN0E3Q0ZPRllKVFVBQQ==MDAwMDg1";
+$cufd = "QUHCoUM5JVRBQUVGREUyN0E3Q3ZhTWNKVFVBQQ==MDAwMDg1";
 
 
 $codigo_sistema= "85AEFDE27A7";
 $cuis_computarizada = "B1506967";
 $cuis_electronica = "9F8FE1BF";
-$numero_fac=1;
+$numero_fac=11;
 $numero_nc = 1;
 $fecha = new DateTime();
 $fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
@@ -52,10 +52,10 @@ session_start();
 /*************
  * GENERAR CUFD
  * **************/	
-	$wsOperaciones= new WsFacturacionOperaciones('https://presiatservicios.impuestos.gob.bo:39268/FacturacionSolicitudCufd?wsdl',2,$codigo_sistema,2,196560027,$cuis_computarizada,0,0);
+	/*$wsOperaciones= new WsFacturacionOperaciones('https://presiatservicios.impuestos.gob.bo:39268/FacturacionSolicitudCufd?wsdl',2,$codigo_sistema,2,196560027,$cuis_computarizada,0,0);
 	$resultop = $wsOperaciones->solicitudCufdOp();
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-	print_r($rop);
+	print_r($rop);*/
 	
 
 /*************
@@ -1177,7 +1177,7 @@ session_start();
 	
 	//generar cuf
 	
-	$concatenacion = MODCuf::concatenar(
+	/*$concatenacion = MODCuf::concatenar(
 											"196560027",//nit
 											$fecha_formato2,//fecha emision
 											"0",//sucursal
@@ -1257,7 +1257,7 @@ session_start();
  							2,1,27,1,2,0,$codigo_sistema,0, $cufd,$cuis_computarizada,196560027,$fecha_formato1,$hash,$archivo_envio);
 	$resultop = $wsOperaciones->recepcionFacturaEstandar();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-	print_r($rop);
+	print_r($rop);*/
 	
 /**************************
  * VALIDA RECEPCION FACTURA VENTA MINERAL COMPUTARIZADA
@@ -1407,6 +1407,203 @@ session_start();
  	/*$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
  							2,1,27,1,1,0,$codigo_sistema,0, $cufd,$cuis_electronica,196560027,NULL,NULL,NULL,150683,'226E0E73EEECA656CA7506D9440DCB4C5A8A3A81',912,4);
 	$resultop = $wsOperaciones->validaAnulacionFacturaEstandar();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);*/
+	
+/**************************
+ * RECEPCION FACTURA COMPUTARIZADA ESTANDAR MASIVAAAAA
+ **************************/
+ 	/*$a = new PharData(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paquete.tar');
+	for ($i = 1; $i <= 10; $i++) {		
+		$fecha = new DateTime();
+		$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
+		$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
+		$fecha_formato2 = $fecha->format('YmdHis000');
+		$concatenacion = MODCuf::concatenar(
+												"196560027",//nit
+												$fecha_formato2,//fecha emision
+												"0",//sucursal
+												"2",//modalidad
+												"2",//tipo emision 1 online 2offline
+												"1",// codigo documento fiscal
+												"1",// codigo documento serctor
+												$numero_fac,//nro factura
+												"0");  //punto venta
+												
+												
+		$mod11 = MODCuf::mod11((string)$concatenacion,1,9,false); 
+		
+		
+		$concatenacion = $concatenacion . $mod11; 
+		$base16 = strtoupper(MODCuf::bcdechex($concatenacion));
+		
+		$cabecera = array(		
+							"nitEmisor" => 196560027,
+							"numeroFactura" => $numero_fac,						
+							"cuf" => $base16,
+							"cufd" => $cufd,
+							"codigoSucursal" => 0,
+							"direccion" => "Calle Ballivian Nro. 1333",
+							"codigoPuntoVenta" => null,
+							"fechaEmision" => $fecha_formato1,
+							"nombreRazonSocial" => "Rivera",
+							"codigoTipoDocumentoIdentidad" => 1,
+							"numeroDocumento" => "4394565",						
+							"complemento" => null,	
+							"codigoCliente" => "C1",	
+							"codigoMetodoPago" => 1,
+							"numeroTarjeta" => null,
+							"montoTotal" => "100.0",
+							"montoDescuento" => null,
+							"codigoMoneda" => 688,
+							"tipoCambio" => "1.0",
+							"montoTotalMoneda" => "100.0",
+							"leyenda" => "El proveedor debera suministrar el servicio en las modalidades y terminos ofertados o convenidos",
+							"usuario" => "JRIVERA",
+							"codigoDocumentoSector" => 1,	
+							"codigoExcepcionDocumento"=>null												
+							);
+		$detalle = [
+					[		"actividadEconomica" => 620200,
+							"codigoProductoSin" => 83132,
+							"codigoProducto" => "P1",
+							"descripcion" => "Aplicacion de facturacion",
+							"cantidad" => 1,
+							"unidadMedida" => 57,		
+							"precioUnitario" => "100.0",
+							"montoDescuento" => null,						
+							"subTotal" => "100.0",
+							"numeroSerie" => null,
+							"numeroImei" => null,						
+											
+					]
+				];	
+		
+		$factura = new Factura('COMP_196560027_'.$numero_fac,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Computarizada");
+		$factura->loadXml($cabecera,$detalle);	
+		$factura->crearArchivoBase64();
+		$factura->crearArchivoGZIP();
+		$archivo_envio = $factura->convertirArchivoGZIPABase64();
+	    $a->addFile(realpath(dirname(__FILE__)."/../../uploaded_files/archivos_facturacion_xml/COMP_196560027_" . $numero_fac . "_FirmadoB64.txt"),"COMP_196560027_" . $numero_fac . "_FirmadoB64.txt");
+		$numero_fac++;
+	}
+	
+	Factura::crearArchivoGZIPMasivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paquete.tar',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz');
+	$archivo_envio = Factura::convertirArchivoGZIPABase64Masivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzipB64.txt');
+	$hash = hash ( "sha256" , $archivo_envio );
+	
+	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39112/FacturaComputarizadaEstandar?wsdl',
+ 							2,1,1,2,2,0,$codigo_sistema,0, $cufd,$cuis_computarizada,196560027,$fecha_formato1,$hash,$archivo_envio);
+	$resultop = $wsOperaciones->recepcionFacturaEstandarPaquete();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);*/
+	
+/**************************
+ * VALIDA RECEPCION FACTURA ESTANDAR COMPUTARIZADA MASIVA
+ **************************/
+ 
+ 	/*$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39112/FacturaComputarizadaEstandar?wsdl',
+ 							2,1,1,2,2,0,$codigo_sistema,0, $cufd,$cuis_computarizada,196560027,NULL,NULL,NULL,69384);
+	$resultop = $wsOperaciones->validarRecepcionFacturaEstandarPaquete();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);*/
+	
+/**************************
+ * RECEPCION FACTURA ELECTRONICA ESTANDAR MASIVAAAAA
+ **************************/
+ 	$a = new PharData(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paquete_ele.tar');
+	for ($i = 1; $i <= 10; $i++) {		
+		$fecha = new DateTime();
+		$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
+		$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
+		$fecha_formato2 = $fecha->format('YmdHis000');
+		$concatenacion = MODCuf::concatenar(
+												"196560027",//nit
+												$fecha_formato2,//fecha emision
+												"0",//sucursal
+												"1",//modalidad
+												"2",//tipo emision 1 online 2offline
+												"1",// codigo documento fiscal
+												"1",// codigo documento serctor
+												$numero_fac,//nro factura
+												"0");  //punto venta
+												
+												
+		$mod11 = MODCuf::mod11((string)$concatenacion,1,9,false); 
+		
+		
+		$concatenacion = $concatenacion . $mod11; 
+		$base16 = strtoupper(MODCuf::bcdechex($concatenacion));
+		
+		$cabecera = array(		
+							"nitEmisor" => 196560027,
+							"numeroFactura" => $numero_fac,						
+							"cuf" => $base16,
+							"cufd" => $cufd,
+							"codigoSucursal" => 0,
+							"direccion" => "Calle Ballivian Nro. 1333",
+							"codigoPuntoVenta" => null,
+							"fechaEmision" => $fecha_formato1,
+							"nombreRazonSocial" => "Rivera",
+							"codigoTipoDocumentoIdentidad" => 1,
+							"numeroDocumento" => "4394565",						
+							"complemento" => null,	
+							"codigoCliente" => "C1",	
+							"codigoMetodoPago" => 1,
+							"numeroTarjeta" => null,
+							"montoTotal" => "100.0",
+							"montoDescuento" => null,
+							"codigoMoneda" => 688,
+							"tipoCambio" => "1.0",
+							"montoTotalMoneda" => "100.0",
+							"leyenda" => "El proveedor debera suministrar el servicio en las modalidades y terminos ofertados o convenidos",
+							"usuario" => "JRIVERA",
+							"codigoDocumentoSector" => 1,	
+							"codigoExcepcionDocumento"=>null												
+							);
+		$detalle = [
+					[		"actividadEconomica" => 620200,
+							"codigoProductoSin" => 83132,
+							"codigoProducto" => "P1",
+							"descripcion" => "Aplicacion de facturacion",
+							"cantidad" => 1,
+							"unidadMedida" => 57,		
+							"precioUnitario" => "100.0",
+							"montoDescuento" => null,						
+							"subTotal" => "100.0",
+							"numeroSerie" => null,
+							"numeroImei" => null,						
+											
+					]
+				];	
+		
+		$factura = new Factura('ELE_196560027_'.$numero_fac,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Electronica");
+		$factura->loadXml($cabecera,$detalle);	
+		$factura->sign(dirname(__FILE__).'/../firma_digital/server.p12');
+		$factura->crearArchivoBase64();
+		$factura->crearArchivoGZIP();
+		$archivo_envio = $factura->convertirArchivoGZIPABase64();
+	    $a->addFile(realpath(dirname(__FILE__)."/../../uploaded_files/archivos_facturacion_xml/ELE_196560027_" . $numero_fac . "_FirmadoB64.txt"),"ELE_196560027_" . $numero_fac . "_FirmadoB64.txt");
+		$numero_fac++;
+	}
+	
+	Factura::crearArchivoGZIPMasivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paquete_ele.tar',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip_ele.tar.gz');
+	$archivo_envio = Factura::convertirArchivoGZIPABase64Masivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip_ele.tar.gz',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzipB64_ele.txt');
+	$hash = hash ( "sha256" , $archivo_envio );
+	
+	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
+ 							2,1,1,1,2,0,$codigo_sistema,0, $cufd,$cuis_computarizada,196560027,$fecha_formato1,$hash,$archivo_envio);
+	$resultop = $wsOperaciones->recepcionFacturaEstandarPaquete();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);
+	
+/**************************
+ * VALIDA RECEPCION FACTURA ESTANDAR ELECTRONICA MASIVA
+ **************************/
+ 
+ 	/*$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
+ 							2,1,1,1,2,0,$codigo_sistema,0, $cufd,$cuis_computarizada,196560027,NULL,NULL,NULL,69353);
+	$resultop = $wsOperaciones->validarRecepcionFacturaEstandarPaquete();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);*/
 	

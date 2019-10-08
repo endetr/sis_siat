@@ -219,6 +219,15 @@ EOT;
 		fwrite($fp, $gzdata);
 		fclose($fp);
 	}
+	
+	public static function crearArchivoGZIPMasivo($tar_file,$gzip_file)
+	{
+		$data = implode("", file($tar_file));
+		$gzdata = gzencode($data, 9);
+		$fp = fopen($gzip_file, "w");
+		fwrite($fp, $gzdata);
+		fclose($fp);
+	}
 
 	/**
 	 * Agarra el archivo GZIP y lo convierte en base64
@@ -232,6 +241,21 @@ EOT;
 		$data   = file_get_contents($path);
 		$base64 = base64_encode($data);
 		file_put_contents($this->gzipB64Fisico, $base64);
+		return $base64;
+	}
+	
+	/**
+	 * Agarra el archivo GZIP y lo convierte en base64
+	 * @return string Devuelve la cadena del base del archivo GZIP
+	 */
+	public static function convertirArchivoGZIPABase64Masivo($gzip_file,$gzip_b64_file)
+	{
+		$base64 = '';
+		$path   = $gzip_file;
+		$type   = pathinfo($path, PATHINFO_EXTENSION);
+		$data   = file_get_contents($path);
+		$base64 = base64_encode($data);
+		file_put_contents($gzip_b64_file, $base64);
 		return $base64;
 	}
 
