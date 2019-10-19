@@ -1,0 +1,173 @@
+1,fechaEmision,fecha = fecha actual + 1 día,1
+1,fechaEmision,fecha = fecha actual - 1 día,1
+1,codigoTipoDocumentoIdentidad,8,1
+1,cuf,abc12345,1
+1,cufd,12345abc,1
+1,numeroDocumento,0,1
+1,numeroDocumento,4262636013,1
+1,numeroDocumento,99002,1
+1,numeroDocumento,99003,1
+1,numeroDocumento,99004,1
+1,numeroDocumento,99002,1
+1,numeroDocumento,99003,1
+1,numeroDocumento,99004,1
+1,codigoSucursal,200,1
+1,codigoPuntoVenta,500,1
+1,nombreRazonSocial,CONSUMIDOR FINAL,1
+1,nombreRazonSocial,VENTAS MENORES DEL DÍA,1
+1,nombreRazonSocial,Control Tributario,1
+1,nombreRazonSocial,CONSUMIDOR FINAL,1
+1,nombreRazonSocial,VENTAS MENORES DEL DÍA,1
+1,nombreRazonSocial,Control Tributario,1
+1,codigoDocumentoSector,3,1
+1,nitEmisor,3964772013,1
+1,nitEmisor,1003579028,1
+1,nitEmisor,su NIT,1
+1,codigoMetodoPago,50,1
+1,codigoMoneda,5000,1
+1,actividadEconomica,718134,1
+1,codigoProductoSin,7596328,1
+1,codigoProductoSin,34110,1
+2,fechaEmision,fecha = fecha actual - 1 día,1
+2,codigoTipoDocumentoIdentidad,8,1
+2,cuf,abc12345,1
+2,cufd,12345abc,1
+2,numeroDocumento,0,1
+2,numeroDocumento,4262636013,1
+2,numeroDocumento,99002,1
+2,numeroDocumento,99003,1
+2,numeroDocumento,99004,1
+2,numeroDocumento,99002,1
+2,numeroDocumento,99003,1
+2,numeroDocumento,99004,1
+2,codigoSucursal,200,1
+2,codigoPuntoVenta,500,1
+2,nombreRazonSocial,CONSUMIDOR FINAL,1
+2,nombreRazonSocial,VENTAS MENORES DEL DÍA,1
+2,nombreRazonSocial,Control Tributario,1
+2,nombreRazonSocial,CONSUMIDOR FINAL,1
+2,nombreRazonSocial,VENTAS MENORES DEL DÍA,1
+2,nombreRazonSocial,Control Tributario,1
+2,codigoDocumentoSector,3,1
+2,nitEmisor,3964772013,1
+2,nitEmisor,1003579028,1
+2,nitEmisor,su NIT,1
+2,codigoMetodoPago,50,1
+2,codigoMoneda,5000,1
+2,actividadEconomica,718134,1
+2,codigoProductoSin,7596328,1
+2,codigoProductoSin,34110,1
+1,fechaEmision,fecha = fecha actual + 1 día,3
+1,fechaEmision,fecha = fecha actual - 1 día,3
+1,codigoTipoDocumentoIdentidad,8,3
+1,cuf,abc12345,3
+1,cufd,12345abc,3
+1,numeroDocumento,0,3
+1,numeroDocumento,4262636013,3
+1,numeroDocumento,99002,3
+1,numeroDocumento,99003,3
+1,numeroDocumento,99004,3
+1,numeroDocumento,99002,3
+1,numeroDocumento,99003,3
+1,numeroDocumento,99004,3
+1,codigoSucursal,200,3
+1,codigoPuntoVenta,500,3
+1,nombreRazonSocial,CONSUMIDOR FINAL,3
+1,nombreRazonSocial,VENTAS MENORES DEL DÍA,3
+1,nombreRazonSocial,Control Tributario,3
+1,nombreRazonSocial,CONSUMIDOR FINAL,3
+1,nombreRazonSocial,VENTAS MENORES DEL DÍA,3
+1,nombreRazonSocial,Control Tributario,3
+1,codigoDocumentoSector,5,3
+1,nitEmisor,3964772013,3
+1,nitEmisor,1003579028,3
+1,nitEmisor,su NIT,3
+1,codigoMetodoPago,50,3
+1,codigoMoneda,5000,3
+1,actividadEconomica,718134,3
+1,codigoProductoSin,7596328,3
+1,codigoProductoSin,34110,3
+2,fechaEmision,fecha = fecha actual - 1 día,3
+2,codigoTipoDocumentoIdentidad,8,3
+2,cuf,abc12345,3
+2,cufd,12345abc,3
+2,numeroDocumento,0,3
+2,numeroDocumento,4262636013,3
+2,numeroDocumento,99002,3
+2,numeroDocumento,99003,3
+2,numeroDocumento,99004,3
+2,numeroDocumento,99002,3
+2,numeroDocumento,99003,3
+2,numeroDocumento,99004,3
+2,codigoSucursal,200,3
+2,codigoPuntoVenta,500,3
+2,nombreRazonSocial,CONSUMIDOR FINAL,3
+2,nombreRazonSocial,VENTAS MENORES DEL DÍA,3
+2,nombreRazonSocial,Control Tributario,3
+2,nombreRazonSocial,CONSUMIDOR FINAL,3
+2,nombreRazonSocial,VENTAS MENORES DEL DÍA,3
+2,nombreRazonSocial,Control Tributario,3
+2,codigoDocumentoSector,5,3
+2,nitEmisor,3964772013,3
+2,nitEmisor,1003579028,3
+2,nitEmisor,su NIT,3
+2,codigoMetodoPago,50,3
+2,codigoMoneda,5000,3
+2,actividadEconomica,718134,3
+2,codigoProductoSin,7596328,3
+2,codigoProductoSin,34110,3
+1,fechaEmision,fecha = fecha actual + 1 día,18
+1,fechaEmision,fecha = fecha actual - 1 día,18
+1,codigoTipoDocumentoIdentidad,8,18
+1,cuf,abc12345,18
+1,cufd,12345abc,18
+1,numeroDocumento,0,18
+1,numeroDocumento,4262636013,18
+1,numeroDocumento,99002,18
+1,numeroDocumento,99003,18
+1,numeroDocumento,99004,18
+1,numeroDocumento,99002,18
+1,numeroDocumento,99003,18
+1,numeroDocumento,99004,18
+1,codigoSucursal,200,18
+1,codigoPuntoVenta,500,18
+1,nombreRazonSocial,CONSUMIDOR FINAL,18
+1,nombreRazonSocial,VENTAS MENORES DEL DÍA,18
+1,nombreRazonSocial,Control Tributario,18
+1,nombreRazonSocial,CONSUMIDOR FINAL,18
+1,nombreRazonSocial,VENTAS MENORES DEL DÍA,18
+1,nombreRazonSocial,Control Tributario,18
+1,codigoDocumentoSector,3,18
+1,nitEmisor,3964772013,18
+1,nitEmisor,1003579028,18
+1,nitEmisor,su NIT,18
+1,actividadEconomica,718134,18
+1,codigoProductoSin,7596328,18
+1,codigoProductoSin,34110,18
+2,codigoTipoDocumentoIdentidad,8,18
+2,cuf,abc12345,18
+2,cufd,12345abc,18
+2,fechaEmision,fecha = fecha actual - 1 día,18
+2,numeroDocumento,0,18
+2,numeroDocumento,0,18
+2,numeroDocumento,99002,18
+2,numeroDocumento,99003,18
+2,numeroDocumento,99004,18
+2,numeroDocumento,99002,18
+2,numeroDocumento,99003,18
+2,numeroDocumento,99004,18
+2,codigoSucursal,200,18
+2,codigoPuntoVenta,500,18
+2,nombreRazonSocial,CONSUMIDOR FINAL,18
+2,nombreRazonSocial,VENTAS MENORES DEL DÍA,18
+2,nombreRazonSocial,Control Tributario,18
+2,nombreRazonSocial,CONSUMIDOR FINAL,18
+2,nombreRazonSocial,VENTAS MENORES DEL DÍA,18
+2,nombreRazonSocial,Control Tributario,18
+1,codigoDocumentoSector,3,18
+2,nitEmisor,3964772013,18
+2,nitEmisor,1003579028,18
+2,nitEmisor,su NIT,18
+2,actividadEconomica,718134,18
+2,codigoProductoSin,7596328,18
+2,codigoProductoSin,34110,18

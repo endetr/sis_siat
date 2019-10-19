@@ -520,6 +520,21 @@ class WsFacturacion extends SiatClassWs {
 		}    
 	  
    }
+
+	function recepcionNotaCreditoDebitoPaquete()
+   {       
+	   try {
+	   		 if ($this->parametros['codigoModalidad'] == 1) {
+	   		 	$result = $this->clientFac->recepcionPaqueteNotaFiscalElectronicaCreditoDebito(array('SolicitudServicioRecepcion' => $this->parametros));	
+	   		 } else {  			
+	       		$result = $this->clientFac->recepcionPaqueteNotaFiscalComputarizadaCreditoDebito(array('SolicitudServicioRecepcion' => $this->parametros));
+			 }
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
    
    function validaRecepcionNotaCreditoDebitoxCuf()
    {       
@@ -549,6 +564,22 @@ class WsFacturacion extends SiatClassWs {
 			return  'ERROR: '.$fault;
 		}  
    }
+   
+   function validarRecepcionNotaCreditoDebitoPaquete()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionRecepcionPaqueteNotaFiscalElectronicaCreditoDebito(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionRecepcionPaqueteNotaFiscalComputarizadaCreditoDebito(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   
    function anulacionNotaCreditoDebito()
    {       
 	   try {
@@ -595,7 +626,22 @@ class WsFacturacion extends SiatClassWs {
 			return  'ERROR: '.$fault;
 		}    
 	  
-   }      
+   }   
+
+	function recepcionFacturaAlquilerPaquete()
+   {       
+	   try {
+	   		 if ($this->parametros['codigoModalidad'] == 1) {
+	   		 	$result = $this->clientFac->recepcionPaqueteFacturaElectronicaAlquilerBienInmueble(array('SolicitudServicioRecepcion' => $this->parametros));	
+	   		 } else {  			
+	       		$result = $this->clientFac->recepcionPaqueteFacturaComputarizadaAlquilerBienInmueble(array('SolicitudServicioRecepcion' => $this->parametros));
+			 }
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }   
    function validarRecepcionFacturaAlquiler()
    {       
 	   try {
@@ -603,6 +649,20 @@ class WsFacturacion extends SiatClassWs {
 	       		$result = $this->clientFac->validacionRecepcionFacturaElectronicaAlquilerBienInmueble(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
 			} else {  			
 	       		$result = $this->clientFac->validacionRecepcionFacturaComputarizadaAlquilerBienInmueble(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   function validarRecepcionFacturaAlquilerPaquete()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionRecepcionPaqueteFacturaElectronicaAlquilerBienInmueble(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionRecepcionPaqueteFacturaComputarizadaAlquilerBienInmueble(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
 			}
 		   	return $result;
 		} catch (SoapFault $fault) {

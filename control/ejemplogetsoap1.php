@@ -8,18 +8,19 @@ include_once(dirname(__FILE__).'/../lib/cls_Factura.php');
 require(dirname(__FILE__).'/../../lib/lib_modelo/driver.php');
 require(dirname(__FILE__).'/../../lib/lib_modelo/MODbase.php');
 require(dirname(__FILE__).'/../modelo/MODCuf.php');
-$cufd = "QUHCoUM5JVRBQUVGREUyN0E3Q3ZhTWNKVFVBQQ==MDAwMDg1";
+$cufd = "QUFvQ8OBZUNCRTI5MzVCRkQ2QjF1RVFLVFVBQQ==MDAwMDg4";
 
 
-$codigo_sistema= "85AEFDE27A7";
+$codigo_sistema= "88E2935BFD6";
 $cuis_computarizada = "B1506967";
-$cuis_electronica = "9F8FE1BF";
+$cuis_electronica = "4CB33E78";
 $numero_fac=11;
 $numero_nc = 1;
 $fecha = new DateTime();
 $fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
 $fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
 $fecha_formato2 = $fecha->format('YmdHis000');
+$nit = 1023097024;
 
 
 session_start();
@@ -52,7 +53,7 @@ session_start();
 /*************
  * GENERAR CUFD
  * **************/	
-	/*$wsOperaciones= new WsFacturacionOperaciones('https://presiatservicios.impuestos.gob.bo:39268/FacturacionSolicitudCufd?wsdl',2,$codigo_sistema,2,196560027,$cuis_computarizada,0,0);
+	/*$wsOperaciones= new WsFacturacionOperaciones('https://presiatservicios.impuestos.gob.bo:39268/FacturacionSolicitudCufd?wsdl',2,$codigo_sistema,1,$nit,$cuis_electronica,0,0);
 	$resultop = $wsOperaciones->solicitudCufdOp();
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);*/
@@ -235,7 +236,7 @@ session_start();
  * SINCRONIZACION PRODUCTOS Y SERVICIOS
  * **************/
 		
-	/*$wsOperaciones= new WsFacturacionSincroniza('https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl',2,'5D778EC73EF',196560027,'E9EB25AC',0,0,'1000000');
+	/*$wsOperaciones= new WsFacturacionSincroniza('https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl',2,$codigo_sistema,$nit,$cuis_electronica,0,0,'1000000');
 	$resultop = $wsOperaciones->SincronizaProductosServicios();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);*/
@@ -396,9 +397,9 @@ session_start();
  **************************/
  	//creacion de carpeta donde se guarda los archivos xml y archivos encriptados.
  	
-	/*
-	$concatenacion = MODCuf::concatenar(
-											"196560027",//nit
+	
+	/*$concatenacion = MODCuf::concatenar(
+											$nit,//nit
 											$fecha_formato2,//fecha emision
 											"0",//sucursal
 											"1",//modalidad
@@ -416,7 +417,7 @@ session_start();
 	$base16 = strtoupper(MODCuf::bcdechex($concatenacion));
 	
 	$cabecera = array(		
-						"nitEmisor" => 196560027,
+						"nitEmisor" => $nit,
 						"numeroFactura" => $numero_fac,						
 						"cuf" => $base16,
 						"cufd" => $cufd,
@@ -467,7 +468,7 @@ session_start();
 	
 	
  	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
- 							2,1,1,1,1,0,$codigo_sistema,0, $cufd,$cuis_electronica,196560027,$fecha_formato1,$hash,$archivo_envio);
+ 							2,1,1,1,1,0,$codigo_sistema,0, $cufd,$cuis_electronica,$nit,$fecha_formato1,$hash,$archivo_envio);
 	$resultop = $wsOperaciones->recepcionFacturaEstandar();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);*/
@@ -1511,14 +1512,14 @@ session_start();
 /**************************
  * RECEPCION FACTURA ELECTRONICA ESTANDAR MASIVAAAAA
  **************************/
- 	$a = new PharData(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paquete_ele.tar');
+ 	/*$a = new PharData(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paquete_ele.tar');
 	for ($i = 1; $i <= 10; $i++) {		
 		$fecha = new DateTime();
 		$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
 		$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
 		$fecha_formato2 = $fecha->format('YmdHis000');
 		$concatenacion = MODCuf::concatenar(
-												"196560027",//nit
+												$nit,//nit
 												$fecha_formato2,//fecha emision
 												"0",//sucursal
 												"1",//modalidad
@@ -1536,7 +1537,7 @@ session_start();
 		$base16 = strtoupper(MODCuf::bcdechex($concatenacion));
 		
 		$cabecera = array(		
-							"nitEmisor" => 196560027,
+							"nitEmisor" => $nit,
 							"numeroFactura" => $numero_fac,						
 							"cuf" => $base16,
 							"cufd" => $cufd,
@@ -1592,20 +1593,20 @@ session_start();
 	$hash = hash ( "sha256" , $archivo_envio );
 	
 	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
- 							2,1,1,1,2,0,$codigo_sistema,0, $cufd,$cuis_computarizada,196560027,$fecha_formato1,$hash,$archivo_envio);
+ 							2,1,1,2,1,0,$codigo_sistema,0, $cufd,$cuis_electronica,$nit,$fecha_formato1,$hash,$archivo_envio);
 	$resultop = $wsOperaciones->recepcionFacturaEstandarPaquete();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-	print_r($rop);
+	print_r($rop);*/
 	
 /**************************
  * VALIDA RECEPCION FACTURA ESTANDAR ELECTRONICA MASIVA
  **************************/
  
- 	/*$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
- 							2,1,1,1,2,0,$codigo_sistema,0, $cufd,$cuis_computarizada,196560027,NULL,NULL,NULL,69353);
+ 	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
+ 							2,1,1,2,1,0,$codigo_sistema,0, $cufd,$cuis_electronica,$nit,NULL,NULL,NULL,93782);
 	$resultop = $wsOperaciones->validarRecepcionFacturaEstandarPaquete();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-	print_r($rop);*/
+	print_r($rop);
 	
 ?>
 </pre>
