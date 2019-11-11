@@ -24,10 +24,10 @@ session_start();
 
 $numero_fac = 1;
 $numero_nc = 1;
-$tipo_emision = array(2,2,2,2,2,2);
-$documento_fiscal = array(1,1,2,1,1,2);
-$documento_sector = array(1,3,18,1,3,18);//18 nota de debito credito 3 factura de alquiler 1 factura
-$punto_venta = array(3,3,3,3,3,3);
+$tipo_emision = array(1,1,1,1,1,1);
+$documento_fiscal = array(1,1,1,1,2,2);
+$documento_sector = array(1,1,3,3,18,18);//18 nota de debito credito 3 factura de alquiler 1 factura
+$punto_venta = array(1,0,1,0,1,0);
 
 
 for ($i=0;$i<count($tipo_emision);$i++){
@@ -153,6 +153,73 @@ for ($i=0;$i<count($tipo_emision);$i++){
 		$resultop = $tipo_emision[$i] == 1?$wsOperaciones->validarRecepcionFacturaAlquiler():$wsOperaciones->validarRecepcionFacturaAlquilerPaquete();	
 	} else {
 		$resultop = $tipo_emision[$i] == 1?$wsOperaciones->validarRecepcionFacturaEstandar():$wsOperaciones->validarRecepcionFacturaEstandarPaquete();	
+	}	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	//print_r($rop);
+	
+	/*************ANULACION****************/
+	$wsOperaciones= new WsFacturacion(
+		$url,
+ 		$ambiente,
+ 		$documento_fiscal[$i],
+ 		$documento_sector[$i],
+ 		$tipo_emision[$i],
+ 		$modalidad,
+ 		$punto_venta[$i],
+ 		$codigo_sistema,
+ 		$sucursal, 
+ 		$cufd,
+ 		$cuis_electronica,
+ 		$nit,
+ 		NULL,
+ 		NULL,
+ 		NULL,
+ 		NULL,
+ 		$base16,
+ 		912,
+ 		$documento_sector[$i] == 18?$numero_nc:$numero_fac);
+	
+	if ($documento_sector[$i] == 18) {	 	
+		$resultop = $wsOperaciones->anulacionNotaCreditoDebito();	
+	} else if ($documento_sector[$i] == 3) {		
+		$resultop = $wsOperaciones->anulacionFacturaAlquiler();	
+	} else {
+		$resultop = $wsOperaciones->anulacionFacturaEstandar();	
+	}	
+	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	//print_r($rop);	
+	
+ 	$codigo_recepcion = $rop['RespuestaServicioFacturacion']['codigoRecepcion']; 	
+	
+	/****************VALIDAR ANULCAION***************/
+	$wsOperaciones= new WsFacturacion(
+		$url,
+ 		$ambiente,
+ 		$documento_fiscal[$i],
+ 		$documento_sector[$i],
+ 		$tipo_emision[$i],
+ 		$modalidad,
+ 		$punto_venta[$i],
+ 		$codigo_sistema,
+ 		$sucursal, 
+ 		$cufd,
+ 		$cuis_electronica,
+ 		$nit,
+ 		NULL,
+ 		NULL,
+ 		NULL,
+ 		$codigo_recepcion,
+ 		$base16,
+ 		912,
+ 		$documento_sector[$i] == 18?$numero_nc:$numero_fac);
+		
+	if ($documento_sector[$i] == 18) {	 	
+		$resultop = $wsOperaciones->validaAnulacionNotaCreditoDebito();	
+	} else if ($documento_sector[$i] == 3) {		
+		$resultop = $wsOperaciones->validaAnulacionFacturaAlquiler();	
+	} else {
+		$resultop = $wsOperaciones->validaAnulacionFacturaEstandar();	
 	}	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);

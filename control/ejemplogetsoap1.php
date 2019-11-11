@@ -76,7 +76,15 @@ session_start();
 	$resultop = $wsOperaciones->registroPuntoVentaOp();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);*/
-
+/*************
+ * ConsultaEventoSignificativo
+ * **************/	
+ 
+	/*$wsOperaciones= new WsFacturacionOperaciones('https://presiatservicios.impuestos.gob.bo:39127/FacturacionEventosSignificativos?wsdl',2,$codigo_sistema,1,$nit,$cuis_electronica,0,0,'PUNTO1',1,
+								"Descripcion inicio evento","972","2019-07-31T23:53:16.987-04:00","B528C2CCE3EC3BA3FBE44C565FD092CE");
+	$resultop = $wsOperaciones->inicioEventoSignificativoOP();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);*/
 /*************
  * INICIO EVENTO SIGNIFICATIVO
  * **************/	
@@ -96,6 +104,7 @@ session_start();
 	$resultop = $wsOperaciones->inicioEventoSignificativoOP();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);*/
+
 	
 /***************************************
  * ************************************
@@ -1602,11 +1611,11 @@ session_start();
  * VALIDA RECEPCION FACTURA ESTANDAR ELECTRONICA MASIVA
  **************************/
  
- 	$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
+ 	/*$wsOperaciones= new WsFacturacion('https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl',
  							2,1,1,2,1,0,$codigo_sistema,0, $cufd,$cuis_electronica,$nit,NULL,NULL,NULL,93782);
 	$resultop = $wsOperaciones->validarRecepcionFacturaEstandarPaquete();	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-	print_r($rop);
+	print_r($rop);*/
 	
 ?>
 </pre>

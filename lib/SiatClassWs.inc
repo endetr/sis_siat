@@ -307,6 +307,57 @@ class WsFacturacionSincroniza extends SiatClassWs {
 		}       
 	  
    }
+   //nuevos
+   function ParametricaLeyendas()
+   {
+   		try {   			
+	       	$result = $this->clientSINC->sincronizarListaLeyendasFactura(array('SolicitudSincronizacion' => $this->parametros));
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}       
+	  
+   }
+   function ParametricaTipoComponente()
+   {
+   		try {   			
+	       	$result = $this->clientSINC->sincronizarParametricaTipoComponente(array('SolicitudSincronizacion' => $this->parametros));
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}       
+	  
+   }
+   function ParametricaTipoDocumentoSector()
+   {
+   		try {   			
+	       	$result = $this->clientSINC->sincronizarParametricaTipoDocumentoSector(array('SolicitudSincronizacion' => $this->parametros));
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}       
+	  
+   }
+   function ParametricaTipoPuntoVenta()
+   {
+   		try {   			
+	       	$result = $this->clientSINC->sincronizarParametricaTipoPuntoVenta(array('SolicitudSincronizacion' => $this->parametros));
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}       
+	  
+   }
+   function ParametricaUnidadMedida()
+   {
+   		try {   			
+	       	$result = $this->clientSINC->sincronizarParametricaUnidadMedida(array('SolicitudSincronizacion' => $this->parametros));
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}       
+	  
+   }
    
    
 } // fin de la clase de web services para operaciones
@@ -447,6 +498,36 @@ class WsFacturacion extends SiatClassWs {
 	       		$result = $this->clientFac->validacionAnulacionFacturaElectronicaEstandar(array('SolicitudServicioValidacionAnulacion' => $this->parametros));
 			} else {  			
 	       		$result = $this->clientFac->validacionAnulacionFacturaComputarizadaEstandar(array('SolicitudServicioValidacionAnulacion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+
+   function recepcionFacturaEstandarMasiva()
+   {       
+	   try {
+	   		 if ($this->parametros['codigoModalidad'] == 1) {
+	   		 	$result = $this->clientFac->recepcionMasivaFacturaElectronicaEstandar(array('SolicitudServicioRecepcion' => $this->parametros));	
+	   		 } else {  			
+	       		$result = $this->clientFac->recepcionMasivaFacturaComputarizadaEstandar(array('SolicitudServicioRecepcion' => $this->parametros));
+			 }
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+
+   function validarRecepcionFacturaEstandarMasiva()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionRecepcionMasivaFacturaElectronicaEstandar(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionRecepcionMasivaFacturaComputarizadaEstandar(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
 			}
 		   	return $result;
 		} catch (SoapFault $fault) {
@@ -609,6 +690,8 @@ class WsFacturacion extends SiatClassWs {
 		}    
 	  
    }
+   
+   
    /******************************************
     * FACTURA ALQUILER
     *************************************/
@@ -700,7 +783,67 @@ class WsFacturacion extends SiatClassWs {
 		}    
 	  
    }
-    
+   function recepcionFacturaAlquilerMasiva()
+   {       
+	   try {
+	   		 if ($this->parametros['codigoModalidad'] == 1) {
+	   		 	$result = $this->clientFac->recepcionMasivaFacturaElectronicaAlquilerBienInmueble(array('SolicitudServicioRecepcion' => $this->parametros));	
+	   		 } else {  			
+	       		$result = $this->clientFac->recepcionMasivaFacturaComputarizadaAlquilerBienInmueble(array('SolicitudServicioRecepcion' => $this->parametros));
+			 }
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }   
+   
+   function validarRecepcionFacturaAlquilerMasiva()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionRecepcionMasivaFacturaElectronicaAlquilerBienInmueble(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionRecepcionMasivaFacturaComputarizadaAlquilerBienInmueble(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   
+   /******************
+    CONTINGENCIA*****
+    * ******************/
+   function recepcionFacturaContingenciaPaquete()
+   {       
+	   try {
+	   		 if ($this->parametros['codigoModalidad'] == 1) {
+	   		 	$result = $this->clientFac->recepcionPaqueteFacturaElectronicaContingencia(array('SolicitudServicioRecepcion' => $this->parametros));	
+	   		 } else {  			
+	       		$result = $this->clientFac->recepcionPaqueteFacturaComputarizadaContingencia(array('SolicitudServicioRecepcion' => $this->parametros));
+			 }
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   }
+   function validarRecepcionFacturaContingenciaPaquete()
+   {       
+	   try {
+	   		if ($this->parametros['codigoModalidad'] == 1) {   			
+	       		$result = $this->clientFac->validacionRecepcionFacturaElectronicaContingencia(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			} else {  			
+	       		$result = $this->clientFac->validacionRecepcionFacturaComputarizadaContingencia(array('SolicitudServicioValidacionRecepcion' => $this->parametros));
+			}
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}    
+	  
+   } 
    
 } // fin de la clase de web services para facturacion
 

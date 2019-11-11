@@ -39,169 +39,167 @@ $wsOperaciones= new WsFacturacionOperaciones(
 $resultop = $wsOperaciones->solicitudCufdOp();
 $rop = $wsOperaciones->ConvertObjectToArray($resultop);
 $cufd = $rop['RespuestaCufd']['codigo'];
-
-$fn = fopen("5validacionxml.csv","r");
-$i=0;  
-while(! feof($fn))  {
-	
-	$result = fgets($fn);
-	$result = preg_replace( "/\r|\n/", "", $result);
-	$result = explode(',', $result);
-	
-	if ($result[3] == '18') {
-		$url = 'https://presiatservicios.impuestos.gob.bo:39125/NotaFiscalElectronicaCreditoDebito?wsdl';
-	} else if ($result[3] == '3') {
-		$url = 'https://presiatservicios.impuestos.gob.bo:39166/FacturaElectronicaAlquilerBienInmueble?wsdl';
-	} else {
-		$url = 'https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl';
-	}
-	
-	//generar factura
-	$fecha = new DateTime();	
-	if (strpos($result[2], 'fecha')!== false && strpos($result[2], '+')!== false) {		
-		$fecha->modify('+1 day');
-	}
-	if (strpos($result[2], 'fecha')!== false && strpos($result[2], '-')!== false) {
-		$fecha->modify('-1 day');
-	}
-	
-	echo "====================" . $i. "========================";
-	$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
-	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
-	$fecha_formato2 = $fecha->format('YmdHis000');
-	$concatenacion = MODCuf::concatenar(
-											$nit,//nit
-											$fecha_formato2,//fecha emision
-											$sucursal,//sucursal
-											$modalidad,//modalidad																					
-											$result[0],//tipo emision 1 online 2offline
-											$result[3]=='18'?2:1,// codigo documento fiscal
-											$result[3],// codigo documento serctor
-											$result[3] == '18'?$numero_nc:$numero_fac,//nro factura
-											0);  //punto venta											
-									
-	$mod11 = MODCuf::mod11((string)$concatenacion,1,9,false); 
-	
-	
-	$concatenacion = $concatenacion . $mod11; 
-	$base16 = strtoupper(MODCuf::bcdechex($concatenacion));
-	$cabecera = generarCabecera($nit,$result[3]=='18'?$numero_fac-1:$numero_fac,$numero_nc,$base16,$cufd,$sucursal,0,$fecha_formato1,$result[3]);
-	$detalle = generarDetalle($result[3],$codigo_producto,$actividad);
-	
-	
-	if ($result[3] == '18') {
-	 	$factura = new Factura('ELE_196560027_'.$numero_fac,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Electronica","CreditoDebito");
-	} else if ($result[3] == '3') {
-		$factura = new Factura('ELE_196560027_'.$numero_fac,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Electronica","AlquilerBienInmueble");
-	} else {
-		$factura = new Factura('ELE_196560027_'.$numero_fac,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Electronica");	
-	}	
-
-	/*AUQI MODIFICAR CON DATOS DE ARCHIVO*/
-	/*Actualizar tipod e documento*/
-	$cabecera["codigoTipoDocumentoIdentidad"] =$result[4];
-	
-	if ($result[1] == 'actividadEconomica' || $result[1] == 'codigoProductoSin') {
-		$detalle[0][$result[1]] = $result[2];
-	} else if (strpos($result[2],'su NIT') === false &&  strpos($result[2],'fecha actual')=== false) {
-		$cabecera[$result[1]] = $result[2];
-	}
-	
-	
-	/*Si el tamano del arreglo es 7 hay un campo mas para modificar en la cabecera*/
-	if ($result[5] != "") {
-		$cabecera[$result[5]] = $result[6];
-	}	
-	if (in_array($i,array(27, 28, 29))) {
-		var_dump($detalle);
-	}  
+for ($j=0;$j<=10;$j++) {
+	$fn = fopen("5validacionxml.csv","r");
+	$i=0;  
+	while(! feof($fn))  {
 		
-	$factura->loadXml($cabecera,$detalle);
-	$factura->sign(dirname(__FILE__).'/../firma_digital/server.p12');	
-	$factura->crearArchivoBase64();
-	$factura->crearArchivoGZIP();
-	$archivo_envio = $factura->convertirArchivoGZIPABase64();	
-	if ($result[0] == 2) {
-		$name = 'paquete'.$i.'.tar';
-		unlink(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' . $name);
-		$a = new PharData(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' .$name);
-		$a->addFile(realpath(dirname(__FILE__)."/../../uploaded_files/archivos_facturacion_xml/ELE_196560027_" . $numero_fac . "_FirmadoB64.txt"),"ELE_196560027_" . $numero_fac . "_FirmadoB64.txt");
-		Factura::crearArchivoGZIPMasivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/'. $name,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz');
-		$archivo_envio = Factura::convertirArchivoGZIPABase64Masivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzipB64.txt');
-	} 
-	$hash = hash ( "sha256" , $archivo_envio );
+		$result = fgets($fn);
+		$result = preg_replace( "/\r|\n/", "", $result);
+		$result = explode(',', $result);
+		
+		if ($result[3] == '18') {
+			$url = 'https://presiatservicios.impuestos.gob.bo:39125/NotaFiscalElectronicaCreditoDebito?wsdl';
+		} else if ($result[3] == '3') {
+			$url = 'https://presiatservicios.impuestos.gob.bo:39166/FacturaElectronicaAlquilerBienInmueble?wsdl';
+		} else {
+			$url = 'https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl';
+		}
+		
+		//generar factura
+		$fecha = new DateTime();	
+		if (strpos($result[2], 'fecha')!== false && strpos($result[2], '+')!== false) {		
+			$fecha->modify('+1 day');
+		}
+		if (strpos($result[2], 'fecha')!== false && strpos($result[2], '-')!== false) {
+			$fecha->modify('-1 day');
+		}
+		
+		echo "====================" . $i. "========================";
+		$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
+		$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
+		$fecha_formato2 = $fecha->format('YmdHis000');
+		$concatenacion = MODCuf::concatenar(
+												$nit,//nit
+												$fecha_formato2,//fecha emision
+												$sucursal,//sucursal
+												$modalidad,//modalidad																					
+												$result[0],//tipo emision 1 online 2offline
+												$result[3]=='18'?2:1,// codigo documento fiscal
+												$result[3],// codigo documento serctor
+												$result[3] == '18'?$numero_nc:$numero_fac,//nro factura
+												0);  //punto venta											
+										
+		$mod11 = MODCuf::mod11((string)$concatenacion,1,9,false); 
+		
+		
+		$concatenacion = $concatenacion . $mod11; 
+		$base16 = strtoupper(MODCuf::bcdechex($concatenacion));
+		$cabecera = generarCabecera($nit,$result[3]=='18'?$numero_fac-1:$numero_fac,$numero_nc,$base16,$cufd,$sucursal,0,$fecha_formato1,$result[3]);
+		$detalle = generarDetalle($result[3],$codigo_producto,$actividad);
+		 
+		
+		if ($result[3] == '18') {
+		 	$factura = new Factura('ELE_196560027_'.$numero_fac,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Electronica","CreditoDebito");
+		} else if ($result[3] == '3') {
+			$factura = new Factura('ELE_196560027_'.$numero_fac,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Electronica","AlquilerBienInmueble");
+		} else {
+			$factura = new Factura('ELE_196560027_'.$numero_fac,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Electronica");	
+		}	
 	
-	$fecha = new DateTime();	
-	$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
-	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
-	
-	$wsOperaciones= new WsFacturacion(
- 		$url,
- 		$ambiente,
- 		$result[3]=='18'?2:1,
- 		$result[3],
- 		$result[0],
- 		$modalidad,
- 		0,//punto de venta
- 		$codigo_sistema,
- 		$sucursal, 
- 		$cufd,
- 		$cuis_electronica,
- 		$nit,
- 		$fecha_formato1,
- 		$hash,
- 		$archivo_envio);
-	
-	if ($result[3] == '18') {	 	
-		$resultop = $result[0] == 1?$wsOperaciones->recepcionNotaCreditoDebito():$wsOperaciones->recepcionNotaCreditoDebitoPaquete();		
-	} else if ($result[3] == '3') {		
-		$resultop = $result[0] == 1?$wsOperaciones->recepcionFacturaAlquiler():$wsOperaciones->recepcionFacturaAlquilerPaquete();	
-	} else {
-		$resultop = $result[0] == 1?$wsOperaciones->recepcionFacturaEstandar():$wsOperaciones->recepcionFacturaEstandarPaquete();	
-	}
-	
-	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-	$codigo_recepcion = $rop['RespuestaServicioFacturacion']['codigoRecepcion'];
-	
-	if ($codigo_recepcion == "0") {
-		print_r($rop);
-	} else {
-		//var_dump($rop);
+		/*AUQI MODIFICAR CON DATOS DE ARCHIVO*/
+		/*Actualizar tipod e documento*/
+		$cabecera["codigoTipoDocumentoIdentidad"] =$result[4];
+		
+		if ($result[1] == 'actividadEconomica' || $result[1] == 'codigoProductoSin') {
+			$detalle[0][$result[1]] = $result[2];
+		} else if (strpos($result[2],'su NIT') === false &&  strpos($result[2],'fecha actual')=== false) {
+			$cabecera[$result[1]] = $result[2];
+		}
+		
+		
+		/*Si el tamano del arreglo es 7 hay un campo mas para modificar en la cabecera*/
+		if ($result[5] != "") {
+			$cabecera[$result[5]] = $result[6];
+		}	
+		 
+			
+		$factura->loadXml($cabecera,$detalle);
+		$factura->sign(dirname(__FILE__).'/../firma_digital/server.p12');	
+		$factura->crearArchivoBase64();
+		$factura->crearArchivoGZIP();
+		$archivo_envio = $factura->convertirArchivoGZIPABase64();	
+		if ($result[0] == 2) {
+			$name = 'paquete'.'.tar';
+			unlink(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' . $name);
+			$a = new PharData(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' .$name);
+			$a->addFile(realpath(dirname(__FILE__)."/../../uploaded_files/archivos_facturacion_xml/ELE_196560027_" . $numero_fac . "_FirmadoB64.txt"),"ELE_196560027_" . $numero_fac . "_FirmadoB64.txt");
+			Factura::crearArchivoGZIPMasivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/'. $name,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz');
+			$archivo_envio = Factura::convertirArchivoGZIPABase64Masivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzipB64.txt');
+		} 
+		$hash = hash ( "sha256" , $archivo_envio );
+		
+		$fecha = new DateTime();	
+		$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
+		$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
+		
 		$wsOperaciones= new WsFacturacion(
-			$url,
+	 		$url,
 	 		$ambiente,
 	 		$result[3]=='18'?2:1,
 	 		$result[3],
 	 		$result[0],
 	 		$modalidad,
-	 		0,
+	 		0,//punto de venta
 	 		$codigo_sistema,
 	 		$sucursal, 
 	 		$cufd,
 	 		$cuis_electronica,
 	 		$nit,
-	 		NULL,
-	 		NULL,
-	 		NULL,
-	 		$codigo_recepcion);
-			
+	 		$fecha_formato1,
+	 		$hash,
+	 		$archivo_envio);
+		
 		if ($result[3] == '18') {	 	
-			$resultop = $result[0] == 1?$wsOperaciones->validarRecepcionNotaCreditoDebito():$wsOperaciones->validarRecepcionNotaCreditoDebitoPaquete();		
+			$resultop = $result[0] == 1?$wsOperaciones->recepcionNotaCreditoDebito():$wsOperaciones->recepcionNotaCreditoDebitoPaquete();		
 		} else if ($result[3] == '3') {		
-			$resultop = $result[0] == 1?$wsOperaciones->validarRecepcionFacturaAlquiler():$wsOperaciones->validarRecepcionFacturaAlquilerPaquete();	
-		} else { 
-			$resultop = $result[0] == 1?$wsOperaciones->validarRecepcionFacturaEstandar():$wsOperaciones->validarRecepcionFacturaEstandarPaquete();	
-		}	
+			$resultop = $result[0] == 1?$wsOperaciones->recepcionFacturaAlquiler():$wsOperaciones->recepcionFacturaAlquilerPaquete();	
+		} else {
+			$resultop = $result[0] == 1?$wsOperaciones->recepcionFacturaEstandar():$wsOperaciones->recepcionFacturaEstandarPaquete();	
+		}
+		
 		$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+		$codigo_recepcion = $rop['RespuestaServicioFacturacion']['codigoRecepcion'];
 		print_r($rop);
-	}
-	
-	if ($result[3] != 18) {
-		$numero_fac++;
-	} else {
-		$numero_nc++;
-	} 
-	$i++;	
+		/*if ($codigo_recepcion == "0") {
+			print_r($rop);
+		} else {
+			//var_dump($rop);
+			$wsOperaciones= new WsFacturacion(
+				$url,
+		 		$ambiente,
+		 		$result[3]=='18'?2:1,
+		 		$result[3],
+		 		$result[0],
+		 		$modalidad,
+		 		0,
+		 		$codigo_sistema,
+		 		$sucursal, 
+		 		$cufd,
+		 		$cuis_electronica,
+		 		$nit,
+		 		NULL,
+		 		NULL,
+		 		NULL,
+		 		$codigo_recepcion);
+				
+			if ($result[3] == '18') {	 	
+				$resultop = $result[0] == 1?$wsOperaciones->validarRecepcionNotaCreditoDebito():$wsOperaciones->validarRecepcionNotaCreditoDebitoPaquete();		
+			} else if ($result[3] == '3') {		
+				$resultop = $result[0] == 1?$wsOperaciones->validarRecepcionFacturaAlquiler():$wsOperaciones->validarRecepcionFacturaAlquilerPaquete();	
+			} else { 
+				$resultop = $result[0] == 1?$wsOperaciones->validarRecepcionFacturaEstandar():$wsOperaciones->validarRecepcionFacturaEstandarPaquete();	
+			}	
+			$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+			print_r($rop);
+		}*/
+		
+		if ($result[3] != 18) {
+			$numero_fac++;
+		} else {
+			$numero_nc++;
+		} 
+		$i++;	
+	}	
+	fclose($fn);
 }
-
-fclose($fn);
