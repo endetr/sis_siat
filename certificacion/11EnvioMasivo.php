@@ -20,7 +20,7 @@ $nit = 1023097024;
 $codigo_producto = '86311';
 $actividad = '351020';
 $url = 'https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl';
-
+$punto_venta = 1;
 session_start();
 
 $name = 'paquete'.'.tar';
@@ -33,8 +33,8 @@ $wsOperaciones= new WsFacturacionOperaciones(
 	$modalidad,
 	$nit,
 	$cuis_electronica,
-	0,//sucursal
-	0);//punto de venta
+	$sucursal,//sucursal
+	$punto_venta);//punto de venta
 	
 $resultop = $wsOperaciones->solicitudCufdOp();
 $rop = $wsOperaciones->ConvertObjectToArray($resultop);
@@ -49,7 +49,7 @@ $cufd = $rop['RespuestaCufd']['codigo'];
 	$nit,
 	$cuis_electronica,
 	$sucursal,
-	0,//punto de venta
+	$punto_venta,//punto de venta
 	'PUNTO1',//nombre punto de venta no es util para este servicio
 	1,//codigo punto de venta no es util para este servicio
 	"Descripcion inicio evento",//descripcion evento
@@ -69,7 +69,7 @@ $wsOperaciones= new WsFacturacionOperaciones(
 	$nit,
 	$cuis_electronica,
 	$sucursal,
-	0,//punto de venta
+	$punto_venta,//punto de venta
 	'PUNTO1',//nombre punto de venta no es util para este servicio
 	1,//codigo punto de venta no es util para este servicio
 	"Descripcion inicio evento",//descripcion evento
@@ -80,18 +80,31 @@ $wsOperaciones= new WsFacturacionOperaciones(
 	$codigo_evento
 	);*/
 
-unlink(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' . $name);
-$a = new PharData(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' .$name);
-generarFacturas($nit, $sucursal, $modalidad,$cufd,$a,10,0);//aqui cambiar la cantidad de validos e invalidos que se queire generar
-Factura::crearArchivoGZIPMasivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/'. $name,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz');
-$archivo_envio = Factura::convertirArchivoGZIPABase64Masivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzipB64.txt');
 
-$hash = hash ( "sha256" , $archivo_envio );
 
-for ($i = 0;$i<1;$i++){ 		
+
+for ($i = 0;$i<1;$i++){
+	unlink(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' . $name);
+	$a = new PharData(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' .$name);
+	generarFacturas($nit, $sucursal, $modalidad,$cufd,$a,2000,0);//aqui cambiar la cantidad de validos e invalidos que se queire generar
+	Factura::crearArchivoGZIPMasivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/'. $name,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz');
+	$archivo_envio = Factura::convertirArchivoGZIPABase64Masivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzipB64.txt');
+	$hash = hash ( "sha256" , $archivo_envio );		
 	$fecha = new DateTime();	
 	$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
 	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
+	
+	echo "<br>===============================<br>";
+	echo $archivo_envio;
+	echo "<br>=================================<br>";
+	echo "<br>===============================<br>";
+	echo $hash;
+	echo "<br>=================================<br>";
+	echo "<br>===============================<br>";
+	echo $fecha_formato1;
+	echo "<br>=================================<br>";
+	echo $cufd;
+	echo "<br>=================================<br>";
 	
 	$wsOperaciones= new WsFacturacion(
 		$url,
@@ -100,7 +113,7 @@ for ($i = 0;$i<1;$i++){
 		1,//codigo documento sector
 		3, //codigo emision 1 inline 2 offline
 		$modalidad,
-		0,//punto de venta
+		$punto_venta,//punto de venta
 		$codigo_sistema,
 		$sucursal, 
 		$cufd, 
@@ -124,7 +137,7 @@ for ($i = 0;$i<1;$i++){
 		1,
 		3, //codigo emision 1 inline 2 offline
 		$modalidad,
-		0,//punto venta
+		$punto_venta,//punto venta
 		$codigo_sistema,
 		$sucursal, 
 		$cufd,
@@ -146,6 +159,7 @@ function generarFacturas($nit,$sucursal,$modalidad,$cufd,$a,$cantidad_validas,$c
 	$numero_nc = 1;	
 	$codigo_producto = '86311';
 	$actividad = '351020';	
+	$punto_venta = 1;
 	for ($i=0;$i<$cantidad_validas + $cantidad_invalidas;$i++) {
 		//generar factura
 		$fecha = new DateTime();
@@ -158,11 +172,11 @@ function generarFacturas($nit,$sucursal,$modalidad,$cufd,$a,$cantidad_validas,$c
 												$fecha_formato2,//fecha emision
 												$sucursal,//sucursal
 												$modalidad,//modalidad																					
-												2,//tipo emision 1 online 2offline
+												3,//tipo emision 1 online 2offline
 												1,// codigo documento fiscal
 												1,// codigo documento serctor
 												$numero_fac,//nro factura
-												0);  //punto venta											
+												$punto_venta);  //punto venta											
 										
 		$mod11 = MODCuf::mod11((string)$concatenacion,1,9,false); 
 		
@@ -172,7 +186,7 @@ function generarFacturas($nit,$sucursal,$modalidad,$cufd,$a,$cantidad_validas,$c
 		if ($i>=$cantidad_validas) {
 			$base16 = 'XXX';
 		}
-		$cabecera = generarCabecera($nit,$numero_fac,$numero_nc,$base16,$cufd,$sucursal,0,$fecha_formato1,1);
+		$cabecera = generarCabecera($nit,$numero_fac,$numero_nc,$base16,$cufd,$sucursal,$punto_venta,$fecha_formato1,1);
 		$detalle = generarDetalle(1,$codigo_producto,$actividad);
 			
 		$factura = new Factura('ELE_196560027_'.$numero_fac,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',"Electronica");	

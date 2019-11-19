@@ -20,7 +20,7 @@ $nit = 1023097024;
 $codigo_producto = '86311';
 $actividad = '351020';
 $url = 'https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl';
-$codigo_recepcion = 111405;
+$codigo_recepcion = 127254;
 session_start();
 
 $name = 'paquete'.'.tar';
