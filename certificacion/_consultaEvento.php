@@ -19,9 +19,10 @@ $sucursal = 0;
 $nit = 1023097024;
 $codigo_producto = '86311';
 $actividad = '351020';
-$url = 'https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl';
-$codigo_recepcion = 132175;
+$url = 'https://presiatservicios.impuestos.gob.bo:39127/FacturacionEventosSignificativos?wsdl';
+$fecha_evento = "2019-11-13";
 session_start();
+
 
 $name = 'paquete'.'.tar';
 
@@ -41,26 +42,28 @@ $rop = $wsOperaciones->ConvertObjectToArray($resultop);
 $cufd = $rop['RespuestaCufd']['codigo'];
 
 
-$wsOperaciones= new WsFacturacion(
-	$url,
+$wsOperaciones= new WsFacturacionOperaciones(
+	'https://presiatservicios.impuestos.gob.bo:39127/FacturacionEventosSignificativos?wsdl',
 	$ambiente,
-	1,//codigo documento fiscal
-	1,
-	2, //codigo emision 1 inline 2 offline
-	$modalidad,
-	0,
 	$codigo_sistema,
-	$sucursal, 
-	$cufd,
-	$cuis_electronica,
+	$modalidad,
 	$nit,
-	NULL,
-	NULL,
-	NULL,
-	$codigo_recepcion);		
-
-$resultop = $wsOperaciones->validarRecepcionFacturaEstandarPaquete();	
-$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	$cuis_electronica,
+	$sucursal,
+	0,//punto de venta
+	'PUNTO1',//nombre punto de venta no es util para este servicio
+	1,//codigo punto de venta no es util para este servicio
+	NULL,//descripcion evento
+	NULL,//codigo evento significativo
+	NULL,//fecha inicio
+	$cufd,
+	NULL,//fecha fin
+    NULL,//codigo evento
+    NULL,//codigo sistema proveedor
+    $fecha_evento
+	);
+$resultop = $wsOperaciones->consultaEvento();	
+$rop = $wsOperaciones->ConvertObjectToArray($resultop);	
 print_r($rop);
 
 

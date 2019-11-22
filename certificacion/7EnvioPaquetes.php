@@ -39,7 +39,7 @@ $wsOperaciones= new WsFacturacionOperaciones(
 $resultop = $wsOperaciones->solicitudCufdOp();
 $rop = $wsOperaciones->ConvertObjectToArray($resultop);
 $cufd = $rop['RespuestaCufd']['codigo'];
-
+/*
 //registro evento sgnificativo
 $wsOperaciones= new WsFacturacionOperaciones(
 	'https://presiatservicios.impuestos.gob.bo:39127/FacturacionEventosSignificativos?wsdl',
@@ -54,12 +54,13 @@ $wsOperaciones= new WsFacturacionOperaciones(
 	1,//codigo punto de venta no es util para este servicio
 	"Descripcion inicio evento",//descripcion evento
 	973,//codigo evento significativo
-	"2019-11-13T16:53:16.987",
+	"2019-11-21T08:53:16.987",
 	$cufd
 	);
 $resultop = $wsOperaciones->inicioEventoSignificativoOP();	
 $rop = $wsOperaciones->ConvertObjectToArray($resultop);		
 $codigo_evento = $rop['RespuestaListaEventos']['codigoRecepcionEventoSignificativo'];
+var_dump($rop);
 
 $wsOperaciones= new WsFacturacionOperaciones(
 	'https://presiatservicios.impuestos.gob.bo:39127/FacturacionEventosSignificativos?wsdl',
@@ -74,15 +75,18 @@ $wsOperaciones= new WsFacturacionOperaciones(
 	1,//codigo punto de venta no es util para este servicio
 	"Descripcion inicio evento",//descripcion evento
 	973,//codigo evento significativo
-	"2019-11-13T16:53:16.987",
+	"2019-11-21T08:53:16.987",
 	$cufd,
-	"2019-11-14T20:00:16.987",
+	"2019-11-21T20:53:16.987",
 	$codigo_evento
 	);
+$resultop = $wsOperaciones->finEventoSignificativoOP();	
+$rop = $wsOperaciones->ConvertObjectToArray($resultop);	
+var_dump($rop);
+*/
 
 
-
-for ($i = 0;$i<1;$i++){
+for ($i = 0;$i<10;$i++){
 	unlink(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' . $name);
 	$a = new PharData(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' .$name);
 	generarFacturas($nit, $sucursal, $modalidad,$cufd,$a,500,0);//aqui cambiar la cantidad de validos e invalidos que se queire generar
@@ -90,7 +94,8 @@ for ($i = 0;$i<1;$i++){
 	$archivo_envio = Factura::convertirArchivoGZIPABase64Masivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzipB64.txt');
 
 	$hash = hash ( "sha256" , $archivo_envio ); 		
-	$fecha = new DateTime();	
+	$fecha = new DateTime();
+	//$fecha->modify('-1 day');	
 	$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
 	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
 	echo "<br>===============================<br>";
@@ -126,30 +131,7 @@ for ($i = 0;$i<1;$i++){
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	$codigo_recepcion = $rop['RespuestaServicioFacturacion']['codigoRecepcion'];
 	//echo $codigo_recepcion;
-	print_r($rop);
-	//sleep(30);
-	$wsOperaciones= new WsFacturacion(
-		$url,
-		$ambiente,
-		1,//codigo documento fiscal
-		1,
-		2, //codigo emision 1 inline 2 offline
-		$modalidad,
-		0,//punto venta
-		$codigo_sistema,
-		$sucursal, 
-		$cufd,
-		$cuis_electronica,
-		$nit,
-		NULL,
-		NULL,
-		NULL,
-		$codigo_recepcion);		
-	
-	$resultop = $wsOperaciones->validarRecepcionFacturaEstandarPaquete();	
-	echo "=================".$i."=============================";	
-	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-	print_r($rop);
+	print_r($rop);	
 }
 
 function generarFacturas($nit,$sucursal,$modalidad,$cufd,$a,$cantidad_validas,$cantidad_invalidas) {

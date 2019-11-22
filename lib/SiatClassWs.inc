@@ -58,11 +58,11 @@ class WsFacturacionOperaciones extends SiatClassWs {
    var $result;
    var $wsurlFO;
    var $parametrosFO;
-   function WsFacturacionOperaciones($wsurlFO,$codigoAmbiente,$codigoSistema,$codigoModalidad,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta = 0,$nombrePuntoVenta = '',$codigoTipoPuntoVenta=1,$descripcion="",$codigoEvento="",$fechaHoraEvento="",$cufd="",$fechaHoraFinEvento=NULL,$codigoRecepcionEvento = NULL,$codigoSistemaProveedor=NULL)
+   function WsFacturacionOperaciones($wsurlFO,$codigoAmbiente,$codigoSistema,$codigoModalidad,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta = 0,$nombrePuntoVenta = '',$codigoTipoPuntoVenta=1,$descripcion="",$codigoEvento="",$fechaHoraEvento="",$cufd="",$fechaHoraFinEvento=NULL,$codigoRecepcionEvento = NULL,$codigoSistemaProveedor=NULL, $fechaEvento = NULL)
    {	$this->wsurl = $wsurlFO;
        	$this->parametros = compact("codigoAmbiente","codigoSistema","codigoSistemaProveedor","codigoModalidad","nit","cuis","codigoSucursal",
        								"codigoPuntoVenta","nombrePuntoVenta","codigoTipoPuntoVenta","descripcion","codigoEvento",
-       								"fechaHoraEvento","cufd","fechaHoraFinEvento","codigoRecepcionEvento");
+       								"fechaHoraEvento","cufd","fechaHoraFinEvento","codigoRecepcionEvento","fechaEvento");
      
 	    $this->clientFO = $this->Conexion();
         
@@ -124,6 +124,16 @@ class WsFacturacionOperaciones extends SiatClassWs {
    {
    		try {
 	       	$result = $this->clientFO->registroFinEventoSignificativo(array('SolicitudFinEvento'=>$this->parametros));
+		   	return $result;
+		} catch (SoapFault $fault) {
+			return  'ERROR: '.$fault;
+		}
+   }
+
+   function consultaEvento()
+   {
+   		try {
+	       	$result = $this->clientFO->consultaEventoSignificativo(array('SolicitudConsultaEvento'=>$this->parametros));
 		   	return $result;
 		} catch (SoapFault $fault) {
 			return  'ERROR: '.$fault;
