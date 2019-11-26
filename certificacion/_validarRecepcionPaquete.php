@@ -20,7 +20,7 @@ $nit = 1023097024;
 $codigo_producto = '86311';
 $actividad = '351020';
 $url = 'https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl';
-$codigo_recepcion = 132175;
+$codigo_recepcion = 134887;
 session_start();
 
 $name = 'paquete'.'.tar';
@@ -40,6 +40,7 @@ $resultop = $wsOperaciones->solicitudCufdOp();
 $rop = $wsOperaciones->ConvertObjectToArray($resultop);
 $cufd = $rop['RespuestaCufd']['codigo'];
 
+//$cufd = 'QUFvQ8OBZUNCRTI5MzVCRkQ2QmZoS2JMVFVCQQ==MDAwMDg4';
 
 $wsOperaciones= new WsFacturacion(
 	$url,

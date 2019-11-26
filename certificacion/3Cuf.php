@@ -15,7 +15,7 @@ $cuis_computarizada = "B1506967";
 $cuis_electronica = "4CB33E78";
 $ambiente = 2;//1 produccion 2 pruebas
 $modalidad = 1;//1 electronica 2 computarizada
-$sucursal = 0;
+$sucursal = 1;
 $nit = 1023097024;
 $codigo_producto = '86311';
 $actividad = '351020';
@@ -24,10 +24,10 @@ session_start();
 
 $numero_fac = 1;
 $numero_nc = 1;
-$tipo_emision = array(2,2,2,2,2,2);
+$tipo_emision = array(1,1,1,1,1,1);
 $documento_fiscal = array(1,1,2,1,1,2);
 $documento_sector = array(1,3,18,1,3,18);//18 nota de debito credito 3 factura de alquiler 1 factura
-$punto_venta = array(3,3,3,3,3,3);
+$punto_venta = array(0,0,0,0,0,0);
 
 
 for ($i=0;$i<count($tipo_emision);$i++){

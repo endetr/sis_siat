@@ -34,8 +34,8 @@ for ($i = 0; $i < 10;$i++) {
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	print_r($rop);
 }
-//crear punto de venta 1
-$wsOperaciones= new WsFacturacionOperaciones(
+//crear punto de venta 1 SOLOCREAR PUNTO DCE VENTAS SI ES NECESARIO
+/*$wsOperaciones= new WsFacturacionOperaciones(
 	'https://presiatservicios.impuestos.gob.bo:39117/FacturacionOperaciones?wsdl',
 	$ambiente,
 	$codigo_sistema,
@@ -49,7 +49,7 @@ $wsOperaciones= new WsFacturacionOperaciones(
 	"Descripcion punto venta");//descripcion punto de venta
 $resultop = $wsOperaciones->registroPuntoVentaOp();	
 $rop = $wsOperaciones->ConvertObjectToArray($resultop);
-print_r($rop);
+print_r($rop);*/
 
 for ($i = 0; $i < 10;$i++) {
 	$wsOperaciones= new WsFacturacionSincroniza(

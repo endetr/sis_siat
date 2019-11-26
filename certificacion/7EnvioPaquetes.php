@@ -20,10 +20,10 @@ $nit = 1023097024;
 $codigo_producto = '86311';
 $actividad = '351020';
 $url = 'https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl';
-
+$numero_fac = 1;
 session_start();
 
-$name = 'paquete'.'.tar';
+$name = 'paquete.tar';
 
 //cufd punto de venta i
 $wsOperaciones= new WsFacturacionOperaciones(
@@ -54,7 +54,7 @@ $wsOperaciones= new WsFacturacionOperaciones(
 	1,//codigo punto de venta no es util para este servicio
 	"Descripcion inicio evento",//descripcion evento
 	973,//codigo evento significativo
-	"2019-11-21T08:53:16.987",
+	"2019-11-22T08:53:16.987",
 	$cufd
 	);
 $resultop = $wsOperaciones->inicioEventoSignificativoOP();	
@@ -75,9 +75,9 @@ $wsOperaciones= new WsFacturacionOperaciones(
 	1,//codigo punto de venta no es util para este servicio
 	"Descripcion inicio evento",//descripcion evento
 	973,//codigo evento significativo
-	"2019-11-21T08:53:16.987",
+	"2019-11-22T08:53:16.987",
 	$cufd,
-	"2019-11-21T20:53:16.987",
+	"2019-11-22T20:53:16.987",
 	$codigo_evento
 	);
 $resultop = $wsOperaciones->finEventoSignificativoOP();	
@@ -86,19 +86,19 @@ var_dump($rop);
 */
 
 
-for ($i = 0;$i<10;$i++){
-	unlink(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' . $name);
+for ($i = 0;$i<20;$i++){
+	$name = uniqid().'paquete.tar';
 	$a = new PharData(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' .$name);
-	generarFacturas($nit, $sucursal, $modalidad,$cufd,$a,500,0);//aqui cambiar la cantidad de validos e invalidos que se queire generar
+	generarFacturas($nit, $sucursal, $modalidad,$cufd,$a,400,100);//aqui cambiar la cantidad de validos e invalidos que se queire generar
 	Factura::crearArchivoGZIPMasivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/'. $name,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz');
 	$archivo_envio = Factura::convertirArchivoGZIPABase64Masivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzipB64.txt');
 
 	$hash = hash ( "sha256" , $archivo_envio ); 		
-	$fecha = new DateTime();
-	//$fecha->modify('-1 day');	
+	$fecha = new DateTime();			
 	$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
-	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
-	echo "<br>===============================<br>";
+	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);
+		
+	/*echo "<br>===============================<br>";
 	echo $archivo_envio;
 	echo "<br>=================================<br>";
 	echo "<br>===============================<br>";
@@ -108,7 +108,7 @@ for ($i = 0;$i<10;$i++){
 	echo $fecha_formato1;
 	echo "<br>=================================<br>";
 	echo $cufd;
-	echo "<br>=================================<br>";
+	echo "<br>=================================<br>";*/
 	$wsOperaciones= new WsFacturacion(
 		$url,
 		$ambiente,
@@ -129,13 +129,13 @@ for ($i = 0;$i<10;$i++){
 	$resultop = $wsOperaciones->recepcionFacturaEstandarPaquete();		
 	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-	$codigo_recepcion = $rop['RespuestaServicioFacturacion']['codigoRecepcion'];
+	//$codigo_recepcion = $rop['RespuestaServicioFacturacion']['codigoRecepcion'];
 	//echo $codigo_recepcion;
 	print_r($rop);	
 }
 
 function generarFacturas($nit,$sucursal,$modalidad,$cufd,$a,$cantidad_validas,$cantidad_invalidas) {
-	$numero_fac = 1;	
+	global $numero_fac;	
 	$numero_nc = 1;	
 	$codigo_producto = '86311';
 	$actividad = '351020';	
@@ -145,7 +145,7 @@ function generarFacturas($nit,$sucursal,$modalidad,$cufd,$a,$cantidad_validas,$c
 		$fecha->modify('-1 day');
 		$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
 		$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
-		$fecha_formato2 = $fecha->format('YmdHis000');	
+		$fecha_formato2 = $fecha->format('YmdHis000');			
 		$concatenacion = MODCuf::concatenar(
 												$nit,//nit
 												$fecha_formato2,//fecha emision
@@ -164,7 +164,7 @@ function generarFacturas($nit,$sucursal,$modalidad,$cufd,$a,$cantidad_validas,$c
 		$base16 = strtoupper(MODCuf::bcdechex($concatenacion));
 		if ($i>=$cantidad_validas) {
 			$base16 = 'XXX';
-		}
+		}		
 		$cabecera = generarCabecera($nit,$numero_fac,$numero_nc,$base16,$cufd,$sucursal,0,$fecha_formato1,1);
 		$detalle = generarDetalle(1,$codigo_producto,$actividad);
 			
