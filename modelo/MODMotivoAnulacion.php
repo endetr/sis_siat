@@ -6,8 +6,8 @@
 *@date 31-01-2019 16:28:10
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 */
-
-class MODMotivoAnulacion extends MODbase{
+include dirname(__FILE__).'/MODBaseSiat.php';
+class MODMotivoAnulacion extends MODBaseSiat{
 	
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
@@ -94,6 +94,11 @@ class MODMotivoAnulacion extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+	function sincronizarMotivoAnulacion(){
+		$this->respuesta = $this->sincronizar('sincronizacion','motivos_anulacion','tmotivo_anulacion');
 		return $this->respuesta;
 	}
 			

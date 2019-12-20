@@ -1,21 +1,25 @@
 <?php
 /**
 *@package pXP
-*@file gen-Evento.php
-*@author  (admin)
-*@date 17-01-2019 22:19:07
+*@file gen-DocumentoFiscal.php
+*@author  (jrivera)
+*@date 17-12-2019 10:42:00
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ HISTORIAL DE MODIFICACIONES:
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+ #0				17-12-2019				 (jrivera)				CREACION	
+
 */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.Evento=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.DocumentoFiscal=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
-		Phx.vista.Evento.superclass.constructor.call(this,config);
+		Phx.vista.DocumentoFiscal.superclass.constructor.call(this,config);
 		this.addButton('obtener_ws', {
             text: 'Sincronizar WS',
             iconCls: 'bupload',
@@ -23,7 +27,6 @@ Phx.vista.Evento=Ext.extend(Phx.gridInterfaz,{
             handler: this.sincronizar,
             tooltip: '<b>Obtener Datos</b><br/>Obtener Datos desde el WS del SIN'
         });
-	
 		this.init();
 		this.load({params:{start:0, limit:this.tam_pag}})
 	},
@@ -34,7 +37,7 @@ Phx.vista.Evento=Ext.extend(Phx.gridInterfaz,{
 			config:{
 					labelSeparator:'',
 					inputType:'hidden',
-					name: 'id_evento'
+					name: 'id_documento_fiscal'
 			},
 			type:'Field',
 			form:true 
@@ -42,105 +45,46 @@ Phx.vista.Evento=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo',
-				fieldLabel: 'Código',
-				allowBlank: false,
-				anchor: '25%',
+				fieldLabel: 'Codigo',
+				allowBlank: true,
+				anchor: '80%',
 				gwidth: 100,
-				maxLength:10
+				maxLength:50
 			},
-				type:'NumberField',
-				filters:{pfiltro:'evesia.codigo',type:'numeric'},
+				type:'TextField',
+				filters:{pfiltro:'docfis.codigo',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:true,
-				bottom_filter : true
+				form:true
 		},
+		
 		{
 			config:{
 				name: 'descripcion',
-				fieldLabel: 'Descripción',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 200,
-				maxLength:200
-			},
-				type:'TextArea',
-				filters:{pfiltro:'evesia.descripcion',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true,
-				bottom_filter : true
-		},
-		 {
-			config : {
-				name : 'estado_reg',
-				fieldLabel : 'Estado Registro',
-				typeAhead : true,
-				allowBlank : false,
-				triggerAction : 'all',
-				emptyText : 'Seleccione Opcion...',
-				selectOnFocus : true,
-				forceSelection: true,
-				width : 250,
-				mode : 'local',
-
-				store : new Ext.data.ArrayStore({
-					fields : ['ID', 'valor'],
-					data : [['activo', 'Activo'],['inactivo', 'Inactivo']],
-
-				}),
-				renderer : function(value, p, record) {
-					var estado_reg = record.data.estado_reg;
-					return  record.data.estado_reg;
-					if (estado_reg=='activo'){
-						return 'Activo';
-					}else if (estado_reg=='inactivo'){
-						return 'Inactivo';
-						
-					}
-					
-				},
-				valueField : 'ID',
-				displayField : 'valor'
-
-			},
-			type : 'ComboBox',
-			valorInicial : 'activo',
-			filters:{pfiltro:'monsia.estado_reg',type:'string'},
-			id_grupo : 0,
-			grid : true,
-			form : true
-		},
-	    
-		{
-			config:{
-				name: 'fecha_reg',
-				fieldLabel: 'Fecha creación',
+				fieldLabel: 'Descripcion',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 100,
-							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+				gwidth: 300
 			},
-				type:'DateField',
-				filters:{pfiltro:'evesia.fecha_reg',type:'date'},
+				type:'TextField',
+				filters:{pfiltro:'docfis.descripcion',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:false
+				form:true
 		},
 		{
 			config:{
-				name: 'id_usuario_ai',
-				fieldLabel: 'Fecha creación',
+				name: 'estado_reg',
+				fieldLabel: 'Estado Reg.',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
-				maxLength:4
+				maxLength:10
 			},
-				type:'Field',
-				filters:{pfiltro:'evesia.id_usuario_ai',type:'numeric'},
+				type:'TextField',
+				filters:{pfiltro:'docfis.estado_reg',type:'string'},
 				id_grupo:1,
-				grid:false,
+				grid:true,
 				form:false
 		},
 		{
@@ -168,9 +112,40 @@ Phx.vista.Evento=Ext.extend(Phx.gridInterfaz,{
 				maxLength:300
 			},
 				type:'TextField',
-				filters:{pfiltro:'evesia.usuario_ai',type:'string'},
+				filters:{pfiltro:'docfis.usuario_ai',type:'string'},
 				id_grupo:1,
 				grid:true,
+				form:false
+		},
+		{
+			config:{
+				name: 'fecha_reg',
+				fieldLabel: 'Fecha creación',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+							format: 'd/m/Y', 
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+			},
+				type:'DateField',
+				filters:{pfiltro:'docfis.fecha_reg',type:'date'},
+				id_grupo:1,
+				grid:true,
+				form:false
+		},
+		{
+			config:{
+				name: 'id_usuario_ai',
+				fieldLabel: 'Fecha creación',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:4
+			},
+				type:'Field',
+				filters:{pfiltro:'docfis.id_usuario_ai',type:'numeric'},
+				id_grupo:1,
+				grid:false,
 				form:false
 		},
 		{
@@ -184,7 +159,7 @@ Phx.vista.Evento=Ext.extend(Phx.gridInterfaz,{
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
-				filters:{pfiltro:'evesia.fecha_mod',type:'date'},
+				filters:{pfiltro:'docfis.fecha_mod',type:'date'},
 				id_grupo:1,
 				grid:true,
 				form:false
@@ -206,20 +181,20 @@ Phx.vista.Evento=Ext.extend(Phx.gridInterfaz,{
 		}
 	],
 	tam_pag:50,	
-	title:'Evento',
-	ActSave:'../../sis_siat/control/Evento/insertarEvento',
-	ActDel:'../../sis_siat/control/Evento/eliminarEvento',
-	ActList:'../../sis_siat/control/Evento/listarEvento',
-	id_store:'id_evento',
+	title:'Documento Fiscal',
+	ActSave:'../../sis_siat/control/DocumentoFiscal/insertarDocumentoFiscal',
+	ActDel:'../../sis_siat/control/DocumentoFiscal/eliminarDocumentoFiscal',
+	ActList:'../../sis_siat/control/DocumentoFiscal/listarDocumentoFiscal',
+	id_store:'id_documento_fiscal',
 	fields: [
-		{name:'id_evento', type: 'numeric'},
-		{name:'codigo', type: 'numeric'},
-		{name:'descripcion', type: 'string'},
+		{name:'id_documento_fiscal', type: 'numeric'},
+		{name:'codigo', type: 'string'},
 		{name:'estado_reg', type: 'string'},
-		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
-		{name:'id_usuario_ai', type: 'numeric'},
+		{name:'descripcion', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'usuario_ai', type: 'string'},
+		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+		{name:'id_usuario_ai', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
@@ -227,7 +202,7 @@ Phx.vista.Evento=Ext.extend(Phx.gridInterfaz,{
 		
 	],
 	sortInfo:{
-		field: 'id_evento',
+		field: 'id_documento_fiscal',
 		direction: 'ASC'
 	},
 	bdel:false,
@@ -237,7 +212,7 @@ Phx.vista.Evento=Ext.extend(Phx.gridInterfaz,{
 	sincronizar:function () {			
 			Phx.CP.loadingShow();
 			Ext.Ajax.request({
-				url: '../../sis_siat/control/Evento/SincronizarEvento',
+				url: '../../sis_siat/control/DocumentoFiscal/SincronizarDocumentoFiscal',
 				params: {
 					estado: 'recibido'
 				},
@@ -248,7 +223,6 @@ Phx.vista.Evento=Ext.extend(Phx.gridInterfaz,{
 			});
 	
 		},
-		
 	}
 )
 </script>

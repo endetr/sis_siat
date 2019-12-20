@@ -6,8 +6,8 @@
 *@date 18-01-2019 14:58:00
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 */
-
-class MODMensajeSoap extends MODbase{
+include dirname(__FILE__).'/MODBaseSiat.php';
+class MODMensajeSoap extends MODBaseSiat{
 	
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
@@ -94,6 +94,11 @@ class MODMensajeSoap extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+	function sincronizarMensajeSoap(){
+		$this->respuesta = $this->sincronizar('sincronizacion','mensajes_servicios','tmensaje_soap');
 		return $this->respuesta;
 	}
 			

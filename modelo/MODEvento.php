@@ -6,8 +6,8 @@
 *@date 17-01-2019 22:19:07
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 */
-
-class MODEvento extends MODbase{
+include dirname(__FILE__).'/MODBaseSiat.php';
+class MODEvento  extends MODBaseSiat{
 	
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
@@ -94,6 +94,11 @@ class MODEvento extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+	function sincronizarEvento(){
+		$this->respuesta = $this->sincronizar('sincronizacion','eventos_significativos','tevento');
 		return $this->respuesta;
 	}
 			

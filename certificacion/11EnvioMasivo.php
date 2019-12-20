@@ -21,13 +21,13 @@ $codigo_producto = '86311';
 $actividad = '351020';
 $url = 'https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl';
 $punto_venta = 0;
-$numero_fac = 1;
+$numero_fac = 10000;
 session_start();
 
 $name = 'paquete'.'.tar';
 
 //cufd punto de venta i
-$wsOperaciones= new WsFacturacionOperaciones(
+/*$wsOperaciones= new WsFacturacionOperaciones(
 	'https://presiatservicios.impuestos.gob.bo:39268/FacturacionSolicitudCufd?wsdl',
 	$ambiente,
 	$codigo_sistema,
@@ -39,12 +39,15 @@ $wsOperaciones= new WsFacturacionOperaciones(
 	
 $resultop = $wsOperaciones->solicitudCufdOp();
 $rop = $wsOperaciones->ConvertObjectToArray($resultop);
-$cufd = $rop['RespuestaCufd']['codigo'];
+$cufd = $rop['RespuestaCufd']['codigo'];*/
+$cufd = 'QUFvQ8OBZUNCRTI5MzVCRkQ2QkxDTWVMVFVBQQ==MDAwMDg4';
 
-for ($i = 0;$i<20;$i++){
+echo $cufd . "==============================<br>";
+
+for ($i = 0;$i<4;$i++){
 	$name = uniqid().'paquete.tar';	
 	$a = new PharData(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/' .$name);
-	generarFacturas($nit, $sucursal, $modalidad,$cufd,$a,2000,0);//aqui cambiar la cantidad de validos e invalidos que se queire generar
+	generarFacturas($nit, $sucursal, $modalidad,$cufd,$a,1900,100);//aqui cambiar la cantidad de validos e invalidos que se queire generar
 	Factura::crearArchivoGZIPMasivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/'. $name,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz');
 	$archivo_envio = Factura::convertirArchivoGZIPABase64Masivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzip.tar.gz',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/paqueteGzipB64.txt');
 	$hash = hash ( "sha256" , $archivo_envio );		
@@ -52,7 +55,7 @@ for ($i = 0;$i<20;$i++){
 	$fecha_formato1 = $fecha->format('Y-m-dH:i:s.000');
 	$fecha_formato1 = substr($fecha_formato1, 0, 10) . 'T' . substr($fecha_formato1, 10);	
 	
-	echo "<br>==================ARCHVIVO=============<br>";
+	/*echo "<br>==================ARCHVIVO=============<br>";
 	echo $archivo_envio;
 	echo "<br>=================================<br>";
 	echo "<br>================HASH===============<br>";
@@ -62,7 +65,7 @@ for ($i = 0;$i<20;$i++){
 	echo $fecha_formato1;
 	echo "<br>================CUFD=================<br>";
 	echo $cufd;
-	echo "<br>=================================<br>";
+	echo "<br>=================================<br>";*/
 	
 	$wsOperaciones= new WsFacturacion(
 		$url,
@@ -85,10 +88,9 @@ for ($i = 0;$i<20;$i++){
 	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
 	$codigo_recepcion = $rop['RespuestaServicioFacturacion']['codigoRecepcion'];
-	//echo $codigo_recepcion;
-	//print_r($rop);
-	sleep(2);
-	$wsOperaciones= new WsFacturacion(
+	echo $codigo_recepcion.",";
+	
+	/*$wsOperaciones= new WsFacturacion(
 		$url,
 		$ambiente,
 		1,//codigo documento fiscal
@@ -109,7 +111,7 @@ for ($i = 0;$i<20;$i++){
 	$resultop = $wsOperaciones->validarRecepcionFacturaEstandarMasiva();	
 	echo "=================".$i."=============================";	
 	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-	print_r($rop);
+	print_r($rop);*/
 }
 
 function generarFacturas($nit,$sucursal,$modalidad,$cufd,$a,$cantidad_validas,$cantidad_invalidas) {
@@ -117,7 +119,7 @@ function generarFacturas($nit,$sucursal,$modalidad,$cufd,$a,$cantidad_validas,$c
 	$numero_nc = 1;	
 	$codigo_producto = '86311';
 	$actividad = '351020';	
-	$punto_venta = 1;
+	$punto_venta = 0;
 	for ($i=0;$i<$cantidad_validas + $cantidad_invalidas;$i++) {
 		//generar factura
 		$fecha = new DateTime();

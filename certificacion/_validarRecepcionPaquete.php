@@ -20,11 +20,11 @@ $nit = 1023097024;
 $codigo_producto = '86311';
 $actividad = '351020';
 $url = 'https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl';
-$codigo_recepcion = 134887;
+$codigo_recepcion = 135828;
 session_start();
 
 $name = 'paquete'.'.tar';
-
+/*
 //cufd punto de venta i
 $wsOperaciones= new WsFacturacionOperaciones(
 	'https://presiatservicios.impuestos.gob.bo:39268/FacturacionSolicitudCufd?wsdl',
@@ -39,29 +39,33 @@ $wsOperaciones= new WsFacturacionOperaciones(
 $resultop = $wsOperaciones->solicitudCufdOp();
 $rop = $wsOperaciones->ConvertObjectToArray($resultop);
 $cufd = $rop['RespuestaCufd']['codigo'];
+*/
+$cufd = 'QUFvQ8OBZUNCRTI5MzVCRkQ2QkxDTWVMVFVBQQ==MDAwMDg4';
+$codigos = array(	
+	137371,137372,137374,137376							
+				); 
+for ($i = 0; $i< count($codigos); $i++) {
+	$wsOperaciones= new WsFacturacion(
+		$url,
+		$ambiente,
+		1,//codigo documento fiscal
+		1,
+		3, //codigo emision 1 inline 2 offline
+		$modalidad,
+		0,
+		$codigo_sistema,
+		$sucursal, 
+		$cufd,
+		$cuis_electronica,
+		$nit,
+		NULL,
+		NULL,
+		NULL,
+		$codigos[$i]);		
 
-//$cufd = 'QUFvQ8OBZUNCRTI5MzVCRkQ2QmZoS2JMVFVCQQ==MDAwMDg4';
-
-$wsOperaciones= new WsFacturacion(
-	$url,
-	$ambiente,
-	1,//codigo documento fiscal
-	1,
-	2, //codigo emision 1 inline 2 offline
-	$modalidad,
-	0,
-	$codigo_sistema,
-	$sucursal, 
-	$cufd,
-	$cuis_electronica,
-	$nit,
-	NULL,
-	NULL,
-	NULL,
-	$codigo_recepcion);		
-
-$resultop = $wsOperaciones->validarRecepcionFacturaEstandarPaquete();	
-$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-print_r($rop);
+	$resultop = $wsOperaciones->validarRecepcionFacturaEstandarMasiva();	
+	$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+	print_r($rop);
+}
 
 

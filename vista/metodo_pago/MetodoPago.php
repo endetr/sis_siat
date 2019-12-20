@@ -16,11 +16,11 @@ Phx.vista.MetodoPago=Ext.extend(Phx.gridInterfaz,{
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
 		Phx.vista.MetodoPago.superclass.constructor.call(this,config);
-		 this.addButton('obtener_ws', {
-            text: 'Obtener Datos WS',
+		this.addButton('obtener_ws', {
+            text: 'Sincronizar WS',
             iconCls: 'bupload',
             disabled: false,
-            handler: this.BObtenerWS,
+            handler: this.sincronizar,
             tooltip: '<b>Obtener Datos</b><br/>Obtener Datos desde el WS del SIN'
         });
 	
@@ -232,45 +232,21 @@ Phx.vista.MetodoPago=Ext.extend(Phx.gridInterfaz,{
 	bdel:false,
 	bsave:false,
 	bnew:false,
-	onButtonNew: function () {
-            
-             this.ocultarComponente(this.Cmp.estado_reg);
-             Phx.vista.MetodoPago.superclass.onButtonNew.call(this);
-            },
-    onButtonEdit: function () {
-            
-             this.mostrarComponente(this.Cmp.estado_reg);
-             Phx.vista.MetodoPago.superclass.onButtonEdit.call(this);
-            }
-	,
-    BObtenerWS:function () {
-			var rec = this.sm.getSelected();
+	bedit:false,
+	sincronizar:function () {			
 			Phx.CP.loadingShow();
 			Ext.Ajax.request({
-				url: '../../sis_siat/control/MetodoPago/insertarMetodoPagoWS',
+				url: '../../sis_siat/control/MetodoPago/SincronizarMetodoPago',
 				params: {
 					estado: 'recibido'
 				},
-				success: this.successDerivar,
+				success: this.successSave,
 				failure: this.conexionFailure,
 				timeout: this.timeout,
 				scope: this
 			});
 	
 		},
-		
-
-		successDerivar : function(resp) {
-
-			Phx.CP.loadingHide();
-			var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-			if (!reg.ROOT.error) {
-				alert(reg.ROOT.detalle.mensaje)
-
-			}
-			this.reload();
-
-		}
 		
 	}
 )

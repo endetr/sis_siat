@@ -1,37 +1,45 @@
 <?php
 /**
 *@package pXP
-*@file gen-MODAmbiente.php
-*@author  (admin)
-*@date 18-01-2019 14:57:46
+*@file gen-MODMapeoTipoVenta.php
+*@author  (jrivera)
+*@date 17-12-2019 02:51:47
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
+ HISTORIAL DE MODIFICACIONES:
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+ #0				17-12-2019 02:51:47								CREACION
+
 */
-include dirname(__FILE__).'/MODBaseSiat.php';
-class MODAmbiente extends MODBaseSiat{
+
+class MODMapeoTipoVenta extends MODbase{
 	
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
 	}
 			
-	function listarAmbiente(){
+	function listarMapeoTipoVenta(){
 		//Definicion de variables para ejecucion del procedimientp
-		$this->procedimiento='siat.ft_ambiente_sel';
-		$this->transaccion='SIA_AMBSIA_SEL';
+		$this->procedimiento='siat.ft_mapeo_tipo_venta_sel';
+		$this->transaccion='SIA_MATV_SEL';
 		$this->tipo_procedimiento='SEL';//tipo de transaccion
 				
 		//Definicion de la lista del resultado del query
-		$this->captura('id_ambiente','int4');
-		$this->captura('codigo','numeric');
-		$this->captura('descripcion','varchar');
+		$this->captura('id_mapeo_tipo_venta','int4');
 		$this->captura('estado_reg','varchar');
+		$this->captura('id_documento_fiscal','int4');
+		$this->captura('id_documento_sector','int4');
+		$this->captura('id_tipo_venta','int4');
+		$this->captura('id_usuario_reg','int4');
 		$this->captura('fecha_reg','timestamp');
 		$this->captura('id_usuario_ai','int4');
-		$this->captura('id_usuario_reg','int4');
 		$this->captura('usuario_ai','varchar');
-		$this->captura('fecha_mod','timestamp');
 		$this->captura('id_usuario_mod','int4');
+		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('desc_documento_fiscal','text');
+		$this->captura('desc_documento_sector','text');
+		$this->captura('desc_tipo_venta','text');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -41,16 +49,17 @@ class MODAmbiente extends MODBaseSiat{
 		return $this->respuesta;
 	}
 			
-	function insertarAmbiente(){
+	function insertarMapeoTipoVenta(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='siat.ft_ambiente_ime';
-		$this->transaccion='SIA_AMBSIA_INS';
+		$this->procedimiento='siat.ft_mapeo_tipo_venta_ime';
+		$this->transaccion='SIA_MATV_INS';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('codigo','codigo','numeric');
-		$this->setParametro('descripcion','descripcion','varchar');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('id_documento_fiscal','id_documento_fiscal','int4');
+		$this->setParametro('id_documento_sector','id_documento_sector','int4');
+		$this->setParametro('id_tipo_venta','id_tipo_venta','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -60,17 +69,18 @@ class MODAmbiente extends MODBaseSiat{
 		return $this->respuesta;
 	}
 			
-	function modificarAmbiente(){
+	function modificarMapeoTipoVenta(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='siat.ft_ambiente_ime';
-		$this->transaccion='SIA_AMBSIA_MOD';
+		$this->procedimiento='siat.ft_mapeo_tipo_venta_ime';
+		$this->transaccion='SIA_MATV_MOD';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('id_ambiente','id_ambiente','int4');
-		$this->setParametro('codigo','codigo','numeric');
-		$this->setParametro('descripcion','descripcion','varchar');
+		$this->setParametro('id_mapeo_tipo_venta','id_mapeo_tipo_venta','int4');
 		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('id_documento_fiscal','id_documento_fiscal','int4');
+		$this->setParametro('id_documento_sector','id_documento_sector','int4');
+		$this->setParametro('id_tipo_venta','id_tipo_venta','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -80,25 +90,20 @@ class MODAmbiente extends MODBaseSiat{
 		return $this->respuesta;
 	}
 			
-	function eliminarAmbiente(){
+	function eliminarMapeoTipoVenta(){
 		//Definicion de variables para ejecucion del procedimiento
-		$this->procedimiento='siat.ft_ambiente_ime';
-		$this->transaccion='SIA_AMBSIA_ELI';
+		$this->procedimiento='siat.ft_mapeo_tipo_venta_ime';
+		$this->transaccion='SIA_MATV_ELI';
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
-		$this->setParametro('id_ambiente','id_ambiente','int4');
+		$this->setParametro('id_mapeo_tipo_venta','id_mapeo_tipo_venta','int4');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
-		return $this->respuesta;
-	}
-
-	function sincronizarAmbiente(){
-		$this->respuesta = $this->sincronizar('sincronizacion','tipo_ambiente','tambiente');
 		return $this->respuesta;
 	}
 			

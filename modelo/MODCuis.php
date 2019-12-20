@@ -33,7 +33,7 @@ class MODCuis extends MODbase{
 		$this->captura('fecha_mod','timestamp');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
-		$this->captura('horas_anulacion','interval');
+		$this->captura('horas_anulacion','varchar');
 		
 		     
 		//Ejecuta la instruccion
@@ -55,7 +55,7 @@ class MODCuis extends MODbase{
 		$this->setParametro('fecha_fin','fecha_fin','timestamp');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('fecha_inicio','fecha_inicio','timestamp');
-        $this->setParametro('horas_anulacion','horas_anulacion','interval');
+        $this->setParametro('horas_anulacion','horas_anulacion','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -76,7 +76,7 @@ class MODCuis extends MODbase{
 		$this->setParametro('fecha_fin','fecha_fin','timestamp');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('fecha_inicio','fecha_inicio','timestamp');
-        $this->setParametro('horas_anulacion','horas_anulacion','interval');
+        $this->setParametro('horas_anulacion','horas_anulacion','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

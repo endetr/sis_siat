@@ -1,21 +1,25 @@
 <?php
 /**
 *@package pXP
-*@file gen-MotivoAnulacion.php
-*@author  (ana.villegas)
-*@date 31-01-2019 16:28:10
+*@file gen-DocumentoSector.php
+*@author  (jrivera)
+*@date 17-12-2019 10:41:56
 *@description Archivo con la interfaz de usuario que permite la ejecucion de todas las funcionalidades del sistema
+ HISTORIAL DE MODIFICACIONES:
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+ #0				17-12-2019				 (jrivera)				CREACION	
+
 */
 
 header("content-type: text/javascript; charset=UTF-8");
 ?>
 <script>
-Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
+Phx.vista.DocumentoSector=Ext.extend(Phx.gridInterfaz,{
 
 	constructor:function(config){
 		this.maestro=config.maestro;
     	//llama al constructor de la clase padre
-		Phx.vista.MotivoAnulacion.superclass.constructor.call(this,config);
+		Phx.vista.DocumentoSector.superclass.constructor.call(this,config);
 		this.addButton('obtener_ws', {
             text: 'Sincronizar WS',
             iconCls: 'bupload',
@@ -33,7 +37,7 @@ Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
 			config:{
 					labelSeparator:'',
 					inputType:'hidden',
-					name: 'id_motivo_anulacion'
+					name: 'id_documento_sector'
 			},
 			type:'Field',
 			form:true 
@@ -41,72 +45,47 @@ Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'codigo',
-				fieldLabel: 'codigo',
-				allowBlank: false,
+				fieldLabel: 'Codigo',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:50
+			},
+				type:'TextField',
+				filters:{pfiltro:'dcosec.codigo',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		
+		{
+			config:{
+				name: 'descripcion',
+				fieldLabel: 'Descripcion',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 300
+			},
+				type:'TextField',
+				filters:{pfiltro:'dcosec.descripcion',type:'string'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
+				name: 'estado_reg',
+				fieldLabel: 'Estado Reg.',
+				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:10
 			},
-				type:'NumberField',
-				filters:{pfiltro:'motanu.codigo',type:'numeric'},
-				id_grupo:1,
-				grid:true,
-				form:true
-		},
-		 {
-			config : {
-				name : 'estado_reg',
-				fieldLabel : 'Estado Registro',
-				typeAhead : true,
-				allowBlank : false,
-				triggerAction : 'all',
-				emptyText : 'Seleccione Opcion...',
-				selectOnFocus : true,
-				forceSelection: true,
-				width : 250,
-				mode : 'local',
-
-				store : new Ext.data.ArrayStore({
-					fields : ['ID', 'valor'],
-					data : [['activo', 'Activo'],['inactivo', 'Inactivo']],
-
-				}),
-				renderer : function(value, p, record) {
-					var estado_reg = record.data.estado_reg;
-					return  record.data.estado_reg;
-					if (estado_reg=='activo'){
-						return 'Activo';
-					}else if (estado_reg=='inactivo'){
-						return 'Inactivo';
-						
-					}
-					
-				},
-				valueField : 'ID',
-				displayField : 'valor'
-
-			},
-			type : 'ComboBox',
-			valorInicial : 'activo',
-			filters:{pfiltro:'motanu.estado_reg',type:'string'},
-			id_grupo : 0,
-			grid : true,
-			form : true
-		},
-		{
-			config:{
-				name: 'descripcion',
-				fieldLabel: 'descripcion',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:200
-			},
 				type:'TextField',
-				filters:{pfiltro:'motanu.descripcion',type:'string'},
+				filters:{pfiltro:'dcosec.estado_reg',type:'string'},
 				id_grupo:1,
 				grid:true,
-				form:true
+				form:false
 		},
 		{
 			config:{
@@ -125,21 +104,6 @@ Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
 		},
 		{
 			config:{
-				name: 'usuario_ai',
-				fieldLabel: 'Funcionaro AI',
-				allowBlank: true,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:300
-			},
-				type:'TextField',
-				filters:{pfiltro:'motanu.usuario_ai',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:false
-		},
-		{
-			config:{
 				name: 'fecha_reg',
 				fieldLabel: 'Fecha creación',
 				allowBlank: true,
@@ -149,7 +113,22 @@ Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
-				filters:{pfiltro:'motanu.fecha_reg',type:'date'},
+				filters:{pfiltro:'dcosec.fecha_reg',type:'date'},
+				id_grupo:1,
+				grid:true,
+				form:false
+		},
+		{
+			config:{
+				name: 'usuario_ai',
+				fieldLabel: 'Funcionaro AI',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				maxLength:300
+			},
+				type:'TextField',
+				filters:{pfiltro:'dcosec.usuario_ai',type:'string'},
 				id_grupo:1,
 				grid:true,
 				form:false
@@ -157,14 +136,14 @@ Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
 		{
 			config:{
 				name: 'id_usuario_ai',
-				fieldLabel: 'Fecha creación',
+				fieldLabel: 'Funcionaro AI',
 				allowBlank: true,
 				anchor: '80%',
 				gwidth: 100,
 				maxLength:4
 			},
 				type:'Field',
-				filters:{pfiltro:'motanu.id_usuario_ai',type:'numeric'},
+				filters:{pfiltro:'dcosec.id_usuario_ai',type:'numeric'},
 				id_grupo:1,
 				grid:false,
 				form:false
@@ -195,26 +174,26 @@ Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
 							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
 			},
 				type:'DateField',
-				filters:{pfiltro:'motanu.fecha_mod',type:'date'},
+				filters:{pfiltro:'dcosec.fecha_mod',type:'date'},
 				id_grupo:1,
 				grid:true,
 				form:false
 		}
 	],
 	tam_pag:50,	
-	title:'Motivo Anulacion',
-	ActSave:'../../sis_siat/control/MotivoAnulacion/insertarMotivoAnulacion',
-	ActDel:'../../sis_siat/control/MotivoAnulacion/eliminarMotivoAnulacion',
-	ActList:'../../sis_siat/control/MotivoAnulacion/listarMotivoAnulacion',
-	id_store:'id_motivo_anulacion',
+	title:'Documento Sector',
+	ActSave:'../../sis_siat/control/DocumentoSector/insertarDocumentoSector',
+	ActDel:'../../sis_siat/control/DocumentoSector/eliminarDocumentoSector',
+	ActList:'../../sis_siat/control/DocumentoSector/listarDocumentoSector',
+	id_store:'id_documento_sector',
 	fields: [
-		{name:'id_motivo_anulacion', type: 'numeric'},
-		{name:'codigo', type: 'numeric'},
+		{name:'id_documento_sector', type: 'numeric'},
+		{name:'codigo', type: 'string'},
 		{name:'estado_reg', type: 'string'},
 		{name:'descripcion', type: 'string'},
 		{name:'id_usuario_reg', type: 'numeric'},
-		{name:'usuario_ai', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+		{name:'usuario_ai', type: 'string'},
 		{name:'id_usuario_ai', type: 'numeric'},
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
@@ -223,7 +202,7 @@ Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
 		
 	],
 	sortInfo:{
-		field: 'id_motivo_anulacion',
+		field: 'id_documento_sector',
 		direction: 'ASC'
 	},
 	bdel:false,
@@ -233,7 +212,7 @@ Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
 	sincronizar:function () {			
 			Phx.CP.loadingShow();
 			Ext.Ajax.request({
-				url: '../../sis_siat/control/MotivoAnulacion/SincronizarMotivoAnulacion',
+				url: '../../sis_siat/control/DocumentoSector/SincronizarDocumentoSector',
 				params: {
 					estado: 'recibido'
 				},
@@ -243,7 +222,8 @@ Phx.vista.MotivoAnulacion=Ext.extend(Phx.gridInterfaz,{
 				scope: this
 			});
 	
-		},
+	},
+	
 	}
 )
 </script>

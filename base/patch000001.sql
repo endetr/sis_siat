@@ -249,3 +249,58 @@ ALTER TABLE siat.tcuf
   
 
 /************************************F-SCP-JMH-SIAT-0-24/07/2019*************************************************/
+/************************************I-SCP-JRR-SIAT-0-10/12/2019*************************************************/
+CREATE TABLE siat.tgestor_documento (
+    id_gestor_documento serial NOT NULL,
+    tipo VARCHAR(20) NOT NULL,
+    id_venta INTEGER  NOT NULL,
+    url_servicio VARCHAR(200) NOT NULL,
+    metodo_servicio VARCHAR(100) NOT NULL,
+    estado VARCHAR(20) NOT NULL,
+    contenido_base64_corrida1 TEXT NOT NULL,
+    contenido_base64_corrida2 TEXT NOT NULL,
+    hash VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id_gestor_documento))
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+CREATE TABLE siat.tdireccion_servicio (
+    id_direccion_servicio serial NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
+    subtipo VARCHAR(50) ,
+    url VARCHAR(200) NOT NULL,
+    id_documento_fiscal INTEGER,
+    id_documento_sector INTEGER,
+    recepcion VARCHAR(50) NOT NULL,
+    validacion VARCHAR(50),
+    recepcion_anulacion VARCHAR(50),
+    validacion_anulacion VARCHAR(50),    
+    PRIMARY KEY (id_direccion_servicio))
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+CREATE TABLE siat.tmapeo_tipo_venta (
+    id_mapeo_tipo_venta serial NOT NULL,
+    id_documento_fiscal INTEGER,
+    id_documento_sector INTEGER,    
+    id_tipo_venta INTEGER,       
+    PRIMARY KEY (id_mapeo_tipo_venta))
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+CREATE TABLE siat.tdocumento_sector (
+    id_documento_sector serial NOT NULL,
+    codigo VARCHAR(50) UNIQUE,
+    descripcion TEXT,      
+    PRIMARY KEY (id_documento_sector))
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+CREATE TABLE siat.tdocumento_fiscal (
+    id_documento_fiscal serial NOT NULL,
+    codigo VARCHAR(50) UNIQUE,
+    descripcion TEXT,      
+    PRIMARY KEY (id_documento_fiscal))
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+ALTER TABLE siat.tcuis
+  ALTER COLUMN horas_anulacion TYPE VARCHAR(4);
+
+
+/************************************F-SCP-JRR-SIAT-0-10/12/2019*************************************************/

@@ -6,8 +6,8 @@
 *@date 18-01-2019 14:57:57
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 */
-
-class MODMetodoPago extends MODbase{
+include dirname(__FILE__).'/MODBaseSiat.php';
+class MODMetodoPago extends MODBaseSiat{
 	
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
@@ -94,6 +94,11 @@ class MODMetodoPago extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+	function sincronizarMetodoPago(){
+		$this->respuesta = $this->sincronizar('sincronizacion','tipo_metodo_pago','tmetodo_pago');
 		return $this->respuesta;
 	}
 			

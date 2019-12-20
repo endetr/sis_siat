@@ -17,7 +17,7 @@ $modalidad = 1;//1 electronica 2 computarizada
 $sucursal = 0;
 $nit = 1023097024;
 $url = 'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl';
-
+//codigo de autorizacio para sincronizacion total 1000000
 session_start();
 $fn = fopen("10SincronizacionCatalogos.csv","r");
 $i=0;  
