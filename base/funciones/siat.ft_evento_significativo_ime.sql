@@ -26,6 +26,8 @@ DECLARE
 	v_nombre_funcion        text;
 	v_mensaje_error         text;
 	v_id_evento_significativo	integer;
+	v_fecha_ini				timestamp;
+	v_fecha_fin				timestamp;
 			    
 BEGIN
 
@@ -42,9 +44,12 @@ BEGIN
 	if(p_transaccion='SIA_EVSI_INS')then
 					
         begin
+			v_fecha_ini = to_timestamp(to_char(v_parametros.fecha_ini,'DD/MM/YYYY') || ' ' || v_parametros.hora_ini, 'DD/MM/YYYY HH24:MI:SS');
+			v_fecha_fin = to_timestamp(to_char(v_parametros.fecha_fin,'DD/MM/YYYY') || ' ' || v_parametros.hora_fin, 'DD/MM/YYYY HH24:MI:SS');
         	--Sentencia de la insercion
         	insert into siat.tevento_significativo(
-			fk_sucursal,
+			codigo_sucursal,
+			codigo_punto_venta,
 			description,
 			estado_reg,
 			fecha_fin,
@@ -55,24 +60,29 @@ BEGIN
 			id_usuario_reg,
 			id_usuario_ai,
 			fecha_mod,
-			id_usuario_mod
+			id_usuario_mod,
+			id_evento
           	) values(
-			v_parametros.fk_sucursal,
+			v_parametros.codigo_sucursal,
+			v_parametros.codigo_punto_venta,
 			v_parametros.description,
 			'activo',
-			v_parametros.fecha_fin,
+			v_fecha_fin,
 			v_parametros.codigo_evento,
-			v_parametros.fecha_ini,
+			v_fecha_ini,
 			v_parametros._nombre_usuario_ai,
 			now(),
 			p_id_usuario,
 			v_parametros._id_usuario_ai,
 			null,
-			null
-							
-			
-			
+			null,
+			v_parametros.id_evento
 			)RETURNING id_evento_significativo into v_id_evento_significativo;
+
+			update siat.tgestor_documento
+			set tipo = 'paquete',
+			estado = 'pendiente'
+			where tipo = 'documento' and estado in ('pendiente','error') and fecha_hora_factura between v_fecha_ini and v_fecha_fin; 
 			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','Evento Significativo almacenado(a) con exito (id_evento_significativo'||v_id_evento_significativo||')'); 

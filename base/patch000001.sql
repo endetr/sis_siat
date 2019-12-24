@@ -254,12 +254,13 @@ CREATE TABLE siat.tgestor_documento (
     id_gestor_documento serial NOT NULL,
     tipo VARCHAR(20) NOT NULL,
     id_venta INTEGER  NOT NULL,
-    url_servicio VARCHAR(200) NOT NULL,
-    metodo_servicio VARCHAR(100) NOT NULL,
+    fecha_hora_factura TIMESTAMP  NOT NULL,
+    url_servicio VARCHAR(200),
+    metodo_servicio VARCHAR(100),
     estado VARCHAR(20) NOT NULL,
-    contenido_base64_corrida1 TEXT NOT NULL,
-    contenido_base64_corrida2 TEXT NOT NULL,
-    hash VARCHAR(100) NOT NULL,
+    contenido_base64_corrida1 TEXT,
+    contenido_base64_corrida2 TEXT,
+    hash VARCHAR(100),
     PRIMARY KEY (id_gestor_documento))
 INHERITS (pxp.tbase) WITHOUT OIDS;
 
@@ -301,6 +302,71 @@ INHERITS (pxp.tbase) WITHOUT OIDS;
 
 ALTER TABLE siat.tcuis
   ALTER COLUMN horas_anulacion TYPE VARCHAR(4);
+
+--generar desde aqui
+CREATE TABLE siat.tunidad_medida (
+    id_unidad_medida serial NOT NULL,
+    codigo VARCHAR(50) UNIQUE,
+    descripcion TEXT,      
+    PRIMARY KEY (id_unidad_medida))
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+CREATE TABLE siat.tleyenda (
+    id_leyenda serial NOT NULL,
+    codigo VARCHAR(50) UNIQUE,
+    descripcion TEXT,      
+    PRIMARY KEY (id_leyenda))
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+CREATE TABLE siat.tcomponente (
+    id_componente serial NOT NULL,
+    codigo VARCHAR(50) UNIQUE,
+    descripcion TEXT,      
+    PRIMARY KEY (id_componente))
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+CREATE TABLE siat.tdepartamento (
+    id_departamento serial NOT NULL,
+    codigo VARCHAR(50) UNIQUE,
+    descripcion TEXT,      
+    PRIMARY KEY (id_departamento))
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+CREATE TABLE siat.tfecha_hora (
+    id_fecha_hora serial NOT NULL,
+    fecha_hora VARCHAR(50),
+    PRIMARY KEY (id_fecha_hora))
+INHERITS (pxp.tbase) WITHOUT OIDS;
+
+ALTER TABLE siat.tproducto
+ADD COLUMN actividad VARCHAR(20) NOT NULL;
+
+ALTER TABLE siat.tproducto
+ADD COLUMN codigo_concepto_ingas VARCHAR(50);
+
+ALTER TABLE siat.tunidad_medida
+ADD COLUMN codigo_pxp VARCHAR(50);
+
+ALTER TABLE siat.ttipo_moneda
+ADD COLUMN codigo_pxp VARCHAR(50);
+
+ALTER TABLE siat.tmetodo_pago
+ADD COLUMN codigo_pxp VARCHAR(50);
+
+ALTER TABLE siat.tcufd
+ALTER COLUMN id_cuis DROP NOT NULL;
+
+ALTER TABLE siat.tevento_significativo
+ADD COLUMN id_evento INTEGER NOT NULL;
+
+ALTER TABLE siat.tevento_significativo
+ADD COLUMN codigo_sucursal VARCHAR(20) NOT NULL;
+
+ALTER TABLE siat.tevento_significativo
+ADD COLUMN codigo_punto_venta VARCHAR(20) NOT NULL;
+
+ALTER TABLE siat.tevento_significativo
+DROP COLUMN fk_sucursal;
 
 
 /************************************F-SCP-JRR-SIAT-0-10/12/2019*************************************************/

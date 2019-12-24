@@ -71,7 +71,7 @@ Phx.vista.DireccionServicio=Ext.extend(Phx.gridInterfaz,{
                 mode: 'local',                                  
                // displayField: 'descestilo',
                 store:['leyenda','mensajes_servicios','eventos_significativos','motivos_anulacion','pais','tipo_ambiente','tipo_componente','tipo_departamento','tipo_documento_fiscal',
-						'tipo_documento_sector','tipo_emision','tipo_metodo_pago','tipo_modalidad','tipo_moneda','unidad_medida','fecha_hora','cuis','cufd','punto_venta']
+						'tipo_documento_sector','tipo_emision','tipo_metodo_pago','tipo_modalidad','tipo_moneda','unidad_medida','fecha_hora','cuis','cufd','punto_venta','tipo_documento_identidad','producto','evento_significativo_inicio','evento_significativo_fin']
             },
             type:'ComboBox', 
             grid:true,

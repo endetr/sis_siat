@@ -17,14 +17,9 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.EventoSignificativo.superclass.constructor.call(this,config);
 		this.init();
-		//this.load({params:{start:0, limit:this.tam_pag}})
+		this.load({params:{start:0, limit:this.tam_pag}});
 	},
-	onReloadPage:function(p){
-		this.store.baseParams=p;
-		//cargar datos pasando como parametros
-		this.load({params:{start:0, limit:this.tam_pag}})
-	},
-			
+				
 	Atributos:[ 
 		{
 			//configuracion del componente
@@ -38,55 +33,91 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 		},
 		
 		/**/
-		
+
 		{
             config:{
-                name: 'nombre_sucursal',
-                fieldLabel: 'Sucursal',              
+                name: 'codigo_evento',
+                fieldLabel: 'Codigo Evento',              
                 gwidth: 150
             },
                 type:'TextField',
-                filters: { pfiltro: 'suc.nombre', type: 'string'},      
+                filters: { pfiltro: 'evsi.codigo_evento', type: 'string'},      
+                grid: true,
+                form: false,
+                bottom_filter: true
+		},
+		
+		{
+            config:{
+                name: 'codigo_sucursal',
+                fieldLabel: 'Codigo Sucursal',              
+				gwidth: 150,
+				allowBlank: false
+            },
+                type:'TextField',
+                filters: { pfiltro: 'evsi.codigo_sucursal', type: 'string'},      
                 grid: true,
                 form: true,
                 bottom_filter: false
-        },
-        
-		
-		/**/
-		{
-			config:{
-				name: 'fk_sucursal',
-				fieldLabel: 'fk_sucursal',
-				allowBlank: false,
-				anchor: '80%',
-				gwidth: 100,
-				maxLength:4
-			},
-				type:'NumberField',
-				filters:{pfiltro:'evsi.fk_sucursal',type:'numeric'},
-				id_grupo:1,
-				grid:false,
-				form:true
 		},
 		
 		{
-			config:{
-				name: 'codigo_evento',
-				fieldLabel: 'Código Evento',
+            config:{
+                name: 'codigo_punto_venta',
+                fieldLabel: 'Codigo Punto Venta',              
+				gwidth: 150,
+				allowBlank: false
+            },
+                type:'TextField',
+                filters: { pfiltro: 'evsi.codigo_punto_venta', type: 'string'},      
+                grid: true,
+                form: true,
+                bottom_filter: false
+		}, 
+		
+		{
+			config: {
+				name: 'id_evento',
+				fieldLabel: 'Tipo Evento',
 				allowBlank: false,
-				anchor: '80%',
-				gwidth: 120,
-				maxLength:55
+				emptyText: 'Elija una opción...',
+				store: new Ext.data.JsonStore({
+					url: '../../sis_siat/control/Evento/listarEvento',
+					id: 'id_evento',
+					root: 'datos',
+					sortInfo: {
+						field: 'descripcion',
+						direction: 'ASC'
+					},
+					totalProperty: 'total',
+					fields: ['id_evento', 'codigo', 'descripcion'],
+					remoteSort: true,
+					baseParams: {par_filtro: 'evesia.codigo#evesia.descripcion'}
+				}),
+				valueField: 'id_evento',
+				displayField: 'descripcion',
+				gdisplayField: 'desc_evento',
+				hiddenName: 'id_evento',
+				forceSelection: true,
+				typeAhead: false,
+				triggerAction: 'all',
+				lazyRender: true,
+				mode: 'remote',
+				pageSize: 15,
+				queryDelay: 1000,
+				anchor: '100%',
+				gwidth: 200,
+				minChars: 2,
+				renderer : function(value, p, record) {
+					return String.format('{0}', record.data['desc_evento']);
+				}
 			},
-				type:'TextField',
-				filters:{pfiltro:'evsi.codigo_evento',type:'string'},
-				id_grupo:1,
-				grid:true,
-				form:true
+			type: 'ComboBox',
+			id_grupo: 0,
+			filters: {pfiltro: 'evesia.descripcion',type: 'string'},
+			grid: true,
+			form: true
 		},
-		
-		
 		
 		{
 			config:{
@@ -96,10 +127,24 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 				anchor: '80%',
 				gwidth: 150,
 							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 				type:'DateField',
 				filters:{pfiltro:'evsi.fecha_ini',type:'date'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
+				name: 'hora_ini',
+				fieldLabel: 'Hora Inicio',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 100,
+				format: 'H:i:s'
+			},
+				type:'TimeField',				
 				id_grupo:1,
 				grid:true,
 				form:true
@@ -113,10 +158,24 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 				anchor: '80%',
 				gwidth: 150,
 							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 				type:'DateField',
 				filters:{pfiltro:'evsi.fecha_fin',type:'date'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
+				name: 'hora_fin',
+				fieldLabel: 'Hora Fin',
+				allowBlank: false,
+				anchor: '80%',
+				gwidth: 100,
+				format: 'H:i:s'
+			},
+				type:'TimeField',				
 				id_grupo:1,
 				grid:true,
 				form:true
@@ -253,14 +312,13 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 	ActList:'../../sis_siat/control/EventoSignificativo/listarEventoSignificativo',
 	id_store:'id_evento_significativo',
 	fields: [
-		{name:'id_evento_significativo', type: 'numeric'},
-		{name:'fk_sucursal', type: 'numeric'},
-		{name:'nombre_sucursal', type: 'string'},
+		{name:'id_evento_significativo', type: 'numeric'},		
 		{name:'description', type: 'string'},
-		{name:'estado_reg', type: 'string'},
-		{name:'fecha_fin', type: 'date',dateFormat:'Y-m-d H:i:s'},
 		{name:'codigo_evento', type: 'string'},
-		{name:'fecha_ini', type: 'date',dateFormat:'Y-m-d H:i:s'},
+		{name:'estado_reg', type: 'string'},
+		{name:'fecha_fin', type: 'date',dateFormat:'Y-m-d'},
+		{name:'id_evento', type: 'numeric'},
+		{name:'fecha_ini', type: 'date',dateFormat:'Y-m-d'},
 		{name:'usuario_ai', type: 'string'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'id_usuario_reg', type: 'numeric'},
@@ -269,6 +327,11 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'hora_ini', type: 'string'},
+		{name:'hora_fin', type: 'string'},
+		{name:'desc_evento', type: 'string'},
+		{name:'codigo_sucursal', type: 'string'},
+		{name:'codigo_punto_venta', type: 'string'}
 		
 	],
 	sortInfo:{
@@ -280,7 +343,7 @@ Phx.vista.EventoSignificativo=Ext.extend(Phx.gridInterfaz,{
 	bdel:false,
 	bsave:false,
 	bedit:false,
-	bnew:false,
+	bnew:true,
 	}
 )
 </script>

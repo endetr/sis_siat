@@ -32,6 +32,7 @@ class MODMetodoPago extends MODBaseSiat{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('codigo_pxp','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -68,9 +69,7 @@ class MODMetodoPago extends MODBaseSiat{
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_metodo_pago','id_metodo_pago','int4');
-		$this->setParametro('codigo','codigo','numeric');
-		$this->setParametro('descripcion','descripcion','varchar');
-		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('codigo_pxp','codigo_pxp','varchar');		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();

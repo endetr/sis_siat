@@ -43,6 +43,12 @@ class ACTGestorDocumento extends ACTbase{
 		$this->res=$this->objFunc->eliminarGestorDocumento($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
+
+	function procesarGestorDocumento(){
+		$this->objFunc=$this->create('MODGestorDocumento');	
+	$this->res=$this->objFunc->procesarGestorDocumento($this->objParam);
+	$this->res->imprimirRespuesta($this->res->generarJson());
+}
 			
 }
 

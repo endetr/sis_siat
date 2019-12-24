@@ -70,10 +70,24 @@ Phx.vista.Cuis=Ext.extend(Phx.gridInterfaz,{
 				anchor: '80%',
 				gwidth: 100,
 							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 				type:'DateField',
 				filters:{pfiltro:'cuis.fecha_inicio',type:'date'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
+				name: 'hora_inicio',
+				fieldLabel: 'Hora Inicio',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				format: 'H:i:s'
+			},
+				type:'TimeField',				
 				id_grupo:1,
 				grid:true,
 				form:true
@@ -86,10 +100,24 @@ Phx.vista.Cuis=Ext.extend(Phx.gridInterfaz,{
 				anchor: '80%',
 				gwidth: 100,
 							format: 'd/m/Y', 
-							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y H:i:s'):''}
+							renderer:function (value,p,record){return value?value.dateFormat('d/m/Y'):''}
 			},
 				type:'DateField',
 				filters:{pfiltro:'cuis.fecha_fin',type:'date'},
+				id_grupo:1,
+				grid:true,
+				form:true
+		},
+		{
+			config:{
+				name: 'hora_fin',
+				fieldLabel: 'Hora Fin',
+				allowBlank: true,
+				anchor: '80%',
+				gwidth: 100,
+				format: 'H:i:s'
+			},
+				type:'TimeField',				
 				id_grupo:1,
 				grid:true,
 				form:true
@@ -212,9 +240,9 @@ Phx.vista.Cuis=Ext.extend(Phx.gridInterfaz,{
 	fields: [
 		{name:'id_cuis', type: 'numeric'},
 		{name:'codigo', type: 'string'},
-		{name:'fecha_fin', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+		{name:'fecha_fin', type: 'date',dateFormat:'Y-m-d'},
 		{name:'estado_reg', type: 'string'},
-		{name:'fecha_inicio', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
+		{name:'fecha_inicio', type: 'date',dateFormat:'Y-m-d'},
 		{name:'id_usuario_ai', type: 'numeric'},
 		{name:'id_usuario_reg', type: 'numeric'},
 		{name:'fecha_reg', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
@@ -223,7 +251,9 @@ Phx.vista.Cuis=Ext.extend(Phx.gridInterfaz,{
 		{name:'fecha_mod', type: 'date',dateFormat:'Y-m-d H:i:s.u'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
-		{name:'horas_anulacion', type: 'string'}
+		{name:'horas_anulacion', type: 'string'},
+		{name:'hora_inicio', type: 'string'},
+		{name:'hora_fin', type: 'string'}
 	],
 	sortInfo:{
 		field: 'id_cuis',

@@ -7,7 +7,6 @@
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
 
-include "SiatClassWs.inc";
 
 class ACTCufd extends ACTbase{    
 			
@@ -32,38 +31,12 @@ class ACTCufd extends ACTbase{
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 		
-	function verificarCufd(){
-		if($this->objParam->getParametro('id_cuis') != '') {
-                $this->objParam->addFiltro(" cf.id_cuis = " . $this->objParam->getParametro('id_cuis'));
-        }	
+	function registrarCufd() {		
 		$this->objFunc=$this->create('MODCufd');	
-		$this->respuesta=$this->objFunc->verificarCufd($this->objParam);
-		
+		$this->respuesta=$this->objFunc->registrarCufd($this->objParam);		
 		$this->respuesta->imprimirRespuesta($this->respuesta->generarJson());		
-	}
-			
-	function insertarCufd(){
-		$this->objFunc=$this->create('MODCufd');	
-		if($this->objParam->insertar('id_cufd')){
-			$this->res=$this->objFunc->insertarCufd($this->objParam);			
-		} else{			
-			$this->res=$this->objFunc->modificarCufd($this->objParam);
-		}
-		$this->res->imprimirRespuesta($this->res->generarJson());
-	}
+	}	
 	
-	function registrarCufd(){
-				
-		$wsOperaciones= new WsFacturacionOperaciones($_SESSION["_URLWS_OPERACIONES"],2,'2E07180BA7E',1,1009393025,'713E32B4',0);
-		$resultop = $wsOperaciones->solicitudCufdOp();
-		$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-		//$codigo_siat = $rop[2];
-		$this->respuesta=new Mensaje();	
-		foreach ($rop as $campos){
-			$this->respuesta->setDatos($campos);									
-		};
-			$this->respuesta->imprimirRespuesta($this->respuesta->generarJson());		
-	}
 						
 	function eliminarCufd(){
 			$this->objFunc=$this->create('MODCufd');	

@@ -29,6 +29,8 @@ Phx.vista.Cufd=Ext.extend(Phx.gridInterfaz,{
 				handler : this.BGenerar,
 				tooltip : '<b>Genera CUFD</b><br/>Se comunica con el SIN para solicitar el Código diario'
 			});  
+		
+		this.load({params:{start:0, limit:this.tam_pag}})
 			
 		
 		
@@ -61,7 +63,7 @@ Phx.vista.Cufd=Ext.extend(Phx.gridInterfaz,{
 				fieldLabel: 'Código',
 				allowBlank: true,
 				anchor: '80%',
-				gwidth: 350,
+				gwidth: 500,
 				maxLength:500
 			},
 				type:'TextField',
@@ -256,120 +258,24 @@ Phx.vista.Cufd=Ext.extend(Phx.gridInterfaz,{
     },
     
       BGenerar : function() {
- 			
+		Phx.CP.loadingShow();
  			Ext.Ajax.request({
-				url : '../../sis_siat/control/Cufd/verificarCufd',
+				url : '../../sis_siat/control/Cufd/registrarCufd',
 				params : {
-					id_cuis:this.maestro.id_cuis
+					estado:'registrar'
 					
 				},
-				success : this.successVerificar,
+				success : this.successSave,
 				failure : this.conexionFailure,
 				timeout : this.timeout,
 				scope : this
 			    });     	
       	
       	
-			/*var leng = this.store.data.length;
-			var paso;
-			var pedimo=false;
-			var f = new Date();
 			
-			var fecha_fin= new Date();
-			for(paso=0; paso<leng; paso++){
-				id = this.store.data.keys[paso]
-				estado = this.store.data.map[id].data.estado_reg;
-				if (estado == 'activo'){
-					pedimo=true;
-					fecha_fin=this.store.data.map[id].data.fecha_fin;
-				}
-			}
-			console.log(pedimo +' - '+ fecha_fin + ' - '+f );
-			
-			if(fecha_fin<f){
-				console.log('ingresa')
-			}*/
-			
-		/*
-			
-			 */
-		},
+	},
 		
-		successVerificar : function(resp) {
-			//Phx.CP.loadingHide();
-			var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-			var estado_cufd = reg.datos[0].alerta;
-			
-			if(estado_cufd == 'true'){
-				if(confirm('Esta seguro de solicitar CUFD al SIN?')){
-			   Phx.CP.loadingShow();
-				Ext.Ajax.request({
-				url : '../../sis_siat/control/Cufd/registrarCufd',
-				params : {
-					estado:'borrador'
-					
-				},
-				success : this.successGenerar,
-				failure : this.conexionFailure,
-				timeout : this.timeout,
-				scope : this
-			    });
-			    }
-			}
-			else {
-				alert ('El CUFD esta activo aun hasta el '+ reg.datos[0].fecha);
-			}
-			
-			console.log(reg.datos[0].alerta);
-			
-									
-			this.reload();
-
-		},
 		
-		successGenerar : function(resp) {
-
-			//Phx.CP.loadingHide();
-			var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-			console.log('ingrsa:');
-			console.log(JSON.stringify(resp));
-			console.log('segunda:');
-			console.log(reg);
-			console.log(reg.ROOT.datos.codigo);
-			if (!reg.ROOT.error) {
-				alert(reg.ROOT.detalle.mensaje)
-
-			}
-			
-			Ext.Ajax.request({
-				url : '../../sis_siat/control/Cufd/insertarCufd',
-				params : {
-					codigo:reg.ROOT.datos.codigo,
-					fecha_inicio:'',
-					fecha_fin:reg.ROOT.datos.fechaVigencia,
-					id_cuis:this.maestro.id_cuis,
-				},
-				success : this.successCufd,
-				failure : this.conexionFailure,
-				timeout : this.timeout,
-				scope : this
-			    });
-			
-			//this.reload();
-
-		},
-		
-	successCufd : function(resp) {
-
-			Phx.CP.loadingHide();
-			var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-			if (!reg.ROOT.error) {
-				alert(reg.ROOT.detalle.mensaje)
-			}
-									
-			this.reload();
-
-		},
     	
     
 	}

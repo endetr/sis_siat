@@ -71,6 +71,24 @@ Phx.vista.MetodoPago=Ext.extend(Phx.gridInterfaz,{
 				form:true,
 				bottom_filter : true
 		},
+
+		{
+			config:{
+				name: 'codigo_pxp',
+				fieldLabel: 'Codigo PXP',
+				allowBlank: false,
+				anchor: '25%',
+				gwidth: 150,
+				maxLength:50
+			},
+				type:'TextField',
+				filters:{pfiltro:'mepsia.codigo_pxp',type:'string'},
+				id_grupo:1,
+				grid:true,
+				egrid:true,
+				form:true,
+				bottom_filter : true
+		},
 	 {
 			config : {
 				name : 'estado_reg',
@@ -223,6 +241,7 @@ Phx.vista.MetodoPago=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'codigo_pxp', type: 'string'},
 		
 	],
 	sortInfo:{
@@ -230,7 +249,7 @@ Phx.vista.MetodoPago=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:false,
-	bsave:false,
+	bsave:true,
 	bnew:false,
 	bedit:false,
 	sincronizar:function () {			

@@ -6,8 +6,8 @@
 *@date 18-01-2019 13:59:47
 *@description Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 */
-
-class MODTipoMoneda extends MODbase{
+include dirname(__FILE__).'/MODBaseSiat.php';
+class MODTipoMoneda extends MODBaseSiat{
 	
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
@@ -32,6 +32,7 @@ class MODTipoMoneda extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('codigo_pxp','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -68,9 +69,7 @@ class MODTipoMoneda extends MODbase{
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_tipo_moneda','id_tipo_moneda','int4');
-		$this->setParametro('codigo','codigo','numeric');
-		$this->setParametro('descripcion','descripcion','varchar');
-		$this->setParametro('estado_reg','estado_reg','varchar');
+		$this->setParametro('codigo_pxp','codigo_pxp','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -94,6 +93,11 @@ class MODTipoMoneda extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+	function sincronizarTipoMoneda(){
+		$this->respuesta = $this->sincronizar('sincronizacion','tipo_moneda','ttipo_moneda');
 		return $this->respuesta;
 	}
 			

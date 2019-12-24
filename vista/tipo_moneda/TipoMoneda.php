@@ -17,10 +17,10 @@ Phx.vista.TipoMoneda=Ext.extend(Phx.gridInterfaz,{
     	//llama al constructor de la clase padre
 		Phx.vista.TipoMoneda.superclass.constructor.call(this,config);
 	    this.addButton('obtener_ws', {
-            text: 'Obtener Datos WS',
+            text: 'Sincronizar WS',
             iconCls: 'bupload',
             disabled: false,
-            handler: this.BObtenerWS,
+            handler: this.sincronizar,
             tooltip: '<b>Obtener Datos</b><br/>Obtener Datos desde el WS del SIN'
         });
 	
@@ -68,6 +68,23 @@ Phx.vista.TipoMoneda=Ext.extend(Phx.gridInterfaz,{
 				filters:{pfiltro:'monsia.descripcion',type:'string'},
 				id_grupo:1,
 				grid:true,
+				form:true,
+				bottom_filter : true
+		},
+		{
+			config:{
+				name: 'codigo_pxp',
+				fieldLabel: 'Codigo PXP',
+				allowBlank: false,
+				anchor: '25%',
+				gwidth: 150,
+				maxLength:50
+			},
+				type:'TextField',
+				filters:{pfiltro:'monsia.codigo_pxp',type:'string'},
+				id_grupo:1,
+				grid:true,
+				egrid:true,
 				form:true,
 				bottom_filter : true
 		},
@@ -223,6 +240,7 @@ Phx.vista.TipoMoneda=Ext.extend(Phx.gridInterfaz,{
 		{name:'id_usuario_mod', type: 'numeric'},
 		{name:'usr_reg', type: 'string'},
 		{name:'usr_mod', type: 'string'},
+		{name:'codigo_pxp', type: 'string'},
 		
 	],
 	sortInfo:{
@@ -230,47 +248,23 @@ Phx.vista.TipoMoneda=Ext.extend(Phx.gridInterfaz,{
 		direction: 'ASC'
 	},
 	bdel:false,
-	bsave:false,
+	bsave:true,
 	bnew:false,
-	onButtonNew: function () {
-            
-             this.ocultarComponente(this.Cmp.estado_reg);
-             Phx.vista.TipoMoneda.superclass.onButtonNew.call(this);
-            },
-    onButtonEdit: function () {
-            
-             this.mostrarComponente(this.Cmp.estado_reg);
-             Phx.vista.TipoMoneda.superclass.onButtonEdit.call(this);
-            }
-	,//1
-    BObtenerWS:function () {
-			var rec = this.sm.getSelected();
+	bedit:false,
+	sincronizar:function () {			
 			Phx.CP.loadingShow();
 			Ext.Ajax.request({
-				url: '../../sis_siat/control/TipoMoneda/insertarTipoMonedaWS',
+				url: '../../sis_siat/control/TipoMoneda/SincronizarTipoMoneda',
 				params: {
-				estado: 'recibido'
+					estado: 'recibido'
 				},
-				success: this.successDerivar,
+				success: this.successSave,
 				failure: this.conexionFailure,
 				timeout: this.timeout,
 				scope: this
 			});
 	
 		},
-		
-
-		successDerivar : function(resp) {
-
-			Phx.CP.loadingHide();
-			var reg = Ext.util.JSON.decode(Ext.util.Format.trim(resp.responseText));
-			if (!reg.ROOT.error) {
-				alert(reg.ROOT.detalle.mensaje)
-
-			}
-			this.reload();
-
-		}
 		
 })
 </script>

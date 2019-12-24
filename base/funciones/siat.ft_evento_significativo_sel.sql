@@ -40,14 +40,14 @@ BEGIN
     	begin
     		--Sentencia de la consulta
 			v_consulta:='select
-						evsi.id_evento_significativo,
-						evsi.fk_sucursal,
-                        suc.nombre as nombre_sucursal,
+						evsi.id_evento_significativo,						
+                        evsi.codigo_sucursal,
+						evsi.codigo_punto_venta,
 						evsi.description,
 						evsi.estado_reg,
-						evsi.fecha_fin,
-						evsi.codigo_evento,
-						evsi.fecha_ini,
+						evsi.fecha_fin::date,
+						evsi.id_evento,
+						evsi.fecha_ini::date,
 						evsi.usuario_ai,
 						evsi.fecha_reg,
 						evsi.id_usuario_reg,
@@ -55,11 +55,15 @@ BEGIN
 						evsi.fecha_mod,
 						evsi.id_usuario_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+						to_char(evsi.fecha_ini,''HH24:MI:SS'')::varchar as hora_ini,
+						to_char(evsi.fecha_fin,''HH24:MI:SS'')::varchar as hora_fin,	
+						evesia.descripcion as desc_evento,
+						evsi.codigo_evento
 						from siat.tevento_significativo evsi
 						inner join segu.tusuario usu1 on usu1.id_usuario = evsi.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = evsi.id_usuario_mod
-                        inner join vef.tsucursal suc on suc.id_sucursal = evsi.fk_sucursal
+						inner join siat.tevento evesia on evesia.id_evento = evsi.id_evento
+						left join segu.tusuario usu2 on usu2.id_usuario = evsi.id_usuario_mod                        
 				        where  ';
 			
 			--Definicion de la respuesta
@@ -86,8 +90,8 @@ BEGIN
 			v_consulta:='select count(id_evento_significativo)
 					    from siat.tevento_significativo evsi
 					    inner join segu.tusuario usu1 on usu1.id_usuario = evsi.id_usuario_reg
-						left join segu.tusuario usu2 on usu2.id_usuario = evsi.id_usuario_mod
-						inner join vef.tsucursal suc on suc.id_sucursal = evsi.fk_sucursal
+						inner join siat.tevento evesia on evesia.id_evento = evsi.id_evento
+						left join segu.tusuario usu2 on usu2.id_usuario = evsi.id_usuario_mod						
 					    where ';
 			
 			--Definicion de la respuesta		    

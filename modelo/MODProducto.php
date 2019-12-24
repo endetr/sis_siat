@@ -6,8 +6,8 @@
 *@date 16-01-2019 19:47:00
 *@descripcion Clase que envia los parametros requeridos a la Base de datos para la ejecucion de las funciones, y que recibe la respuesta del resultado de la ejecucion de las mismas
 */
-
-class MODProducto extends MODbase{
+include dirname(__FILE__).'/MODBaseSiat.php';
+class MODProducto extends MODBaseSiat{
 	
 	function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
@@ -32,6 +32,8 @@ class MODProducto extends MODbase{
 		$this->captura('id_usuario_mod','int4');
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
+		$this->captura('actividad','varchar');
+		$this->captura('codigo_concepto_ingas','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -48,9 +50,11 @@ class MODProducto extends MODbase{
 		$this->tipo_procedimiento='IME';
 				
 		//Define los parametros para la funcion
+		$this->setParametro('actividad','actividad','varchar');
 		$this->setParametro('codigo','codigo','numeric');
 		$this->setParametro('estado_reg','estado_reg','varchar');
 		$this->setParametro('descripcion','descripcion','varchar');
+		$this->setParametro('codigo_concepto_ingas','codigo_concepto_ingas','varchar');
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -68,9 +72,7 @@ class MODProducto extends MODbase{
 				
 		//Define los parametros para la funcion
 		$this->setParametro('id_producto','id_producto','int4');
-		$this->setParametro('codigo','codigo','numeric');
-		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('descripcion','descripcion','varchar');
+		$this->setParametro('codigo_concepto_ingas','codigo_concepto_ingas','varchar');		
 
 		//Ejecuta la instruccion
 		$this->armarConsulta();
@@ -94,6 +96,11 @@ class MODProducto extends MODbase{
 		$this->ejecutarConsulta();
 
 		//Devuelve la respuesta
+		return $this->respuesta;
+	}
+
+	function sincronizarProducto(){
+		$this->respuesta = $this->sincronizar('sincronizacion','producto','tproducto');
 		return $this->respuesta;
 	}
 			

@@ -11,6 +11,8 @@
 
 */
 include dirname(__FILE__).'/../lib/SiatClassWs.inc';
+include_once(dirname(__FILE__).'/../lib/cls_Factura.php');
+include dirname(__FILE__).'/MODCuf.php';
 class MODBaseSiat extends MODbase{
     function __construct(CTParametro $pParam){
 		parent::__construct($pParam);
@@ -30,14 +32,16 @@ class MODBaseSiat extends MODbase{
 				MODFunBasicas::getVariableGlobal('siat_codigo_sistema'), //get config codigo sistema 
 				MODFunBasicas::getVariableGlobal('siat_nit'), //get config nit
 				$cuis, // get cuis
-				0,
-				0,
+				0,//sucursal
+				0,//punto venta
 				$autorizacion);
 			$resultop = $wsOperaciones->{$urlMetodo[1]}();
 			$rop = $wsOperaciones->ConvertObjectToArray($resultop);
-			//var_dump($rop);
+			
 			if (isset($rop['RespuestaListaParametricas']['listaCodigos'])) {
 				$this->insertaTablaSincronizacion($link, $tabla, $rop['RespuestaListaParametricas']['listaCodigos']);
+			} else if (isset($rop['RespuestaListaProductos']['listaCodigos'])) {
+				$this->insertaProductoSincronizacion($link, $rop['RespuestaListaProductos']['listaCodigos']);
 			} else if (isset($rop['RespuestaListaParametricas']['listaCodigosRespuestas']['codigoMensaje'])) {
 				$mensaje = $this->getMensajeSoap($link, $rop['RespuestaListaParametricas']['listaCodigosRespuestas']['codigoMensaje']);
 				throw new Exception("{$mensaje} para : {$tipo} , {$subtipo} ");
@@ -69,11 +73,33 @@ class MODBaseSiat extends MODbase{
 		return $resArray;
 	}
 
+	function getUrlMetodoFacturacion($link, $tipo, $documento_sector, $documento_fiscal){
+		$resArray = array();
+		$sql = "SELECT  url, recepcion, validacion, recepcion_anulacion, validacion_anulacion
+				FROM siat.tdireccion_servicio  ds 
+				INNER JOIN siat.tdocumento_fiscal df on df.id_documento_fiscal = ds.id_documento_fiscal
+				INNER JOIN siat.tdocumento_sector dsec on dsec.id_documento_sector = ds.id_documento_sector
+				WHERE tipo = '{$tipo}' and dsec.codigo = '{$documento_sector}' and df.codigo = '{$documento_fiscal}'";
+
+        foreach ($link->query($sql) as $row) {
+			if ($tipo == 'anulacion') {
+				$resArray = array($row['url'],$row['recepcion_anulacion'],$row['validacion_anulacion']);
+			} else {
+				$resArray = array($row['url'],$row['recepcion'],$row['validacion']);
+			}
+            
+		}
+		if (empty($resArray)) {
+			throw new Exception("No existe direccion configurada para la facturacion: {$tipo} , sector: {$documento_sector} ");
+	   	}
+		return $resArray;
+	}
+
 	function getCuis($link){
 		$codigo = '';
 		$sql = "SELECT  codigo
 				FROM siat.tcuis 
-				WHERE now() between fecha_inicio and fecha_fin";
+				WHERE now() between fecha_inicio and fecha_fin and estado_reg = 'activo'";
 
         foreach ($link->query($sql) as $row) {
             $codigo = $row['codigo'];
@@ -141,5 +167,50 @@ class MODBaseSiat extends MODbase{
 			$stmt->execute();
 		}
 		
-    }
+	}
+	
+	function insertaProductoSincronizacion($link, $datos) {
+		
+		foreach ($datos as $key => $value) {
+			$sql = "INSERT INTO siat.tproducto (id_usuario_reg,actividad, codigo, descripcion)
+					VALUES ({$_SESSION["ss_id_usuario"]}, '{$value['codigoActividad']}', '{$value['codigoProducto']}','{$value['descripcionProducto']}')
+					ON CONFLICT (codigo) DO UPDATE SET descripcion = EXCLUDED.descripcion, actividad = EXCLUDED.actividad;";
+			
+			$stmt = $link->prepare($sql);
+			$stmt->execute();
+		}
+		
+		
+		
+	}
+	
+	function getCodigoTipoEvento($link, $id_evento){
+		$codigo = '';
+		$sql = "SELECT  codigo
+				FROM siat.tevento 
+				WHERE id_evento = {$id_evento}";
+
+        foreach ($link->query($sql) as $row) {
+            $codigo = $row['codigo'];
+		}
+		if ($codigo == '') {
+			throw new Exception("No existe el codigo del tipo de evento seleccionado");
+	   	}
+		return $codigo;
+	}
+	function getCufd($link){
+		//@todo generar un nuevo cufd si el obtenido no es el vigente
+		$codigo = '';
+		$sql = "SELECT  codigo
+				FROM siat.tcufd 
+				WHERE estado_reg = 'activo'";
+
+        foreach ($link->query($sql) as $row) {
+            $codigo = $row['codigo'];
+		}
+		if ($codigo == '') {
+			throw new Exception("No existe codigo cufd valido en este momento");
+	   	}
+		return $codigo;
+	}
 }

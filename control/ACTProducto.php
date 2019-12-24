@@ -6,9 +6,7 @@
 *@date 16-01-2019 19:47:00
 *@description Clase que recibe los parametros enviados por la vista para mandar a la capa de Modelo
 */
-include "SiatClassWs.inc";
 
-session_start();
 class ACTProducto extends ACTbase{    
 			
 	function listarProducto(){
@@ -39,6 +37,12 @@ class ACTProducto extends ACTbase{
 	function eliminarProducto(){
 			$this->objFunc=$this->create('MODProducto');	
 		$this->res=$this->objFunc->eliminarProducto($this->objParam);
+		$this->res->imprimirRespuesta($this->res->generarJson());
+	}
+
+	function sincronizarProducto(){
+		$this->objFunc=$this->create('MODProducto');	
+		$this->res=$this->objFunc->sincronizarProducto($this->objParam);
 		$this->res->imprimirRespuesta($this->res->generarJson());
 	}
 			

@@ -100,13 +100,11 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update siat.tproducto set
-			codigo = v_parametros.codigo,
-			descripcion = v_parametros.descripcion,
+			codigo_concepto_ingas = v_parametros.codigo_concepto_ingas,
 			fecha_mod = now(),
 			id_usuario_mod = p_id_usuario,
 			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai,
-            estado_reg=v_parametros.estado_reg
+			usuario_ai = v_parametros._nombre_usuario_ai            
 			where id_producto=v_parametros.id_producto;
                
 			--Definicion de la respuesta

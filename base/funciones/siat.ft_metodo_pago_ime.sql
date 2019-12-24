@@ -99,13 +99,9 @@ BEGIN
 		begin
 			--Sentencia de la modificacion
 			update siat.tmetodo_pago set
-			codigo = v_parametros.codigo,
-			descripcion = v_parametros.descripcion,
+			codigo_pxp = v_parametros.codigo_pxp,			
 			fecha_mod = now(),
-			id_usuario_mod = p_id_usuario,
-			id_usuario_ai = v_parametros._id_usuario_ai,
-			usuario_ai = v_parametros._nombre_usuario_ai,
-               estado_reg=v_parametros.estado_reg
+			id_usuario_mod = p_id_usuario		
 			where id_metodo_pago=v_parametros.id_metodo_pago;
                
 			--Definicion de la respuesta

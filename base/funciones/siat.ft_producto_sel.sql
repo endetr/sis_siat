@@ -55,7 +55,9 @@ BEGIN
 						prd.fecha_mod,
 						prd.id_usuario_mod,
 						usu1.cuenta as usr_reg,
-						usu2.cuenta as usr_mod	
+						usu2.cuenta as usr_mod,
+						prd.actividad,
+						prd.codigo_concepto_ingas	
 						from siat.tproducto prd
 						inner join segu.tusuario usu1 on usu1.id_usuario = prd.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = prd.id_usuario_mod

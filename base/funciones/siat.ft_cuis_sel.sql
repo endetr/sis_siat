@@ -46,9 +46,9 @@ BEGIN
 			v_consulta:='select
 						cuis.id_cuis,
 						cuis.codigo,
-						cuis.fecha_fin,
+						cuis.fecha_fin::date,
 						cuis.estado_reg,
-						cuis.fecha_inicio,
+						cuis.fecha_inicio::date,
 						cuis.id_usuario_ai,
 						cuis.id_usuario_reg,
 						cuis.fecha_reg,
@@ -57,7 +57,9 @@ BEGIN
 						cuis.fecha_mod,
 						usu1.cuenta as usr_reg,
 						usu2.cuenta as usr_mod,
-                        cuis.horas_anulacion		
+                        cuis.horas_anulacion,
+						to_char(cuis.fecha_inicio,''HH24:MI:SS'')::varchar as hora_inicio,
+						to_char(cuis.fecha_fin,''HH24:MI:SS'')::varchar as hora_fin	
 						from siat.tcuis cuis
 						inner join segu.tusuario usu1 on usu1.id_usuario = cuis.id_usuario_reg
 						left join segu.tusuario usu2 on usu2.id_usuario = cuis.id_usuario_mod

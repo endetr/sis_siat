@@ -22,9 +22,9 @@ class MODCuis extends MODbase{
 		//Definicion de la lista del resultado del query
 		$this->captura('id_cuis','int4');
 		$this->captura('codigo','varchar');
-		$this->captura('fecha_fin','timestamp');
+		$this->captura('fecha_fin','date');
 		$this->captura('estado_reg','varchar');
-		$this->captura('fecha_inicio','timestamp');
+		$this->captura('fecha_inicio','date');
 		$this->captura('id_usuario_ai','int4');
 		$this->captura('id_usuario_reg','int4');
 		$this->captura('fecha_reg','timestamp');
@@ -34,6 +34,8 @@ class MODCuis extends MODbase{
 		$this->captura('usr_reg','varchar');
 		$this->captura('usr_mod','varchar');
 		$this->captura('horas_anulacion','varchar');
+		$this->captura('hora_inicio','varchar');
+		$this->captura('hora_fin','varchar');
 		
 		     
 		//Ejecuta la instruccion
@@ -52,10 +54,12 @@ class MODCuis extends MODbase{
 				
 		//Define los parametros para la funcion
 		$this->setParametro('codigo','codigo','varchar');
-		$this->setParametro('fecha_fin','fecha_fin','timestamp');
+		$this->setParametro('fecha_fin','fecha_fin','date');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('fecha_inicio','fecha_inicio','timestamp');
-        $this->setParametro('horas_anulacion','horas_anulacion','varchar');
+		$this->setParametro('fecha_inicio','fecha_inicio','date');
+		$this->setParametro('horas_anulacion','horas_anulacion','varchar');
+		$this->setParametro('hora_inicio','hora_inicio','varchar');
+		$this->setParametro('hora_fin','hora_fin','varchar');
 		//Ejecuta la instruccion
 		$this->armarConsulta();
 		$this->ejecutarConsulta();
@@ -73,10 +77,12 @@ class MODCuis extends MODbase{
 		//Define los parametros para la funcion
 		$this->setParametro('id_cuis','id_cuis','int4');
 		$this->setParametro('codigo','codigo','varchar');
-		$this->setParametro('fecha_fin','fecha_fin','timestamp');
+		$this->setParametro('fecha_fin','fecha_fin','date');
 		$this->setParametro('estado_reg','estado_reg','varchar');
-		$this->setParametro('fecha_inicio','fecha_inicio','timestamp');
-        $this->setParametro('horas_anulacion','horas_anulacion','varchar');
+		$this->setParametro('fecha_inicio','fecha_inicio','date');
+		$this->setParametro('horas_anulacion','horas_anulacion','varchar');
+		$this->setParametro('hora_inicio','hora_inicio','varchar');
+		$this->setParametro('hora_fin','hora_fin','varchar');
 		
 		//Ejecuta la instruccion
 		$this->armarConsulta();

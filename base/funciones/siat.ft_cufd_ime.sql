@@ -47,8 +47,12 @@ BEGIN
 					
         begin
         	update  siat.tcufd set
-            estado_reg = 'inactivo'
-            where id_cuis = v_parametros.id_cuis;
+				estado_reg = 'inactivo',
+				fecha_fin = now(),
+				id_usuario_mod = p_id_usuario
+			where estado_reg = 'activo';
+
+			v_fecha_fin = to_timestamp(REPLACE(v_parametros.fecha_fin, 'T', ' ' ),'YYYY-MM-DD HH24:MI:SS.MS');
         		
         
         	--Sentencia de la insercion
@@ -56,8 +60,7 @@ BEGIN
 			codigo,
 			fecha_inicio,
 			fecha_fin,
-			estado_reg,
-			id_cuis,
+			estado_reg,			
 			id_usuario_ai,
 			id_usuario_reg,
 			usuario_ai,
@@ -66,10 +69,9 @@ BEGIN
 			fecha_mod
           	) values(
 			v_parametros.codigo,
-			v_parametros.fecha_inicio,
-			v_parametros.fecha_fin,
-			'activo',
-			v_parametros.id_cuis,
+			now(),
+			v_fecha_fin,
+			'activo',			
 			v_parametros._id_usuario_ai,
 			p_id_usuario,
 			v_parametros._nombre_usuario_ai,
@@ -79,12 +81,8 @@ BEGIN
 							
 			
 			
-			)RETURNING id_cufd, fecha_fin into v_id_cufd, v_fecha_fin;
-            
-            update  siat.tcufd set
-            fecha_inicio = v_parametros.fecha_fin - interval '24 hour'
-            where id_cufd=v_id_cufd;
-			
+			)RETURNING id_cufd, fecha_fin into v_id_cufd, v_fecha_fin;            
+            			
 			--Definicion de la respuesta
 			v_resp = pxp.f_agrega_clave(v_resp,'mensaje','CUFD almacenado(a) con exito (id_cufd'||v_id_cufd||')'); 
             v_resp = pxp.f_agrega_clave(v_resp,'id_cufd',v_id_cufd::varchar);

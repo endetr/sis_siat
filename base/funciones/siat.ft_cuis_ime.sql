@@ -45,6 +45,7 @@ BEGIN
 	if(p_transaccion='SIA_CUIS_INS')then
 					
         begin
+			
         	--Sentencia de la insercion
         	insert into siat.tcuis(
 			codigo,
@@ -60,9 +61,9 @@ BEGIN
             horas_anulacion
           	) values(
 			v_parametros.codigo,
-			v_parametros.fecha_fin,
+			to_timestamp(to_char(v_parametros.fecha_fin,'DD/MM/YYYY') || ' ' || v_parametros.hora_fin, 'DD/MM/YYYY HH24:MI:SS'),
 			'activo',
-			v_parametros.fecha_inicio,
+			to_timestamp(to_char(v_parametros.fecha_inicio,'DD/MM/YYYY') || ' ' || v_parametros.hora_inicio, 'DD/MM/YYYY HH24:MI:SS'),
 			v_parametros._id_usuario_ai,
 			p_id_usuario,
 			now(),
@@ -97,8 +98,8 @@ BEGIN
 			--Sentencia de la modificacion
 			update siat.tcuis set
 			codigo = v_parametros.codigo,
-			fecha_fin = v_parametros.fecha_fin,
-			fecha_inicio = v_parametros.fecha_inicio,
+			fecha_fin = to_timestamp(to_char(v_parametros.fecha_fin,'DD/MM/YYYY') || ' ' || v_parametros.hora_fin, 'DD/MM/YYYY HH24:MI:SS'),
+			fecha_inicio = to_timestamp(to_char(v_parametros.fecha_inicio,'DD/MM/YYYY') || ' ' || v_parametros.hora_inicio, 'DD/MM/YYYY HH24:MI:SS'),
 			id_usuario_mod = p_id_usuario,
 			fecha_mod = now(),
 			id_usuario_ai = v_parametros._id_usuario_ai,
