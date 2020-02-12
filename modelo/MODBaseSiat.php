@@ -198,19 +198,43 @@ class MODBaseSiat extends MODbase{
 	   	}
 		return $codigo;
 	}
-	function getCufd($link){
-		//@todo generar un nuevo cufd si el obtenido no es el vigente
-		$codigo = '';
+	//obtiene cufd valido o genera una nuevo
+	function getCufd($link, $codigo_sucursal, $codigo_punto_venta){
+		
+		$cufd = '';
 		$sql = "SELECT  codigo
 				FROM siat.tcufd 
-				WHERE estado_reg = 'activo'";
+				WHERE now() between fecha_inicio and fecha_fin and estado_reg = 'activo' and 
+				codigo_sucursal = '{$codigo_sucursal}' and codigo_punto_venta = '{$codigo_punto_venta}'";
 
         foreach ($link->query($sql) as $row) {
-            $codigo = $row['codigo'];
+            $cufd = $row['codigo'];
 		}
-		if ($codigo == '') {
-			throw new Exception("No existe codigo cufd valido en este momento");
+		if ($cufd == '') { //generar nuevo cufd
+			$urlMetodo = $this->getUrlMetodoSincronizacion($link,'cufd','cufd');
+			$wsOperaciones= new WsFacturacionOperaciones(
+				$urlMetodo[0],
+				MODFunBasicas::getVariableGlobal('siat_ambiente'),
+				MODFunBasicas::getVariableGlobal('siat_codigo_sistema'),
+				MODFunBasicas::getVariableGlobal('siat_modalidad'),
+				MODFunBasicas::getVariableGlobal('siat_nit'),
+				$this->getCuis($link),
+				$codigo_sucursal,//sucursal
+				$codigo_punto_venta);//punto de venta
+				
+			$resultop = $wsOperaciones->{$urlMetodo[1]}();
+			$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+			$cufd = $rop['RespuestaCufd']['codigo'];
+			$sql = "UPDATE siat.tcufd set estado_reg = 'inactivo' WHERE estado_reg = 'activo'";
+			$stmt = $link->prepare($sql);
+			$stmt->execute();
+
+			$sql = "INSERT INTO siat.tcufd (id_usuario_reg, codigo, fecha_inicio, fecha_fin, codigo_sucursal, codigo_punto_venta)
+					VALUES ({$_SESSION["ss_id_usuario"]}, '{$cufd}', now(),now() + INTERVAL '1439 min' ,'{$codigo_sucursal}', '{$codigo_punto_venta}');";
+			
+			$stmt = $link->prepare($sql);
+			$stmt->execute();
 	   	}
-		return $codigo;
+		return $cufd;
 	}
 }

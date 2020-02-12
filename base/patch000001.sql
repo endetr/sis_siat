@@ -368,5 +368,11 @@ ADD COLUMN codigo_punto_venta VARCHAR(20) NOT NULL;
 ALTER TABLE siat.tevento_significativo
 DROP COLUMN fk_sucursal;
 
+ALTER TABLE siat.tcufd
+ADD COLUMN codigo_sucursal VARCHAR(20) NOT NULL;
+
+ALTER TABLE siat.tcufd
+ADD COLUMN codigo_punto_venta VARCHAR(20) NOT NULL;
+
 
 /************************************F-SCP-JRR-SIAT-0-10/12/2019*************************************************/

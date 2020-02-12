@@ -61,19 +61,22 @@ class MODGestorDocumento extends MODBaseSiat{
 	}
 	
 				
-	function procesarGestorDocumento($p_id_gestor_documento = null){
+	function procesarGestorDocumento(){
 		$cone = new conexion();
 		$link = $cone->conectarpdo(); 
 		try {
-			if (isset($p_id_gestor_documento)) {
-				$id_gestor_documento = $p_id_gestor_documento;
-			} else {
-				$id_gestor_documento = $this->objParam->getParametro('id_gestor_documento');
-			}
+			
+			$id_gestor_documento = $this->objParam->getParametro('id_gestor_documento');
+			
 			$nit = MODFunBasicas::getVariableGlobal('siat_nit');
+			$codigo_punto_venta = $this->getPuntoVenta($link, $id_gestor_documento);
+			$codigo_sucursal = $this->getSucursal($link, $id_gestor_documento);			
+			
 			$cuis = $this->getCuis($link);
-			$cufd = $this->getCufd($link);
+			$cufd = $this->getCufd($link, $codigo_sucursal, $codigo_punto_venta);
+			
 			$documento_fiscal = $this->getDocumentoFiscalDeMapeo($link, $id_gestor_documento);
+			
 			$cabecera = $this->getDatosCabecera($link, $id_gestor_documento, $nit, $cufd);
 			$detalle = $this->getDatosDetalle($link, $id_gestor_documento);
 			$datos_gestor = $this->getDatosGestor($link, $id_gestor_documento);			
@@ -121,9 +124,9 @@ class MODGestorDocumento extends MODBaseSiat{
 				$cabecera['codigoDocumentoSector'],
 				$tipo_emision,//tipo emision 1 online 2 paquete 3 masivo
 				$modalidad,
-				$cabecera['codigoPuntoVenta'],//punto de venta
+				$codigo_punto_venta,//punto de venta
 				MODFunBasicas::getVariableGlobal('siat_codigo_sistema'),
-				$cabecera['codigoSucursal'], 
+				$codigo_sucursal, 
 				$cufd,
 				$cuis,
 				$nit,
@@ -152,7 +155,7 @@ class MODGestorDocumento extends MODBaseSiat{
 		$sql = "SELECT  df.codigo
 				FROM siat.tgestor_documento gd 
 				INNER JOIN vef.tventa v on gd.id_venta = v.id_venta
-				INNER JOIN vef.ttipo_venta tv on tv.codigo = v.codigo
+				INNER JOIN vef.ttipo_venta tv on tv.codigo = v.tipo_factura
 				INNER JOIN siat.tmapeo_tipo_venta mtv on mtv.id_tipo_venta = tv.id_tipo_venta
 				INNER JOIN siat.tdocumento_fiscal df on df.id_documento_fiscal = mtv.id_documento_fiscal
 				WHERE id_gestor_documento = {$id_gestor_documento}";
@@ -162,6 +165,40 @@ class MODGestorDocumento extends MODBaseSiat{
 		}
 		if ($codigo == '') {
 			throw new Exception("No existe mapeo para tipo venta del gestor {$id_gestor_documento}");
+	   	}
+		return $codigo;
+	}
+
+	function getPuntoVenta($link, $id_gestor_documento){
+		$codigo = '';
+		$sql = "SELECT  coalesce(pv.codigo,'0') as codigo
+				FROM siat.tgestor_documento gd 
+				INNER JOIN vef.tventa v on gd.id_venta = v.id_venta
+				LEFT JOIN vef.tpunto_venta pv on pv.id_punto_venta = v.id_punto_venta				
+				WHERE id_gestor_documento = {$id_gestor_documento}";
+
+        foreach ($link->query($sql) as $row) {
+            $codigo = $row['codigo'];
+		}
+		if ($codigo == '') {
+			throw new Exception("No existe punto de venta para el gestor {$id_gestor_documento}");
+	   	}
+		return $codigo;
+	}
+
+	function getSucursal($link, $id_gestor_documento){
+		$codigo = '';
+		$sql = "SELECT  suc.codigo
+				FROM siat.tgestor_documento gd 
+				INNER JOIN vef.tventa v on gd.id_venta = v.id_venta
+				LEFT JOIN vef.tsucursal suc on v.id_sucursal = suc.id_sucursal				
+				WHERE id_gestor_documento = {$id_gestor_documento}";
+
+        foreach ($link->query($sql) as $row) {
+            $codigo = $row['codigo'];
+		}
+		if ($codigo == '') {
+			throw new Exception("No existe sucursal para el gestor {$id_gestor_documento}");
 	   	}
 		return $codigo;
 	}
@@ -185,17 +222,43 @@ class MODGestorDocumento extends MODBaseSiat{
 
 	function getDatosCabecera($link, $id_gestor_documento, $nit, $cufd){
 		$encuentra = false;
-		$sql = "SELECT  gd.*, 
-				to_char (gd.fecha_hora_factura, ''YYYY-MM-DD'') || ''T'' || 
-				to_char(''HH24:MI:SS.000'') as fechaFormato1
+		$sql = "SELECT '{$nit}' as nit,
+						v.nro_factura as numeroFactura, 
+						'{$cufd}' as cufd, 						
+						suc.codigo as codigoSucursal,
+						suc.direccion,
+						pv.codigo as codigoPuntoVenta,				
+						to_char (gd.fecha_hora_factura, 'YYYY-MM-DD') || 'T' || 
+						to_char(gd.fecha_hora_factura, 'HH24:MI:SS.000') as fechaEmision,
+						v.nombre_factura as nombreRazonSocial, 
+						'1' as codigoTipoDocumentoIdentidad,
+						v.nit as numeroDocumento,
+						null as complemento,
+						colaesce(cl.codigo, pro.codigo) as codigoCliente,
+						mp.codigo as codigoMetodoPago,
+						vfp.numero_tarjeta as numeroTarjeta,
+						v.total_venta as montoTotal,
+						null as montoDescuento,
+						tmon.codigo as codigoMoneda
+						v.tipo_cambio_venta as tipoCambio
+						v.total_venta_msuc,
+
+
+
 				FROM siat.tgestor_documento gd 	
 				INNER JOIN vef.tventa v
-				INNER JOIN vef.tsucursal s
-				INNER JOIN param.tmoneda mon
-				INNER JOIN vef.tforma_pago
-				LEFT JOIN vef.tpunto_venta pv
-				LEFT JOIN vef.tcliente cl
-				LEFT JOIN param.vproveedor pro				
+				INNER JOIN vef.ttipo_venta tv on tv.codigo = v.codigo
+				INNER JOIN siat.tmapeo_tipo_venta mtv on mtv.id_tipo_venta = tv.id_tipo_venta
+				INNER JOIN siat.tdocumento_sector dsec on dsec.id_documento_sector = mtv.id_documento_sector
+				INNER JOIN vef.tsucursal suc on suc.id_sucursal = v.id_sucursal				
+				INNER JOIN param.tmoneda mon on v.id_moneda = mon.id_moneda
+				INNER JOIN siat.ttipo_moneda tmon on tmon.codigo_pxp = mon.codigo
+				INNER JOIN vef.tventa_forma_pago vfp on vfp.id_venta = v.id_venta
+				INNER JOIN vef.tforma_pago fp on fp on fp.id_forma_pago = vfp.id_forma_pago
+				INNER JOIN siat.tmetodo_pago mp on mp.codigo_pxp = fp.codigo				
+				LEFT JOIN vef.tpunto_venta pv on pv.id_punto_venta = v.id_punto_venta
+				LEFT JOIN vef.tcliente cl on cl.id_cliente = v.id_cliente
+				LEFT JOIN param.vproveedor pro on pro.id_proveedor = v.id_proveedor				
 				WHERE id_gestor_documento = {$id_gestor_documento}";
 
         foreach ($link->query($sql) as $row) {
