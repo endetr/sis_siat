@@ -70,5 +70,38 @@ VALUES
   (E'vef_integracion_siat', E'si', E'Define si el sistema de ventas se integrara con el sistema siat, posibles valores si y no');
   
 
+INSERT INTO siat.tdireccion_servicio ("id_usuario_reg", "fecha_reg", "estado_reg", "id_usuario_ai", "usuario_ai", "tipo", "subtipo", "url", "id_documento_fiscal", "id_documento_sector", "recepcion", "validacion", "recepcion_anulacion", "validacion_anulacion")
+VALUES 
+  (1, E'2019-12-17 23:41:05.899', E'activo', NULL, E'NULL', E'sincronizacion', E'tipo_documento_fiscal', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaTipoDocumentoFiscal', E'', E'', E''),
+  (1, E'2019-12-18 14:56:37.279', E'activo', NULL, E'NULL', E'sincronizacion', E'mensajes_servicios', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaMensajesServicios', E'', E'', E''),
+  (1, E'2019-12-18 15:03:59.351', E'activo', NULL, E'NULL', E'sincronizacion', E'tipo_documento_sector', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaTipoDocumentoSector', E'', E'', E''),
+  (1, E'2019-12-18 15:04:53.520', E'activo', NULL, E'NULL', E'sincronizacion', E'leyenda', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaLeyendas', E'', E'', E''),
+  (1, E'2019-12-18 15:05:17.839', E'activo', NULL, E'NULL', E'sincronizacion', E'eventos_significativos', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaEventosSignificativos', E'', E'', E''),
+  (1, E'2019-12-18 15:08:40.347', E'activo', NULL, E'NULL', E'sincronizacion', E'motivos_anulacion', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaMotivoAnulacion', E'', E'', E''),
+  (1, E'2019-12-18 15:08:53.333', E'activo', NULL, E'NULL', E'sincronizacion', E'pais', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaPaisOrigen', E'', E'', E''),
+  (1, E'2019-12-18 15:09:07.019', E'activo', NULL, E'NULL', E'sincronizacion', E'tipo_ambiente', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaTipoAmbiente', E'', E'', E''),
+  (1, E'2019-12-18 15:09:24.501', E'activo', NULL, E'NULL', E'sincronizacion', E'tipo_componente', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaTipoComponente', E'', E'', E''),
+  (1, E'2019-12-18 15:09:37.237', E'activo', NULL, E'NULL', E'sincronizacion', E'tipo_departamento', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaTipoDepartamento', E'', E'', E''),
+  (1, E'2019-12-18 15:10:00.074', E'activo', NULL, E'NULL', E'sincronizacion', E'tipo_emision', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaTipoEmision', E'', E'', E''),
+  (1, E'2019-12-18 15:14:32.486', E'activo', NULL, E'NULL', E'sincronizacion', E'tipo_metodo_pago', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaMetodoPago', E'', E'', E''),
+  (1, E'2019-12-18 15:15:16.656', E'activo', NULL, E'NULL', E'sincronizacion', E'tipo_modalidad', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaTipoModalidad', E'', E'', E''),
+  (1, E'2019-12-18 15:18:26.737', E'activo', NULL, E'NULL', E'sincronizacion', E'tipo_moneda', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaTipoMoneda', E'', E'', E''),
+  (1, E'2019-12-18 15:18:52.561', E'activo', NULL, E'NULL', E'sincronizacion', E'unidad_medida', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaUnidadMedida', E'', E'', E''),
+  (1, E'2019-12-18 17:10:01.392', E'activo', NULL, E'NULL', E'documento', E'', E'https://presiatservicios.impuestos.gob.bo:39113/FacturaElectronicaEstandar?wsdl', 8, 9, E'recepcionFacturaEstandar', E'validarRecepcionFacturaEstandar', E'anulacionFacturaEstandar', E'validaAnulacionFacturaEstandar'),
+  (1, E'2019-12-21 10:34:50.350', E'activo', NULL, E'NULL', E'sincronizacion', E'fecha_hora', E'https://presiatservicios.impuestos.gob.bo:39266/FacturacionSincronizacionFechaHora?wsdl', NULL, NULL, E'SincronizaFechaHora', E'', E'', E''),
+  (1, E'2019-12-21 15:41:36.705', E'activo', NULL, E'NULL', E'sincronizacion', E'tipo_documento_identidad', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'ParametricaTipoDocumentoIdentidad', E'', E'', E''),
+  (1, E'2019-12-21 21:12:16.627', E'activo', NULL, E'NULL', E'sincronizacion', E'producto', E'https://presiatservicios.impuestos.gob.bo:39118/FacturacionSincronizacion?wsdl', NULL, NULL, E'SincronizaProductosServicios', E'', E'', E''),
+  (1, E'2019-12-22 00:31:20.475', E'activo', NULL, E'NULL', E'cufd', E'cufd', E'https://presiatservicios.impuestos.gob.bo:39268/FacturacionSolicitudCufd?wsdl', NULL, NULL, E'solicitudCufdOp', E'', E'', E''),
+  (1, E'2019-12-22 15:43:46.994', E'activo', NULL, E'NULL', E'eventos', E'evento_significativo_inicio', E'https://presiatservicios.impuestos.gob.bo:39127/FacturacionEventosSignificativos?wsdl', NULL, NULL, E'inicioEventoSignificativoOP', E'', E'', E''),
+  (1, E'2019-12-22 15:44:11.970', E'activo', NULL, E'NULL', E'eventos', E'evento_significativo_fin', E'https://presiatservicios.impuestos.gob.bo:39127/FacturacionEventosSignificativos?wsdl', NULL, NULL, E'finEventoSignificativoOP', E'', E'', E'');
+  
+
+
+INSERT INTO siat.tcuis ("id_usuario_reg", "fecha_reg", "estado_reg", "id_usuario_ai", "usuario_ai", "fecha_inicio", "fecha_fin", "codigo", "horas_anulacion")
+VALUES 
+  (1, E'2019-12-17 23:45:57.049', E'activo', NULL, E'NULL', E'2019-12-01 00:00:00', E'2020-06-30 23:45:00', E'4CB33E78', E'48');
+  
+  
+
 /********************************************F-DAT-RAC-SIAT-0-12/02/2019********************************************/
 
