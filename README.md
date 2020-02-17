@@ -10,6 +10,11 @@ See the LICENSE file for license rights and limitations (GPLv3)
 
 NOTE
 
-Locate php.ini in your apache bin folder, I.e Apache/bin/php.ini
-Remove the ; from the beginning of extension=php_soap.dll
+yum install php-soap
+
 Restart your Apache server
+
+to verify
+
+php -m | grep -i soap
+
