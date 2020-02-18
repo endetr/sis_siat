@@ -1,3 +1,5 @@
+--------------- SQL ---------------
+
 CREATE OR REPLACE FUNCTION siat.ft_cuis_ime (
   p_administrador integer,
   p_id_usuario integer,
@@ -45,7 +47,12 @@ BEGIN
 	if(p_transaccion='SIA_CUIS_INS')then
 					
         begin
-			
+			update  siat.tcuis set
+				estado_reg = 'inactivo',
+				fecha_mod = now(),
+				id_usuario_mod = p_id_usuario
+			where estado_reg = 'activo';
+
         	--Sentencia de la insercion
         	insert into siat.tcuis(
 			codigo,
