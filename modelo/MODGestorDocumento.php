@@ -100,8 +100,9 @@ class MODGestorDocumento extends MODBaseSiat{
 		   	} else {
 			   	$factura = new Factura("FAC_{$cabecera['cuf']}", dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/',$modalidad_texto);	
 		   	}	
-		   
+		 
 		   $factura->loadXml($cabecera,$detalle);
+		   
 		   $factura->sign(dirname(__FILE__).'/../firma_digital/server.p12'); //@todo modificar para obtener dinamicamente la firma	
 		   $factura->crearArchivoBase64();
 		   $factura->crearArchivoGZIP();
@@ -115,6 +116,7 @@ class MODGestorDocumento extends MODBaseSiat{
 			   Factura::crearArchivoGZIPMasivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/'. $name,dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/{$name}.tar.gz');
 			   $archivo_envio = Factura::convertirArchivoGZIPABase64Masivo(dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/{$name}.tar.gz',dirname(__FILE__).'/../../uploaded_files/archivos_facturacion_xml/{$name}GzipB64.txt');
 		   } 
+		   
 		   $hash = hash ( "sha256" , $archivo_envio );
 		   
 		   $wsOperaciones= new WsFacturacion(
@@ -133,7 +135,7 @@ class MODGestorDocumento extends MODBaseSiat{
 				$datos_gestor['fechaFormato1'],
 				$hash,
 				$archivo_envio);	   
-		   
+			
 		    $resultop = $wsOperaciones->{$urlMetodo[1]}();
 		    $rop = $wsOperaciones->ConvertObjectToArray($resultop);
 			$codigo_recepcion = $rop['RespuestaServicioFacturacion']['codigoRecepcion'];
@@ -159,8 +161,10 @@ class MODGestorDocumento extends MODBaseSiat{
 				INNER JOIN siat.tmapeo_tipo_venta mtv on mtv.id_tipo_venta = tv.id_tipo_venta
 				INNER JOIN siat.tdocumento_fiscal df on df.id_documento_fiscal = mtv.id_documento_fiscal
 				WHERE id_gestor_documento = {$id_gestor_documento}";
-
-        foreach ($link->query($sql) as $row) {
+		
+		$stm = $link->query($sql);
+		$rows = $stm->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as $row) {
             $codigo = $row['codigo'];
 		}
 		if ($codigo == '') {
@@ -205,86 +209,111 @@ class MODGestorDocumento extends MODBaseSiat{
 
 	function getDatosGestor($link, $id_gestor_documento){
 		$encuentra = false;
-		$sql = "SELECT  gd.*, 
-				to_char (gd.fecha_hora_factura, ''YYYY-MM-DD'') || ''T'' || 
-				to_char(''HH24:MI:SS.000'') as fechaFormato1
-				FROM siat.tgestor_documento gd 							
+		$sql = "SELECT  
+					gd.*, 
+					to_char (gd.fecha_hora_factura, 'YYYY-MM-DD') || 'T' || 
+					to_char(gd.fecha_hora_factura, 'HH24:MI:SS.000') as \"fechaFormato1\"
+				FROM siat.tgestor_documento gd							
 				WHERE id_gestor_documento = {$id_gestor_documento}";
 
-        foreach ($link->query($sql) as $row) {
-            $codigo = $row['codigo'];
+        $stm = $link->query($sql);
+		$rows = $stm->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as $row) {
+			$datos = $row;
+			$encuentra = true;
 		}
 		if (!$encuentra) {
 			throw new Exception("No se encontro el gestor documento {$id_gestor_documento}");
 	   	}
-		return $codigo;
+		return $datos;
 	}
 
 	function getDatosCabecera($link, $id_gestor_documento, $nit, $cufd){
 		$encuentra = false;
 		$sql = "SELECT '{$nit}' as nit,
-						v.nro_factura as numeroFactura, 
+						v.nro_factura as \"numeroFactura\", 
 						'{$cufd}' as cufd, 						
-						suc.codigo as codigoSucursal,
+						suc.codigo as \"codigoSucursal\",
 						suc.direccion,
-						pv.codigo as codigoPuntoVenta,				
+						pv.codigo as \"codigoPuntoVenta\",				
 						to_char (gd.fecha_hora_factura, 'YYYY-MM-DD') || 'T' || 
-						to_char(gd.fecha_hora_factura, 'HH24:MI:SS.000') as fechaEmision,
-						v.nombre_factura as nombreRazonSocial, 
-						'1' as codigoTipoDocumentoIdentidad,
-						v.nit as numeroDocumento,
-						null as complemento,
-						colaesce(cl.codigo, pro.codigo) as codigoCliente,
-						mp.codigo as codigoMetodoPago,
-						vfp.numero_tarjeta as numeroTarjeta,
-						v.total_venta as montoTotal,
-						null as montoDescuento,
-						tmon.codigo as codigoMoneda
-						v.tipo_cambio_venta as tipoCambio
-						v.total_venta_msuc,
-
-
-
+						to_char(gd.fecha_hora_factura, 'HH24:MI:SS.000') as \"fechaEmision\",
+						v.nombre_factura as \"nombreRazonSocial\", 
+						'1' as \"codigoTipoDocumentoIdentidad\", --@todo tipo documento identidad carnet o nit anadir en cliente, proveedor
+						v.nit as \"numeroDocumento\",
+						null as complemento, --@todo sacar complemento en caso de q sea de ci
+						coalesce(cl.codigo, pro.codigo) as \"codigoCliente\",
+						mp.codigo as \"codigoMetodoPago\",
+						vfp.numero_tarjeta as \"numeroTarjeta\",
+						v.total_venta as \"montoTotal\", --@todo monto moneda base
+						null as \"montoDescuento\", --@todo descuento
+						tmon.codigo as \"codigoMoneda\",
+						v.tipo_cambio_venta as \"tipoCambio\",
+						v.total_venta_msuc as \"montoTotalMoneda\",--@todo monto moneda transaccion
+						'El proveedor debera suministrar el servicio en las modalidades y terminos ofertados o convenidos' as leyenda, --@todo random leyenda
+						usu.cuenta as usuario,
+						dsec.codigo as \"codigoDocumentoSector\",
+						null as \"codigoExcepcionDocumento\"--@todo verificar posibles codigo excepcion documento
 				FROM siat.tgestor_documento gd 	
-				INNER JOIN vef.tventa v
-				INNER JOIN vef.ttipo_venta tv on tv.codigo = v.codigo
+				INNER JOIN vef.tventa v on v.id_venta = gd.id_venta
+				INNER JOIN vef.ttipo_venta tv on tv.codigo = v.tipo_factura
 				INNER JOIN siat.tmapeo_tipo_venta mtv on mtv.id_tipo_venta = tv.id_tipo_venta
 				INNER JOIN siat.tdocumento_sector dsec on dsec.id_documento_sector = mtv.id_documento_sector
 				INNER JOIN vef.tsucursal suc on suc.id_sucursal = v.id_sucursal				
 				INNER JOIN param.tmoneda mon on v.id_moneda = mon.id_moneda
 				INNER JOIN siat.ttipo_moneda tmon on tmon.codigo_pxp = mon.codigo
 				INNER JOIN vef.tventa_forma_pago vfp on vfp.id_venta = v.id_venta
-				INNER JOIN vef.tforma_pago fp on fp on fp.id_forma_pago = vfp.id_forma_pago
-				INNER JOIN siat.tmetodo_pago mp on mp.codigo_pxp = fp.codigo				
+				INNER JOIN vef.tforma_pago fp on fp.id_forma_pago = vfp.id_forma_pago
+				INNER JOIN siat.tmetodo_pago mp on mp.codigo_pxp = fp.codigo
+				INNER JOIN segu.tusuario usu on usu.id_usuario = v.id_usuario_reg				
 				LEFT JOIN vef.tpunto_venta pv on pv.id_punto_venta = v.id_punto_venta
 				LEFT JOIN vef.tcliente cl on cl.id_cliente = v.id_cliente
-				LEFT JOIN param.vproveedor pro on pro.id_proveedor = v.id_proveedor				
+				LEFT JOIN param.vproveedor pro on pro.id_proveedor = v.id_proveedor			
 				WHERE id_gestor_documento = {$id_gestor_documento}";
 
-        foreach ($link->query($sql) as $row) {
-            $codigo = $row['codigo'];
+		$stm = $link->query($sql);
+		$rows = $stm->fetchAll(PDO::FETCH_ASSOC);
+		foreach ($rows as $row) {
+			$encuentra = true;
+            $cabecera = $row;
 		}
 		if (!$encuentra) {
 			throw new Exception("No se encontro los datos de cabecera para gestor documento {$id_gestor_documento}");
 	   	}
-		return $codigo;
+		return $cabecera;
 	}
 
-	function getDatosDetalle($link, $id_gestor_documento){
-		$encuentra = false;
-		$sql = "SELECT  gd.*, 
-				to_char (gd.fecha_hora_factura, ''YYYY-MM-DD'') || ''T'' || 
-				to_char(''HH24:MI:SS.000'') as fechaFormato1
-				FROM siat.tgestor_documento gd 				
+	function getDatosDetalle($link, $id_gestor_documento){		
+		$detalle = array();
+		$sql = "SELECT 
+					prod.actividad as \"actividadEconomica\",
+					prod.codigo as \"codigoProductoSin\",
+					cig.codigo as \"codigoProducto\",
+					vd.descripcion as descripcion,
+					vd.cantidad as cantidad,
+					sum.codigo as \"unidadMedida\",
+					vd.precio as \"precioUnitario\",
+					null as \"montoDescuento\", --@todo hacer descuentos
+					round(vd.precio * vd.cantidad) as \"subTotal\",
+					null as \"numeroSerie\", --@todo anadir serie
+					null as \"numeroImei\" --@todo anadir imei
+				FROM siat.tgestor_documento gd 	
+				INNER JOIN vef.tventa v on v.id_venta = gd.id_venta
+				INNER JOIN vef.tventa_detalle vd on v.id_venta = vd.id_venta
+				INNER JOIN vef.tsucursal_producto sp on sp.id_sucursal_producto = vd.id_sucursal_producto
+				INNER JOIN param.tconcepto_ingas cig on cig.id_concepto_ingas = sp.id_concepto_ingas
+				INNER JOIN siat.tproducto prod on prod.codigo_concepto_ingas = cig.codigo
+				INNER JOIN param.tunidad_medida um on um.id_unidad_medida = cig.id_unidad_medida
+				INNER JOIN siat.tunidad_medida sum on sum.codigo_pxp = um.codigo				
 				WHERE id_gestor_documento = {$id_gestor_documento}";
 
-        foreach ($link->query($sql) as $row) {
-            $codigo = $row['codigo'];
-		}
-		if (!$encuentra) {
-			throw new Exception("No se encontro los datos de cabecera para gestor documento {$id_gestor_documento}");
+		$stm = $link->query($sql);
+		$rows = $stm->fetchAll(PDO::FETCH_ASSOC);
+		
+		if (count($rows) == 0) {
+			throw new Exception("No se encontro los datos de detalle para gestor documento {$id_gestor_documento}");
 	   	}
-		return $codigo;
+		return $rows;
 	}
 			
 }
