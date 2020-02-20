@@ -1,9 +1,14 @@
 <?php
-
+/*
 // clase base con propiedades y métodos miembro
 //autor: Ariel Lopez Gutierrez
 //fecha: 23/01/2019 17:00
 
+HISTORIAL DE MODIFICACIONES:
+#ISSUE				FECHA				AUTOR				DESCRIPCION
+
+#3	ETR				20/02/2020			RAC KPLIAN			Renombrar constructores para compatibilidad PHP7
+*/
 class SiatClassWs {
 
    var $wsurl;
@@ -18,7 +23,7 @@ class SiatClassWs {
    var $sucursal;
 
 
-   function SiatClassWs($wsurl,$codigoAmbiente,$codigoSistema,$codigoModalidad,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta,$nombrePuntoVenta,$codigoTipoPuntoVenta,$descripcion,$codigoEvento,$fechaHoraEvento,$cufd,$fechaHoraFinEvento,$codigoRecepcionEvento)
+   function __construct($wsurl,$codigoAmbiente,$codigoSistema,$codigoModalidad,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta,$nombrePuntoVenta,$codigoTipoPuntoVenta,$descripcion,$codigoEvento,$fechaHoraEvento,$cufd,$fechaHoraFinEvento,$codigoRecepcionEvento)
    {
        $this->wsurl = $wsurl;
        $this->parametros = compact("codigoAmbiente","codigoSistema","codigoModalidad","nit","cuis","codigoSucursal","codigoPuntoVenta",
@@ -58,7 +63,7 @@ class WsFacturacionOperaciones extends SiatClassWs {
    var $result;
    var $wsurlFO;
    var $parametrosFO;
-   function WsFacturacionOperaciones($wsurlFO,$codigoAmbiente,$codigoSistema,$codigoModalidad,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta = 0,$nombrePuntoVenta = '',$codigoTipoPuntoVenta=1,$descripcion="",$codigoEvento="",$fechaHoraEvento="",$cufd="",$fechaHoraFinEvento=NULL,$codigoRecepcionEvento = NULL,$codigoSistemaProveedor=NULL, $fechaEvento = NULL)
+   function __construct($wsurlFO,$codigoAmbiente,$codigoSistema,$codigoModalidad,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta = 0,$nombrePuntoVenta = '',$codigoTipoPuntoVenta=1,$descripcion="",$codigoEvento="",$fechaHoraEvento="",$cufd="",$fechaHoraFinEvento=NULL,$codigoRecepcionEvento = NULL,$codigoSistemaProveedor=NULL, $fechaEvento = NULL)
    {	$this->wsurl = $wsurlFO;
        	$this->parametros = compact("codigoAmbiente","codigoSistema","codigoSistemaProveedor","codigoModalidad","nit","cuis","codigoSucursal",
        								"codigoPuntoVenta","nombrePuntoVenta","codigoTipoPuntoVenta","descripcion","codigoEvento",
@@ -150,7 +155,7 @@ class WsFacturacionSincroniza extends SiatClassWs {
    var $result;
    var $wsurlSINC;
    var $parametrosSINC;
-   function WsFacturacionSincroniza($wsurlSINC,$codigoAmbiente,$codigoSistema,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta = 0,$codigoAutorizacion=null)
+   function __construct($wsurlSINC,$codigoAmbiente,$codigoSistema,$nit,$cuis,$codigoSucursal,$codigoPuntoVenta = 0,$codigoAutorizacion=null)
    {
         $this->wsurl = $wsurlSINC;
        	$this->parametros = compact("codigoAmbiente","codigoSistema","nit","cuis","codigoSucursal",
@@ -380,7 +385,7 @@ class WsFacturacion extends SiatClassWs {
    var $wsurlFac;
    var $parametrosFac;
    
-   function WsFacturacion($wsurlFac,$codigoAmbiente,$codigoDocumentoFiscal,$codigoDocumentoSector,$codigoEmision,
+   function __construct($wsurlFac,$codigoAmbiente,$codigoDocumentoFiscal,$codigoDocumentoSector,$codigoEmision,
    										$codigoModalidad,$codigoPuntoVenta,$codigoSistema,$codigoSucursal,$cufd,$cuis,$nit,
    										$fechaEnvio=NULL,$hashArchivo=NULL,$archivo=NULL,$codigoRecepcion=NULL,$cuf=NULL,
    										$codigoMotivo = NULL,$numeroDocumentoFiscal=NULL)
