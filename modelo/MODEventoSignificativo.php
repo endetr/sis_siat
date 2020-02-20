@@ -72,7 +72,7 @@ class MODEventoSignificativo extends MODBaseSiat{
 			$fecha_fin = DateTime::createFromFormat('d/m/Y G:i:s', $this->objParam->getParametro('fecha_fin') . ' ' . $this->objParam->getParametro('hora_fin'));			
 			$fecha_fin_formato = $fecha_fin->format('Y-m-dH:i:s.000');
 			$fecha_fin_formato = substr($fecha_fin_formato, 0, 10) . 'T' . substr($fecha_fin_formato, 10);
-			$cufd = $this->getCufd($link);
+			$cufd = $this->getCufd($link, $codigo_sucursal, $codigo_punto_venta);
 			
 			//inicio de evento
 			$wsOperaciones= new WsFacturacionOperaciones(
