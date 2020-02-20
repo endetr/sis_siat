@@ -92,7 +92,13 @@ class MODEventoSignificativo extends MODBaseSiat{
 				$cufd
 				);
 			$resultop = $wsOperaciones->{$urlMetodoIni[1]}();
-			$rop = $wsOperaciones->ConvertObjectToArray($resultop);	
+			$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+			
+			//descomentar estas lienas para ver el codigo de error retornado por servicio de impuestos
+			//echo "<pre>";
+			//var_dump($var);
+			//echo "</pre>";
+			//exit;
 			
 			if (isset($rop['RespuestaListaEventos']['codigoRecepcionEventoSignificativo'])) {				
 				$codigo_evento = $rop['RespuestaListaEventos']['codigoRecepcionEventoSignificativo'];
@@ -118,6 +124,7 @@ class MODEventoSignificativo extends MODBaseSiat{
 				
 				$resultop = $wsOperaciones->{$urlMetodoFin[1]}();
 				$rop = $wsOperaciones->ConvertObjectToArray($resultop);
+				
 				//registro de inicio y fin exitoso ahora se puede registrar en la bd
 				if ($rop['RespuestaListaEventos']['transaccion']) {	
 					$this->setParametro('description','description','varchar');	
@@ -143,10 +150,13 @@ class MODEventoSignificativo extends MODBaseSiat{
 					if ($resp_procedimiento['tipo_respuesta']=='ERROR') {			
 						throw new Exception("Error al insertar el evento significativo en la bd");
 					}
-				}				
+				} else {
+					throw new Exception("Ha ocurrido un error al llamar al servicio para insertar el evento significativo en impuestos");
+				} 
+				
 
 			} else {
-				throw new Exception("Ha ocurrido un error al llamar al servicio para insertar el evento significativo en impuestos");
+				throw new Exception("Ha ocurrido un error al llamar al servicio para insertar el evento significativo en impuestos Codigo: ".$rop['RespuestaListaEventos']['listaCodigosRespuestas']['codigoMensaje']);
 			}
 			
 			$this->respuesta=new Mensaje();
