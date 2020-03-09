@@ -104,4 +104,7 @@ VALUES
   
 
 /********************************************F-DAT-RAC-SIAT-0-12/02/2019********************************************/
+/********************************************I-DAT-VAN-SIAT-0-09/03/2020********************************************/
+select pxp.f_insert_tgui ('Tipos de Documento de Identidad', 'Gestiona los tipos de documento de identidad como (CARNET DE IDENTIDAD, PASAPORTE, NUMERO DE IDENTIFICACION TRIBUTARIA)', 'TDISIA', 'si', 16, 'sis_siat/vista/tipo_documento_identidad/TipoDocumentoIdentidad.php', 3, '', 'TipoDocumentoIdentidad', 'SIAT');
+/********************************************F-DAT-VAN-SIAT-0-09/03/2020********************************************/
 

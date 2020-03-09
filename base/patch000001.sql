@@ -376,3 +376,16 @@ ADD COLUMN codigo_punto_venta VARCHAR(20) NOT NULL;
 
 
 /************************************F-SCP-JRR-SIAT-0-10/12/2019*************************************************/
+/************************************I-SCP-VAN-SIAT-0-09/03/2020*************************************************/
+create table siat.ttipo_documento_identidad
+(
+    id_tipo_documento_identidad serial       not null
+        constraint ttipo_documento_identidad_pkey
+            primary key,
+    codigo                      numeric      not null
+        constraint ttipo_documento_identidad_codigo_key
+            unique,
+    descripcion                 varchar(200) not null
+)
+    inherits (pxp.tbase);
+/************************************F-SCP-VAN-SIAT-0-09/03/2020*************************************************/
